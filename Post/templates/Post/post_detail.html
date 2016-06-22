@@ -1,0 +1,64 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load comments %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+<section>
+        <div class="container">
+            <div class="post">
+           {% if user.is_authenticated %}
+               {% if request.user == post.author %}
+    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+
+<a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+{% endif %}
+	
+	<h1>{{ post.title }}</h1> 
+<div style="overflow:auto;"> 
+{% if photo != blank %}
+<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
+{% endif %}
+<div style="float:left; margin-top:10px; margin-left:10px;"> 
+<p style="width: 50%;">{{ post.description }}</p> 
+ 
+<P>Location: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
+	<p>Time: {{post.time}}</p>
+	{%if post.price == 0%}
+		<p>***Free Event</p>
+	
+	{%else%}
+	
+        <p> price: ${{ post.price }} </p>
+	{%endif%}
+
+               <p class= "date" style="padding-bottom: 13px;">posted: {{ post.posted_date }}
+ by: {{post.author}} </p> 
+
+{% render_comment_form for Post.post object_pk %}
+
+{% get_comment_count for Post.post object_pk as comment_count %}
+<p>{{ comment_count }} comments have been posted.</p>
+
+{% get_comment_list for Post.post object_pk as comment_list %}
+
+{% for comment in comment_list %}
+<p>Posted by: {{ comment.user_name }} on {{ comment.submit_date }}</p>
+...
+<p>Comment: {{ comment.comment }}</p>
+...
+{% endfor %}
+
+<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+            </div>
+    </div>
+</div>
+
+ {% endblock %}      

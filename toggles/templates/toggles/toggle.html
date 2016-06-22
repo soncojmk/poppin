@@ -1,0 +1,11 @@
+{% spaceless %}
+<a {% if btnid %}id="{{ btnid }}"{% endif %}
+        
+        
+        data-active="{{ active }}"
+        data-url="{{ url }}" 
+	
+        data-loading-text="{{ loading }}"
+        data-on-text="{{ on }}"
+        data-off-text="{{ off }}">{{ label }} <i class="fa fa-thumbs-up"></i></a>
+{% endspaceless %}
