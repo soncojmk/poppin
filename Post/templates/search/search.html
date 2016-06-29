@@ -1,5 +1,7 @@
 {% extends 'homepage.html' %}
 
+{% load pinax_likes_tags %}
+
 {% load more_like_this %}
 
 {% block content%} 
@@ -44,12 +46,19 @@
         {%if result.object.price == 0%}
 		<b>***Free Event</b>
 	
-	{%else%}
+	{%elif result.object.price != 0 and price != blank%}
 	
         <p> <b>price: ${{ result.object.price }} </b></p>
 	{%endif%}
                
             </div>
+<p  style=" text-align:left; font-size: 17px; color: #504849; padding-left:20px; padding-top: 8px;" >
+	
+		{{ result.object.entry}}</p>
+		<br> 
+<p>
+                                               
+<span> <a href="{{ result.object.get_absolute_url }}">       Comments: {{ question.questioncomments.count }}</a> </span> </p>
 
 
                 </div>

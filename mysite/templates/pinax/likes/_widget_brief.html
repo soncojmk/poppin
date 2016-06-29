@@ -1,4 +1,4 @@
-<div class="likes">
+<span class="likes">
     {% if can_like %}
         <a class="btn ajax"
            data-method="post"
@@ -6,7 +6,12 @@
            data-spinner="off"
            href="{{ like_url }}?t=b"
            title="{{ like_text }}">
-            <i class="icon {{ like_class }}"></i>
+            <i class="fa fa-thumbs-up" class="icon {{ like_class }}"></i>
         </a>
     {% endif %}
-</div>
+
+<span class="count">
+        {{ like_count }} likes
+    </span>
+
+</span>

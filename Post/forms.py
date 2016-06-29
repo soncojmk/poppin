@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post
+from .models import Post, EventComment, Question, QuestionComment
 from haystack.forms import SearchForm
 from taggit_labels.widgets import LabelWidget
 from taggit.forms import *
@@ -8,10 +8,15 @@ from taggit.models import Tag
 
 class PostForm(forms.ModelForm):
     time = forms.TimeField(required = True)
-    photo = forms.ImageField(required = False)
+    #photo = forms.ImageField(required = False)
     class Meta:
         model = Post
-        fields = ('title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description','price','photo','tags',)
+        fields = ('title','description', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'price',)
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ('entry',)
 
 #adds first name and last name to signup form
 class SignupForm(forms.Form):
@@ -49,4 +54,17 @@ class SearchForm(SearchForm):
 
 class ContentForm(forms.ModelForm):
     tags = TagField(required=False, widget=LabelWidget)
+
+
+class EventCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = EventComment
+        fields = ('comment',)
+
+class QuestionCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = QuestionComment
+        fields = ('comment',)
 

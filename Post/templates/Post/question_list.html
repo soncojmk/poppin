@@ -1,0 +1,214 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %} 
+<!--
+<style>
+
+.navbar-fixed-side-left {
+  left: 0;
+  background-color: white;
+  padding-top: 45px;
+  
+}
+.navbar-fixed-side-right {
+  right: 0;
+}
+.navbar-fixed-side {
+  position: fixed;
+  border-width: 0;
+  z-index: 1030;
+  min-height: 5px;
+  min-width: 5px;
+  max-width: 200px;
+  margin-bottom: 0;
+  border: 0px solid transparent;
+  
+}
+.navbar-fixed-side .navbar-toggle {
+  float: none;
+  margin: 0;
+}
+.navbar-fixed-side .nav > li > a {
+  width: 100%;
+  padding: 5px;
+}
+.navbar-fixed-side .dropdown-menu > li > a {
+  padding: 5px;
+}
+.navbar-fixed-side .dropdown-header {
+  padding: 5px;
+}
+.navbar-fixed-side .navbar-nav {
+  margin: 0;
+
+}
+.navbar-fixed-side .navbar-nav > li {
+  float: none;
+}
+.navbar-fixed-side .navbar-nav > li > a {
+  padding: 5px;
+  line-height: 20px;
+  
+}
+.navbar-fixed-side .navbar-nav .open .dropdown-menu > li > a,
+.navbar-fixed-side .navbar-nav .open .dropdown-menu .dropdown-header {
+  padding: 3px 5px 3px 15px;
+
+}
+.navbar-fixed-side .container {
+  width: 100%;
+  padding: 0;
+
+}
+.navbar-fixed-side .navbar-header {
+  float: none;
+  margin: 0;
+  
+}
+.navbar-fixed-side .navbar-collapse {
+  padding: 0 2px;
+
+}
+.navbar-fixed-side .container .navbar-collapse {
+  margin: 0;
+}
+.navbar-fixed-side .container .navbar-brand {
+  margin: 0;
+}
+.navbar-fixed-side .navbar-brand {
+  float: none;
+  height: 100%;
+  
+  font-size: 18px;
+  line-height: 20px;
+  
+}
+
+
+}
+</style>
+
+
+<div style = "padding-top: 45px; background-color: #F7F7F7;">
+<div class="navbar navbar-default navbar-fixed-side navbar-fixed-side-left" role="navigation">
+        <div class="container" >
+            <div class="navbar-header" >
+                
+                    
+                </button>
+            </div>
+            <div  class="navbar-collapse collapse">
+                
+                <ul class="nav navbar-nav" style=" position: sticky;
+				width: 280px;
+				height: 100%;
+				padding-top:45px;
+				margin-left:35px;" >
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    
+                </ul>
+            </div>
+            <!--/.nav-collapse --
+        </div>
+    </div>
+</div>
+-->
+
+
+<div  class="col-sm-2" data-spy="scroll"  
+			style=" position: sticky;
+				width: 280px;
+				height: 100%;
+				padding-top:45px;
+				margin-left:35px;
+				">
+
+     <div class="panel panel-content" style="	border: solid white .5px; 
+						border-radius:0;">
+
+      <div class="panel-heading" style="text-align:center;">
+        <h3> Categories </h3>
+      </div>
+      <div class="panel-body" style="height: 330px;">
+<a href="{% url 'question_list' %}" > Questions </a> <br> <br>
+<a href="{% url 'post_list' %} "> Events </a>
+
+
+<!--  {% get_taglist as tags %} 
+
+	<ul style="list-style-type: none;
+    		   margin: 0;
+   		   padding: 0; ">
+
+	{% for tag in tags %}
+	<li><a  style="  display: block;
+   			
+    			 padding: 8px 0 8px 30px;
+   			 text-decoration: none;" 
+			 href="{% url 'categories'  %}">{{tag}}</a>
+	</li>
+	{% endfor %}
+
+-->
+
+	</ul>
+      </div>
+    </div>
+  </div>
+
+ <div style= "background-color: #F7F7F7;  padding-bottom: 25px; padding-top: 45px;">
+
+	{% if user.is_authenticated%}
+
+    <form method="POST" class="question-form"  style="width:600px; padding: 5px; padding-top:0;
+    margin: auto; 
+    margin-bottom: 10px;
+    text-align:center;">
+		{% csrf_token %}
+        {{ form|as_bootstrap }}
+        <button type="submit" class="save btn btn-primary">Send</button>
+    </form>
+	{% endif %}
+
+
+
+            {% for question in questions %}
+
+    <div class="post" style= "background-color: #FEFCFF;
+    width: 600px;
+    padding: 5px;
+    padding-top: 15px;
+    margin: auto; 
+    margin-bottom: 10px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+   ">
+        
+        <p  style=" text-align:left; font-size: 17px; color: #504849; padding-left:20px; padding-top: 8px;" >
+	
+		{{ question.entry}}</p>
+		<br> 
+<p>
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}                                               
+<span> <a href="{% url 'question_detail' pk=question.pk %}">       Comments: {{ question.questioncomments.count }}</a> </span> </p>
+
+            </div> 
+    
+{% endfor %}
+</div>
+
+{% endblock %}

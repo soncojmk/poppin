@@ -1,0 +1,25 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+
+<div style="padding-top: 10px;">
+
+<a id="post_new" href="{% url 'post_new' %}"> <i class="fa fa-pencil"></i> {% trans "Post New Event" %}</a> <br> <br>
+<a id="post_new" href="{% url 'question_new' %}"> <i class="fa fa-pencil"></i> {% trans "Post New Entry" %}</a>
+
+
+
+</div>
+
+{% endblock %}

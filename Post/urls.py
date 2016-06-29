@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
@@ -10,10 +11,21 @@ urlpatterns = [
     url(r'^search/?$', views.MySearchView, name='search_view'),
     url(r"^likes/", include("pinax.likes.urls", namespace="pinax_likes")),
     url(r'^tag/$', views.categories, name='categories'),
-    
-    
-    
 
+    #url(r'^post/(?P<pk>\d+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
+    #url(r'^comment/(?P<pk>\d+)/approve/$', views.comment_approve, name='comment_approve'),
+
+    url(r'^eventcomment/(?P<pk>\d+)/remove/$', views.event_comment_remove, name='event_comment_remove'),
+    url(r'^questioncomment/(?P<pk>\d+)/remove/$', views.question_comment_remove, name='question_comment_remove'),
+    #url(r'^category$', views.category_list, name='category_list'),
+    #url(r'^category/(?P<pk>\d+)/$', views.category_detail, name='category_detail'),
+    
+    url(r'^question/$', views.question_list, name='question_list'),
+    url(r'^question/(?P<pk>\d+)/$', views.question_detail, name='question_detail'),
+    url(r'^question/new/$', views.question_new, name='question_new'),
+    url(r'^question/(?P<pk>\d+)/edit/$', views.question_edit, name='question_edit'),
+    url(r'^question/(?P<pk>\d+)/remove/$', views.question_remove, name='question_remove'),
+    url(r"^post/question/$", TemplateView.as_view(template_name="Post/post.html"), name="post"),
 ]
 
 

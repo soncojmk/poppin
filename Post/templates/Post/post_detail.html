@@ -2,7 +2,9 @@
 
 {% load i18n %}
 
-{% load comments %}
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
 
 {% block head_title %}{% endblock %}
 
@@ -17,17 +19,21 @@
                {% if request.user == post.author %}
     <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 
-<a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+<a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
 {% endif %}
 {% endif %}
 	
 	<h1>{{ post.title }}</h1> 
 <div style="overflow:auto;"> 
+
+<!--
 {% if photo != blank %}
 <img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
 {% endif %}
+-->
+
 <div style="float:left; margin-top:10px; margin-left:10px;"> 
-<p style="width: 50%;">{{ post.description }}</p> 
+<p >{{ post.description }}</p> 
  
 <P>Location: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
 	<p>Time: {{post.time}}</p>
@@ -42,21 +48,53 @@
                <p class= "date" style="padding-bottom: 13px;">posted: {{ post.posted_date }}
  by: {{post.author}} </p> 
 
-{% render_comment_form for Post.post object_pk %}
 
-{% get_comment_count for Post.post object_pk as comment_count %}
-<p>{{ comment_count }} comments have been posted.</p>
+{% who_likes post as post_likes %}
 
-{% get_comment_list for Post.post object_pk as comment_list %}
-
-{% for comment in comment_list %}
-<p>Posted by: {{ comment.user_name }} on {{ comment.submit_date }}</p>
-...
-<p>Comment: {{ comment.comment }}</p>
-...
+{% for like in post_likes %}
+    <div class="like">{{ like.sender }} likes</div>
 {% endfor %}
 
-<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+
+<hr>   {% if user.is_authenticated%}
+
+    <form method="POST" class="post-form"  style="width:100%;">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        <button type="submit" class="save btn btn-default">Send</button>
+    </form>
+	{% endif %}
+
+
+
+
+{% for comment in post.comments.all %}
+ 
+    <div class="comment">
+        
+           
+
+            {% if request.user == comment.author %}
+                <a class= "glyphicon glyphicon-remove small" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
+            {% endif %}
+
+        
+    
+        <p style="margin=0;">{{ comment.comment}}  <br>
+
+  <div class="date" style="color:#aaa;
+    font-family:verdana;
+    font-size:11px;" > 
+	<span>by: <strong>{{ comment.author }}</strong></span> <br>
+	<span>{{ comment.created_date }}</span></div>
+</p>
+</div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+</div>
+
+</div>
+<a href="{% url 'post_list' %}" class="btn btn-primary" >Go Back</a>
             </div>
     </div>
 </div>

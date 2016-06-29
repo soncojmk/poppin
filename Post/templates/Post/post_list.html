@@ -16,7 +16,7 @@
 			style=" position: sticky;
 				width: 280px;
 				height: 100%;
-				padding-top:54px;
+				padding-top:45px;
 				margin-left:35px;
 				">
 
@@ -27,8 +27,12 @@
         <h3> Categories </h3>
       </div>
       <div class="panel-body" style="height: 330px;">
-        {% get_taglist as tags %}
-	
+<a href="{% url 'question_list' %}" > Questions </a> <br> <br>
+<a href="{% url 'post_list' %} "> Events </a>
+
+
+<!--  {% get_taglist as tags %} 
+
 	<ul style="list-style-type: none;
     		   margin: 0;
    		   padding: 0; ">
@@ -42,17 +46,21 @@
 	</li>
 	{% endfor %}
 
+-->
+
 	</ul>
       </div>
     </div>
   </div>
 
 	
-        <div style= "background-color: #F7F7F7 ;">
+        <div style= "background-color: #F7F7F7; padding-top: 45px;">
+<!--
             <p class="lead" style="padding-top: 5px; text-align: left;">
                 {% blocktrans %}
                 <b style= "color: black;">Nearby Events</b> 
                 {% endblocktrans %}
+-->
             {% for post in posts %}
     <div class="post" style= "background-color: #FEFCFF;
     width: 600px;
@@ -63,13 +71,13 @@
     text-align:center;
    ">
         
-        <h1 style = "font-size:25px"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        <p>{{ post.description }}</p>
+        <h1 style = "font-size:25px;"><a style = "font-size:25px; " href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+        <p style=" font-size: 17px; color:#666362; ">{{ post.description }}</p>
         
             
             <div>
         {%if post.price == 0%}
-		<p><b>*** Free Event ***</b></p>
+		<p><b>*** Free ***</b></p>
 	
 	{%else%}
 	
@@ -77,13 +85,16 @@
 	
 	{%endif%}
 
+<!--
 {% get_tags_for_object post as "tags" %}
 
 	{% for tag in tags %}
 	<a> #{{tag}} </a>
 	{% endfor %}
 
-       {% likes_widget request.user post %}
+-->
+
+     <p>  {% likes_widget request.user post %}    <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}</a> </p>
 
             </div> 
     </div>

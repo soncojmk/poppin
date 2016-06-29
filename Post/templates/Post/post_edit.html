@@ -12,7 +12,7 @@
 
 {%if user.is_authenticated %}
 <div style= "background-color: #F7F7F7 ;">
-<form method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px;" enctype="multipart/form-data">
+<form method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px; padding-top: 10px;" enctype="multipart/form-data">
     <legend>CREATE NEW POST</legend>
     {% csrf_token %}
     {{ form|as_bootstrap }}

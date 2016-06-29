@@ -129,7 +129,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
-    "django_comments",
     "pinax.likes",
     "mailer",
     "Post",
@@ -155,10 +154,13 @@ INSTALLED_APPS = [
     "mysite",
 ]
 
+SITE_ID = 1
+
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
 PINAX_LIKES_LIKABLE_MODELS = {
-    "Post.Post": {}  # can override default config settings for each model here
+    "Post.Post": {},
+    "Post.Question": {},  # can override default config settings for each model here
 }
 
 #search bar
