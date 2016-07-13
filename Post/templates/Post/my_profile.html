@@ -1,0 +1,59 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %} 
+
+
+
+<div  class="col-sm-2" data-spy="scroll"  
+			style=" position: sticky;
+				width: 280px;
+				height: 100%;
+				padding-top:45px;
+				margin-left:35px;
+				">
+
+     <div class="panel panel-content" style="	border: solid white .5px; 
+						border-radius:0;">
+
+      <div class="panel-heading" style="text-align:center;">
+        <h3> My Profile </h3>
+      </div>
+      <div class="panel-body" style="height: 330px;">
+<a href="#"> About Me </a> <br> <br>
+<a href="{% url 'my_events' %} "> My Events </a> <br> <br>
+<a href="{% url 'my_questions' %}" > My Questions </a> 
+
+
+	</ul>
+      </div>
+    </div>
+  </div>
+
+<div style= "background-color: #F7F7F7;  padding-bottom: 25px; padding-top: 45px;">
+
+
+
+	
+
+	<p> fun {{ profile.about }} </p>	
+
+</div>
+
+
+{% endblock %}
+
+
+
+

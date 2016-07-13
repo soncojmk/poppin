@@ -2,37 +2,84 @@
 {% load account_tags %}
 
 
-<ul class="nav navbar-nav pull-right">
+<style>
+@media (min-width: 768px) {
+	.dropdown:hover .dropdown-menu {
+		display: block;
+	}
+}
+
+</style>
+<ul class="nav navbar-nav pull-right" class= "bar">
  
-<li>
- <a id="post_list" href="{% url 'post_list' %}"> <i class="fa fa-globe"></i> {% trans "Events" %}</a>
-        </li>
+
 
 
 
     {% if request.user.is_authenticated %}
- <li>
- <a id="post" href="{% url 'post' %}"> <i class="fa fa-pencil"></i> {% trans "Post" %}</a>
+
+ 
+<li class="dropdown" >
+                        <a href="{% url 'feed' %}" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"><b >Nearby</b> <b class="caret"></b></a>
+                     <ul class="dropdown-menu"  style = " background-color:#236B8E;">
+<li style = " padding: 5px;" >
+ <a id="post_list" href="{% url 'post_list' %}" style = " color:white;" > <i   class="fa fa-globe"></i> <b >{% trans "Events" %}</b></a>
         </li>
+                           
+<li style = " padding: 5px;">
+ <a id="question_list" href="{% url 'question_list' %}" style = " color:white;"> <i  class="fa fa-question"></i> <b>{% trans "Questions" %}</b></a>
+        </li>     
+                            
+ </ul>
+</li>
+
+
+
+<li class="dropdown" >
+                        <a href="{% url 'feed' %}" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"><b >Post</b> <b class="caret"></b></a>
+                     <ul class="dropdown-menu" style = " background-color:#236B8E;" >
+<li style = " padding: 5px;" >
+ <a id="post_list" href="{% url 'post_new' %}"  style = " color:white;"> <i   class="fa fa-globe"></i> <b >{% trans "Event" %}</b></a>
+        </li>
+                           
+<li style = " padding: 5px;">
+ <a id="question_list" href="{% url 'question_list' %}"  style = " color:white;"> <i  class="fa fa-question"></i> <b>{% trans "Question" %}</b></a>
+        </li>     
+                            
+ </ul>
+</li>
   
         <li>
-            <a href="{% url 'account_settings' %}"><i class="fa fa-user"></i> {% user_display request.user %}</a>
+            <a href="{% url 'my_events' %}" style = " color:white;"><i  class="fa fa-user"></i> <b  class= "bar">{% user_display request.user %}</b></a>
         </li>
         <li>
-            <a id="account_logout" href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> {% trans "Log out" %}</a>
+            <a id="account_logout" href="{% url 'account_logout' %}" style = " color:white;"><i  class="fa fa-power-off"></i> <b  class= "bar">{% trans "Log out" %}</b></a>
         </li>
 	
 	
            
     {% else %}
-
-<li>
- <a id="account_login" href="{% url 'account_login' %}"> <i class="fa fa-pencil"></i> {% trans "Post" %}</a>
+<li class="dropdown" >
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"> <b >Nearby</b> <b class="caret"></b></a>
+                        <ul class="dropdown-menu" style = " background-color:#236B8E;">
+<li style = " padding: 5px;" >
+ <a id="post_list" href="{% url 'account_login' %}" style = " color:white;" > <i class="fa fa-globe"></i>  <b >{% trans "Events" %}</b></a>
+        </li>
+                           
+<li style = " padding: 5px;">
+ <a id="question_list" href="{% url 'account_login' %}" style = " color:white;"> <i class="fa fa-question"></i> <b > {% trans "Questions" %}</b></a>
+        </li>     
+                            
+ </ul>
 </li>
 
-        <li><a href="{% url 'account_login' %}">{% trans "Log in" %}</a></li>
+<li>
+ <a id="account_login" href="{% url 'account_login' %}" style = " color:white;"> <i class="fa fa-pencil"></i>  <b class="bar">{% trans "Post" %}</b></a>
+</li>
+
+        <li><a href="{% url 'account_login' %}" style = " color:white;"> <b class="bar">{% trans "Log in" %}</b></a></li>
         {% if ACCOUNT_OPEN_SIGNUP %}
-            <li><a href="{% url 'account_signup' %}">{% trans "Sign up" %}</a></li>
+            <li><a href="{% url 'account_signup' %}" style = " color:white;"> <b class="bar">{% trans "Sign up" %}</b></a></li>
         {% endif %}
     {% endif %}
 </ul>

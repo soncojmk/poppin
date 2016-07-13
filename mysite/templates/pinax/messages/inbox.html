@@ -1,0 +1,30 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+
+{% for userthread in userthreads %}
+    <div class="post" style= "background-color: #FEFCFF;
+    width: 600px;
+    padding: 5px;
+    margin: auto; 
+    margin-bottom: 10px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+   ">
+        
+        
+        <p style=" font-size: 17px; color:#666362; ">{{ userthread.thread }}</p>
+        
+            
+  {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %} 
+
+
+
+
+
+<style>
+
+
+li a{color:#504849;}
+
+#icon{
+
+color:#236B8E;}
+
+body {
+  padding-top: 60px;
+}
+
+.affix-top {
+	top:60px;
+    position:fixed;
+}
+
+
+@media (max-width: 997px) {
+ 
+.affix,.affix-top,#midCol.affix,#midCol.affix-top {
+      position:static;
+  }
+
+.affix-top {
+	top:60px;
+	
+    
+}
+}
+
+
+
+/* uncomment this section to make the sidebar un-pin
+.affix-top {
+	top:60px;
+    position:fixed;
+}
+
+.affix {
+    position:static;
+}
+*/
+
+
+
+
+/* custom theme */
+    
+#midCol.affix-top {
+    position:fixed;
+  	margin-left:-18px;
+  	margin-right:10px;
+}
+
+#midCol.affix-bottom {
+	position:static;
+}
+
+#midCol.affix {
+    position:static;
+}
+
+@media (max-width:800px) {
+  .affix,.affix-top,#midCol.affix,#midCol.affix-top {
+      position:static;
+  }
+.affix-top {
+	top:30px;
+   
+}
+
+}
+
+.caption {
+	background-color:#eee;
+  	padding:10px;
+    margin:0;
+	color:#555;
+}
+
+
+@media (max-width:620px) {
+.sidebar-nav-fixed{
+	display:none;
+
+}
+
+
+}
+
+	
+	
+
+</style>
+
+
+<div class="container" >
+	<div class="row" >
+  		<div class="col-lg-3 col-md-3  " >
+          <!--sidebar-->
+          <div class="sidebar-nav-fixed" style="padding-top:20px; padding-left:60px;" data-spy="affix" data-offset-top="140">
+          <ul class="nav nav-list" class="center" style="color:black;">
+	      
+             <li><a href="{% url 'my_events' %} ">  <i id="icon" class="fa fa-globe"></i> My Events </a></li>
+            <li><a href="{% url 'my_questions' %} ">  <i id="icon" class="fa fa-question-circle"></i> My Questions </a> </li>
+            <li><a href="{% url 'account_settings' %}" >  <i id="icon" class="fa fa-cog"></i> Settings </a></li>
+		<li class="divider"></li> <hr>
+		<li class="divider"></li>
+	    <li><a href="{% url 'post_new' %}" >  <i id="icon" class="fa fa-pencil-square-o"></i> Post New Event </a></li>
+	    <li><a href="{% url 'question_new' %}" >  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
+          </ul>
+          </div>
+      	</div>
+      	
+          
+          
+      	
+{% block content %}
+{% endblock %}
+
+</div>
+
+{% endblock %}
+
+
+<!--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,150 @@
+{% extends "Post/profile_side_nav.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% block content %} 
+
+
+
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+ 
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.well{
+	zoom: .7;
+	
+
+}
+
+
+.image {
+	width:100%;
+	padding:0px;
+	
+
+}
+
+}
+</style>
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 " >
+{% if user.is_authenticated%}
+ {% for post in posts %}
+
+    {% if request.user == post.author %} 
+          
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+	
+
+
+<div style="float:right; ">
+ {% if request.user == post.author %}
+    <a  href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+
+<a  href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+
+</div>	
+    
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+
+{%if post.price == 0%}
+		<span style="float:right;  color:grey;"> Free </span>
+	
+	{%else%}
+	
+         <span style="float:right;  color:grey;">${{ post.price }} </span>
+	
+	{%endif%}
+
+</p>
+
+	
+        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description }}</p>
+
+
+        {% if post.image %}
+ <div class= "image">
+    <a   href="{% url 'post_detail' pk=post.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ post.image.large.url }}"/></a>
+</div>
+	{% endif %}
+            
+<hr>
+ <div style="text-align:left; ">
+
+	<p> <b> Date:  </b> {{post.date}}  </p>
+
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+  
+     <p > {% likes_widget request.user post %} </p> 
+
+<p style="float:right; ">
+<a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ post.comments.count }} </a></p>
+
+
+
+  
+</div>
+
+</div>
+             
+ {% endif %}
+{% endfor %} 
+{% endif %}
+</div>
+{% endblock %}

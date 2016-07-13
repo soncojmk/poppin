@@ -1,4 +1,4 @@
-{% extends "site_base.html" %}
+{% extends "Post/side_nav.html" %}
 
 {% load i18n %}
 
@@ -6,97 +6,222 @@
 
 {% load taggit_templatetags2_tags %}
 
-{% block head_title %}{% endblock %}
+{% block content %} 
 
-{% block body_class %}home{% endblock %}
+<style>
 
-{% block body_base %} 
-
-<div  class="col-sm-2" data-spy="scroll"  
-			style=" position: sticky;
-				width: 280px;
-				height: 100%;
-				padding-top:45px;
-				margin-left:35px;
-				">
-
-     <div class="panel panel-content" style="	border: solid white .5px; 
-						border-radius:0;">
-
-      <div class="panel-heading" style="text-align:center;">
-        <h3> Categories </h3>
-      </div>
-      <div class="panel-body" style="height: 330px;">
-<a href="{% url 'question_list' %}" > Questions </a> <br> <br>
-<a href="{% url 'post_list' %} "> Events </a>
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
 
 
-<!--  {% get_taglist as tags %} 
 
-	<ul style="list-style-type: none;
-    		   margin: 0;
-   		   padding: 0; ">
+}
 
-	{% for tag in tags %}
-	<li><a  style="  display: block;
-   			
-    			 padding: 8px 0 8px 30px;
-   			 text-decoration: none;" 
-			 href="{% url 'categories'  %}">{{tag}}</a>
-	</li>
-	{% endfor %}
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
 
--->
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
 
-	</ul>
-      </div>
-    </div>
-  </div>
 
+}
+
+
+@media (max-width:600px){
+
+
+ 
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.well{
+	zoom: .7;
 	
-        <div style= "background-color: #F7F7F7; padding-top: 45px;">
-<!--
-            <p class="lead" style="padding-top: 5px; text-align: left;">
-                {% blocktrans %}
-                <b style= "color: black;">Nearby Events</b> 
-                {% endblocktrans %}
--->
-            {% for post in posts %}
-    <div class="post" style= "background-color: #FEFCFF;
-    width: 600px;
-    padding: 5px;
-    margin: auto; 
-    margin-bottom: 10px;
-    border-bottom: solid lightgrey .5px;
-    text-align:center;
-   ">
+
+}
+
+
+.image {
+	width:100%;
+	padding:0px;
+	
+
+}
+
+}
+</style>
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 " >
+          	 {% for post in posts %}
         
-        <h1 style = "font-size:25px;"><a style = "font-size:25px; " href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        <p style=" font-size: 17px; color:#666362; ">{{ post.description }}</p>
-        
-            
-            <div>
-        {%if post.price == 0%}
-		<p><b>*** Free ***</b></p>
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+	
+	
+    
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+
+{%if post.price == 0%}
+		<span style="float:right;  color:grey;"> Free </span>
 	
 	{%else%}
 	
-        <p> <b>price: ${{ post.price }} </b></p>
+         <span style="float:right;  color:grey;">${{ post.price }} </span>
 	
 	{%endif%}
 
-<!--
-{% get_tags_for_object post as "tags" %}
+</p>
 
-	{% for tag in tags %}
-	<a> #{{tag}} </a>
-	{% endfor %}
+	
+        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description }}</p>
 
--->
 
-     <p>  {% likes_widget request.user post %}    <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}</a> </p>
+        {% if post.image %}
+ <div class= "image">
+    <a   href="{% url 'post_detail' pk=post.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ post.image.large.url }}"/></a>
+</div>
+	{% endif %}
+            
+<hr>
+ <div style="text-align:left; ">
 
-            </div> 
-    </div>
+	<p> <b> Date:  </b> {{post.date}}  </p>
+
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+  
+     <p > {% likes_widget request.user post %} </p> 
+
+<p style="float:right; ">
+<a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ post.comments.count }} </a></p>
+
+
+
+  
+</div>
+
+</div>
+             
+   
 {% endfor %}
+
+	       
+
+        
+
+
+
+
+<!--
+<style>
+	
+ .post{
+	background-color: white;
+    width: 600px;
+    padding: 5px;
+     
+    margin-bottom: 15px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+
+
+}
+
+@media screen and (max-width: 767px) {
+
+ 
+
+  .post {
+   
+   
+   margin-left:auto;
+}    
+  
+}
+</style>
+	
+ <div class="list" class="col-md-6" style= "background-color: #F5F5F5; padding-top: 45px;">
+
+           
+            {% for post in posts %}
+    <div class="post">
+
+<p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{post.author}}</p>
+
+       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+
+{%if post.price == 0%}
+		<span style="float:right; padding-right:20px; color:grey;"> Free </span>
+	
+	{%else%}
+	
+         <span style="float:right; padding-right:20px; color:grey;">${{ post.price }} </span>
+	
+	{%endif%}
+
+</p>
+
+	
+        <p style=" text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px;">{{ post.description }}</p>
+
+
+        {% if post.image %}
+ 	
+    <a style= "border-radius:2px; " href="{% url 'post_detail' pk=post.pk %}"><img alt="" src="{{ post.image.large.url }}"/></a>
+	{% endif %}
+            
+<hr>
+ <div style="text-align:left; padding-left:20px;">
+
+	<p> <b>{{post.date}} </b>   </p>
+
+</div>
+
+<hr style="width:560px;">
+            <div style="overflow: auto;
+	width: 100%;">
+
+  
+     <p > {% likes_widget request.user post %} </p> 
+
+<p style="float:right; padding-right:30px;">
+<a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ post.comments.count }} </a></p>
+
+
+
+  
+</div>
+
+
+             
+    </div></div> 
+{% endfor %}
+-->
 {% endblock %}

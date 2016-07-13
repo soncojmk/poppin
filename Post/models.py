@@ -3,6 +3,9 @@ from django.db import models
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from taggit.managers import TaggableManager
+from localflavor.us.us_states import STATE_CHOICES
+from localflavor.us.models import USStateField
+from stdimage.models import StdImageField
 
 # Create your models here.
 class Category(models.Model):
@@ -22,21 +25,29 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     street_address = models.CharField(max_length=200)
     city = models.CharField(max_length=64)
-    state = models.CharField(max_length=20)
+    state = USStateField(choices = STATE_CHOICES)
     zip_code = models.CharField(max_length=5)
     date = models.DateField(default='', null=True)
-    time = models.TimeField(blank=True, null=True)
+    time = models.TimeField( help_text="only 24 hour clocks, you can do that, right?", blank=True, null=True,)
     description = models.TextField()
     price = models.IntegerField()
-    photo = models.ImageField(upload_to="Post/images/", null=True, blank=True)
+    image = StdImageField(upload_to='Post/images', null =True, blank=True,
+                          variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
+
     posted_date = models.DateTimeField(default=timezone.now)
 
     tags = TaggableManager()
-    
-    
+
+
     def posted(self):
         self.posted_date=timezone.now()
         self.save()
+
+     
+    @property
+    def time_since(self):
+        return (timezone.now()-self.posted_date).total_seconds()
+
 
     def __str__(self):
         return self.title
@@ -50,12 +61,16 @@ class Post(models.Model):
 
 class Question(models.Model):
     author = models.ForeignKey('auth.user')
-    entry = models.TextField(max_length=200, blank=True, null=True, verbose_name="")
+    entry = models.TextField(max_length=200, blank=False, null=True, verbose_name="")
     posted_date = models.DateTimeField(default=timezone.now)
 
     def posted(self):
         self.posted_date=timezone.now()
         self.save()
+
+   
+    def time_since(self):
+        return (timezone.now()-self.posted_date).total_seconds()
 
     def __str__(self):
         return self.entry
@@ -102,7 +117,32 @@ class QuestionComment(models.Model):
         return self.comment
 
  
+class Profile(models.Model):
+    user = models.ForeignKey('auth.user', unique=True)
+    about = models.TextField(help_text="tell us about your shitty professors or something")
+    college = models.CharField(max_length=50)
 
+    FRESHMAN = 'FR'
+    SOPHOMORE = 'SO'
+    JUNIOR = 'JR'
+    SENIOR = 'SR'
+
+    YEAR_IN_SCHOOL_CHOICES = (
+        (FRESHMAN, 'Freshman'),
+        (SOPHOMORE, 'Sophomore'),
+        (JUNIOR, 'Junior'),
+        (SENIOR, 'Senior'),
+    )
+    year_in_school = models.CharField(
+        max_length=10,
+        choices=YEAR_IN_SCHOOL_CHOICES,
+        default=FRESHMAN,
+    )
+    
+    
+    
+    
+  
 
 
 

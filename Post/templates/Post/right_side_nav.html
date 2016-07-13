@@ -1,0 +1,56 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+<style>
+
+
+#midCol.affix-bottom {
+	position:static;
+}
+
+#midCol.affix {
+    position:static;
+}
+
+@media (max-width:1190px) {
+  .affix,.affix-top,#midCol.affix,#midCol.affix-top {
+      position:static;
+  }
+}
+
+
+</style>
+
+
+<div class="col-lg-3 pull-right">
+          
+          <!--2nd column-->
+          <div id="midCol" data-spy="affix" data-offset-top="250">
+            
+          	<a href="http://onwardstate.com/2014/09/18/twenty-famous-penn-state-alumni/" ><img src="http://onwardstate.com/2014/09/18/twenty-famous-penn-state-alumni/#prettyPhoto/0/"> </a>
+            <h4 class="caption">Famous People you didn't know went to Penn State <span class="pull-right"></span></h4>  
+            
+            <hr>
+            
+            <img src="//placehold.it/300x150/2255EE/EEE">
+            <h4 class="caption">Image Caption</h4>  
+            
+            <hr>
+            
+            
+          </div><!--/middleCol-->
+            
+      	</div><!--/span3-->
+
+</div>

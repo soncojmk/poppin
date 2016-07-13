@@ -12,6 +12,253 @@
 
 {% block body_base %}
 
+
+
+<style>
+
+.container-fluid {
+width:660px;
+margin:auto;
+text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px; 
+.well{text-align:center;}
+
+}
+
+
+
+@media (max-width:960px){
+.container-fluid{
+	width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.container-fluid{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+ 
+.container-fluid{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:0px;
+	padding-top: 0px;
+	margin-right:40px;
+	
+
+}
+
+.well{
+	zoom: .9;
+	
+
+}
+
+
+.image {
+	width:100%;
+	padding:0px;
+	
+
+}
+
+}
+</style>
+
+
+
+<div class="container-fluid "  >
+
+        
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+<div style="float:right; padding-right: 10px;">
+ {% if request.user == question.author %}
+    <a  href="{% url 'question_edit' pk=question.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+
+<a  href="{% url 'question_remove' pk=question.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+
+</div>
+
+
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p> 
+
+        <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 55px 20px;" >
+	
+		{{ question.entry}}</p>
+	
+
+<hr >
+<div  style="overflow: auto;
+	width: 100%;"> 
+
+<p>
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
+                                         
+ <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
+
+<br> 
+<hr>
+
+
+{% if user.is_authenticated%}
+
+    <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        
+    </form>
+	{% endif %}
+
+ <hr>
+
+
+<div style="float:left; text-align: left; padding: 0px 10px 0px 10px;">
+{% for comment in question.questioncomments.all %}
+ 
+    <div class="comment">
+   
+        <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
+                <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
+            {% endif %}
+
+
+<br>
+
+  <div class="date" style="color:#aaa;
+    font-family:verdana;
+    font-size:11px;" > 
+	<span>by: <strong>{{ comment.author }}</strong></span> <br>
+	<span>{{ comment.created_date }}</span></div>
+</p>
+
+<hr>
+
+</div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+</div>
+
+</div>
+<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+
+</div>
+  
+</div>
+
+
+</div>
+            </div> 
+
+
+<!--
+<div class="post" style= "background-color: #FEFCFF;
+    width: 600px;
+    padding: 5px;
+    padding-top: 15px;
+    margin: auto; 
+    margin-bottom: 10px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+    margin-top:45px;
+   ">
+
+<div style="float:right; padding-right: 10px;">
+ {% if request.user == question.author %}
+    <a  href="{% url 'question_edit' pk=question.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+
+<a  href="{% url 'question_remove' pk=question.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+
+</div>
+
+
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p> 
+
+        <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 55px 20px;" >
+	
+		{{ question.entry}}</p>
+	
+
+<hr style="width:560px;">
+<div  style="overflow: auto;
+	width: 100%;"> 
+
+<p>
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
+                                         
+ <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
+
+<br> 
+<hr>
+
+
+{% if user.is_authenticated%}
+
+    <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        
+    </form>
+	{% endif %}
+
+ <hr>
+
+
+<div style="float:left; text-align: left; padding: 0px 10px 0px 10px;">
+{% for comment in question.questioncomments.all %}
+ 
+    <div class="comment">
+   
+        <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
+                <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
+            {% endif %}
+
+
+<br>
+
+  <div class="date" style="color:#aaa;
+    font-family:verdana;
+    font-size:11px;" > 
+	<span>by: <strong>{{ comment.author }}</strong></span> <br>
+	<span>{{ comment.created_date }}</span></div>
+</p>
+
+<hr style="width:550px;">
+
+</div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+</div>
+
+</div>
+<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+
+</div>
+  
+</div>
+
+
+</div>
+            </div> 
+    
+
+
+<!--
 <section>
         <div class="container">
             <div class="post">
@@ -30,7 +277,7 @@
 {% if photo != blank %}
 <img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
 {% endif %}
--->
+
 
 <div style="float:left; margin-top:10px; margin-left:10px;"> 
 <p >{{ question.entry}}</p> 
@@ -85,9 +332,9 @@
 </div>
 
 </div>
-<a href="{% url 'question_list' %}" class="btn btn-primary">Go Back</a>
+<a href="{% url 'question_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
             </div>
     </div>
 </div>
-
+--> 
  {% endblock %}      

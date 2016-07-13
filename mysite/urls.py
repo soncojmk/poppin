@@ -14,7 +14,8 @@ urlpatterns = [
     url(r"^account/social/", include("social.apps.django_app.urls", namespace="social")),
     url(r"^post/", include('Post.urls')),
     url(r"^search/", include('haystack.urls')),
-    url(r'^comments/', include('django_comments.urls')),
+    #url(r'^comments/', include('django_comments.urls')),
+    url(r'^messages/', include("pinax.messages.urls", namespace="pinax_messages")),
     
     
 ]

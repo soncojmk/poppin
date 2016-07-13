@@ -12,25 +12,197 @@
 
 {% block body_base %}
 
-<section>
-        <div class="container">
-            <div class="post">
-           {% if user.is_authenticated %}
-               {% if request.user == post.author %}
-    <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 
-<a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
-{% endif %}
-{% endif %}
+<style>
+
+.container-fluid {
+width:660px;
+margin:auto;
+text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px; 
+.well{text-align:center;}
+
+}
+
+.comments{padding: 0px 10px 0px 10px;}
+
+@media (max-width:960px){
+.container-fluid{
+	width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-top: 20px;
+}
+
+.comments{padding: 0px 10px 0px 10px;}
+}
+
+@media (max-width:800px){
+.container-fluid{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+.comments{padding: 0px;}
+}
+
+
+@media (max-width:600px){
+
+
+ 
+.container-fluid{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:0px;
+	padding-top: 0px;
+	margin-right:40px;
 	
-	<h1>{{ post.title }}</h1> 
-<div style="overflow:auto;"> 
+
+}
+
+.well{
+	zoom: .7;
+	
+
+}
+
+.comments{padding: 0px;}
+
+.image {
+	width:100%;
+	padding:0px;
+	
+
+}
+
+}
+</style>
+
+
+<div class="container-fluid "  >
+
+        
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+<div style="float:right; padding-right: 10px;">
+ {% if request.user == post.author %}
+    <a  href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+
+<a  href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+
+</div>
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
+
+       <p style = "font-size:15px; text-align:left; "><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+
+{%if post.price == 0%}
+		<span style="float:right;  color:grey;"> Free </span>
+	
+	{%else%}
+	
+         <span style="float:right;  color:grey;">${{ post.price }} </span>
+	
+	{%endif%}
+
+</p>
+
+	
+        <p style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description }}</p>
+
+
+        {% if post.image %}
+ 	
+    <a style= "border-radius:2px; " href="{% url 'post_detail' pk=post.pk %}"><img class="img-responsive" alt="" src="{{ post.image.large.url }}"/></a>
+	{% endif %}
+            
+ 
+<hr style="width:560px;">
+
+<div style="text-align:left; padding-left:10px;">
+<P> <b>Location</b>: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
+	<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>When</b>: {{post.time}} </p>
+
+</div>
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+  
+     <p > {% likes_widget request.user post %} </p> 
+
+<p style="float:right; padding-right:30px;">
+<a > <i class="fa fa-comment-o"></i>
+ {{ post.comments.count }} </a></p> <br>
+
+<hr>   
+
+
+
+
+{% if user.is_authenticated%}
+
+    <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        
+    </form>
+	{% endif %}
+
+ <hr>
+
+
+<div class="comments" style="float:left; text-align: left;">
+{% for comment in post.comments.all %}
+ 
+    <div class="comment">
+   
+        <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
+                <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
+            {% endif %}
+
+
+<br>
+
+  <div class="date" style="color:#aaa;
+    font-family:verdana;
+    font-size:11px;" > 
+	<span>by: <strong>{{ comment.author }}</strong></span> <br>
+	<span>{{ comment.created_date }}</span></div>
+</p>
+
+<hr >
+
+</div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+</div>
+
+</div>
+<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+
+</div>
+  
+
+</div>
+
+
+             
+    </div></div> 
 
 <!--
+<div style="overflow:auto; width:700px; margin: auto;">	
+	<h1>{{ post.title }}</h1> 
+ 
+
+
 {% if photo != blank %}
 <img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
 {% endif %}
--->
+
 
 <div style="float:left; margin-top:10px; margin-left:10px;"> 
 <p >{{ post.description }}</p> 
@@ -47,6 +219,7 @@
 
                <p class= "date" style="padding-bottom: 13px;">posted: {{ post.posted_date }}
  by: {{post.author}} </p> 
+	<p class= "date" style="padding-bottom: 13px;">when: {{ post.date }} </p>
 
 
 {% who_likes post as post_likes %}
@@ -55,46 +228,12 @@
     <div class="like">{{ like.sender }} likes</div>
 {% endfor %}
 
-
-<hr>   {% if user.is_authenticated%}
-
-    <form method="POST" class="post-form"  style="width:100%;">{% csrf_token %}
-        {{ form|as_bootstrap }}
-        <button type="submit" class="save btn btn-default">Send</button>
-    </form>
-	{% endif %}
+-->
 
 
 
 
-{% for comment in post.comments.all %}
- 
-    <div class="comment">
-        
-           
 
-            {% if request.user == comment.author %}
-                <a class= "glyphicon glyphicon-remove small" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
-            {% endif %}
-
-        
-    
-        <p style="margin=0;">{{ comment.comment}}  <br>
-
-  <div class="date" style="color:#aaa;
-    font-family:verdana;
-    font-size:11px;" > 
-	<span>by: <strong>{{ comment.author }}</strong></span> <br>
-	<span>{{ comment.created_date }}</span></div>
-</p>
-</div>
-{% empty %}
-    <p>No comments here yet :(</p>
-{% endfor %}
-</div>
-
-</div>
-<a href="{% url 'post_list' %}" class="btn btn-primary" >Go Back</a>
             </div>
     </div>
 </div>

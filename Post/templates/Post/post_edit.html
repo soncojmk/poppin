@@ -11,9 +11,9 @@
 {% block body_base %}
 
 {%if user.is_authenticated %}
-<div style= "background-color: #F7F7F7 ;">
-<form method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px; padding-top: 10px;" enctype="multipart/form-data">
-    <legend>CREATE NEW POST</legend>
+<div >
+<form  method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px; padding-top: 10px;" enctype="multipart/form-data">
+    <legend>CREATE NEW EVENT</legend>
     {% csrf_token %}
     {{ form|as_bootstrap }}
     <div class="form-actions">
@@ -21,7 +21,8 @@
       <button type="submit" class="btn btn-primary">Save changes</button>
     </div>
 </form>
-</div>
+
 
 {% endif %}
+</div>
 {% endblock %}

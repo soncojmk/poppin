@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post, EventComment, QuestionComment, Category, Question
+from .models import Post, EventComment, QuestionComment, Category, Question, Profile
 from django.shortcuts import get_object_or_404, render_to_response
-from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm
+from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, UserProfileForm
 #from allauth.account.decorators import verified_email_required
 from haystack.generic_views import SearchView
 from toggles.views import ToggleView
@@ -10,6 +10,11 @@ from datetime import date
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from taggit.models import Tag
+from django.db.models import CharField
+from django.db.models import Value
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic import UpdateView
+from django.utils.decorators import method_decorator
 #from django.views.generic.list_detail import object_list
 # Create your views here.
 
@@ -45,10 +50,11 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+	    post.image=request.FILES['image']
             post.author = request.user
             post.posted_date = timezone.now()
             post.save()
-            return redirect('post_list', pk=post.pk)
+            return redirect('post_list')
     else:
         form = PostForm()
     return render(request, 'Post/post_edit.html', {'form': form})
@@ -61,10 +67,10 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.photo = request.FILES['photo']
+            post.image = request.FILES['image']
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_list', pk=post.pk)
+            return redirect('post_list')
     else:
         form = PostForm(instance=post)
     return render(request, 'Post/post_edit.html', {'form': form})
@@ -195,8 +201,8 @@ def question_edit(request, pk):
             question.author = request.user
             #question.photo = request.FILES['photo']
             question.published_date = timezone.now()
-            post.save()
-            return redirect('question_list', pk=question.pk)
+            question.save()
+            return redirect('question_list')
     else:
         form = QuestionForm(instance=question)
     return render(request, 'Post/question_edit.html', {'form': form})
@@ -214,6 +220,102 @@ def question_comment_remove(request, pk):
     question_pk = comment.question.pk
     comment.delete()
     return redirect('question_detail', pk=question_pk)
+
+
+def feed(request):
+    # annotate a type for each model to be used in the template
+    events = Post.objects.all().annotate(type=Value('events', CharField()))
+    questions = Question.objects.all().annotate(type=Value('questions', CharField()))
+
+
+    all_items = list(events) + list(questions)
+
+    # all items sorted by publication date. Most recent first
+    all_items_feed = sorted(all_items, key=lambda obj: obj.posted_date)
+    all_items_feed.reverse()
+
+    return render(request, 'Post/feed.html', {'all_items_feed': all_items_feed})
+
+
+def my_profile(request, pk):
+    profile = get_object_or_404(UserProfile, pk=pk)
+ 
+    return render(request, 'Post/my_profile.html', {'profile':profile})
+
+def profile_new(request):
+    if request.method == "POST":
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect('my_profile', pk=profile.pk)
+    else:
+        form = UserProfileForm()
+    return render(request, 'Post/profile_edit.html', {'form': form})
+
+'''
+def profile_edit(request, pk):
+    profile = get_object_or_404(UserProfile pk=pk)
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            return redirect('my_profile')
+    else:
+        form = UserProfileForm(instance=profile)
+    return render(request, 'Post/profile_edit.html', {'form': form})
+'''
+
+
+
+
+@login_required
+def my_events(request):
+    posts = Post.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
+    return render(request, 'Post/my_events.html', {'posts':posts})
+
+@login_required
+def my_questions(request):
+    questions = Question.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
+    return render(request, 'Post/my_questions.html', {'questions':questions})
+
+
+
+
+
+
+class ProfileObjectMixin(SingleObjectMixin):
+    """
+    Provides views with the current user's profile.
+    """
+    model = Profile
+
+    def get_object(self):
+        """Return's the current users profile."""
+        try:
+            return self.request.user.get_profile()
+        except Profile.DoesNotExist:
+            raise NotImplemented(
+                "What if the user doesn't have an associated profile?")
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        """Ensures that only authenticated users can access the view."""
+        klass = ProfileObjectMixin
+        return super(klass, self).dispatch(request, *args, **kwargs)
+
+
+class ProfileUpdateView(ProfileObjectMixin, UpdateView):
+    """
+    A view that displays a form for editing a user's profile.
+
+    Uses a form dynamically created for the `Profile` model and
+    the default model's update template.
+    """
+    pass  # That's All Folks!
 
 
 

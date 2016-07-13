@@ -1,0 +1,168 @@
+{% extends "Post/profile_side_nav.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% block content %} 
+
+
+
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+.question-form{
+
+width:620px; padding: 5px; padding-top:0;
+    margin: auto; 
+    margin-bottom: 10px;
+    text-align:center;
+
+}
+
+#entry{
+
+padding-bottom: 20px;
+}
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+
+
+.question-form{
+
+width:580px; padding: 5px; padding-top:0;
+    margin: auto; 
+    margin-bottom: 10px;
+    text-align:center;
+
+}
+
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+	
+
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+ 
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:0px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+	zoom:.5;
+
+}
+
+.well{
+	zoom: .7;
+	
+
+}
+
+
+.image {
+	width:100%;
+	padding:0px;
+	
+
+}
+
+}
+</style>
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 " >
+
+{% if user.is_authenticated%}
+{% for question in questions %}
+
+{% if request.user == question.author %} 
+         
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+	
+	
+    
+<div style="float:right;">
+ {% if request.user == question.author %}
+    <a  href="{% url 'question_edit' pk=question.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+
+<a  href="{% url 'question_remove' pk=question.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+{% endif %}
+
+</div>
+
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{question.author}}</p> 
+
+        <p  id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
+	
+		{{ question.entry}}</p>
+	
+
+<hr>
+<div  style="overflow: auto;
+	width: 100%;"> 
+
+<p>
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
+                                         
+ <p style="float:right;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
+</div>
+
+
+
+  
+</div>
+
+
+    
+ {% endif %}
+{% endfor %}
+ {% endif %}
+</div>
+
+{% endblock %}
