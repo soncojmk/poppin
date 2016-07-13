@@ -12,3 +12,10 @@ django-haystack
 solr-4.10.2.tgz
 pinax-likes
 pinax
+pinax-messages
+django-stdimages
+virtualenv
+pysolr
+solr
+django-localflavor
+pinax-account
