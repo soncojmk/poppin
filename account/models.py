@@ -42,25 +42,7 @@ class Account(models.Model):
         default=settings.LANGUAGE_CODE
     )
 
-    about = models.TextField(help_text="tell us about your shitty professors or something", default='', blank=True)
-    college = models.CharField(max_length=50, default='', blank=True)
 
-    FRESHMAN = 'FR'
-    SOPHOMORE = 'SO'
-    JUNIOR = 'JR'
-    SENIOR = 'SR'
-
-    YEAR_IN_SCHOOL_CHOICES = (
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-    )
-    year_in_school = models.CharField(
-        max_length=10,
-        choices=YEAR_IN_SCHOOL_CHOICES,
-        default=FRESHMAN, blank=True
-    )
 
     @classmethod
     def for_request(cls, request):

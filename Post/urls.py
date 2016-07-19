@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^questioncomment/(?P<pk>\d+)/remove/$', views.question_comment_remove, name='question_comment_remove'),
     #url(r'^category$', views.category_list, name='category_list'),
     #url(r'^category/(?P<pk>\d+)/$', views.category_detail, name='category_detail'),
-    
+
     url(r'^question/$', views.question_list, name='question_list'),
     url(r'^question/(?P<pk>\d+)/$', views.question_detail, name='question_detail'),
     url(r'^question/new/$', views.question_new, name='question_new'),
@@ -27,11 +27,11 @@ urlpatterns = [
     url(r'^question/(?P<pk>\d+)/remove/$', views.question_remove, name='question_remove'),
     url(r"^post/question/$", TemplateView.as_view(template_name="Post/post.html"), name="post"),
 
-    url(r"^myprofile/about/(?P<pk>\d+)/$", views.my_profile, name='my_profile'),
+    #url(r"^myprofile/about/(?P<pk>\d+)/$", views.my_profile, name='my_profile'),
     url(r"^myprofile/myevents/$", views.my_events, name='my_events'),
     url(r"^myprofile/myquestions/$", views.my_questions, name='my_questions'),
     url(r"^feed/$", views.feed, name='feed'),
-    url(r'^myprofile/new/$', views.ProfileObjectMixin, name='profile_new'),
+    #url(r'^myprofile/new/$', views.ProfileObjectMixin, name='profile_new'),
     #url(r'^myprofile/(?P<pk>\d+)/edit/$', views.profile_edit, name='profile_edit'),
 
 

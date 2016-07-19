@@ -8,7 +8,7 @@
 
 {% load taggit_templatetags2_tags %}
 
-{% block content %} 
+{% block content %}
 
 <style>
 
@@ -25,7 +25,7 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 .question-form{
 
 width:620px; padding: 5px; padding-top:0;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 10px;
     text-align:center;
 
@@ -48,7 +48,7 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 .question-form{
 
 width:580px; padding: 5px; padding-top:0;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 10px;
     text-align:center;
 
@@ -67,7 +67,7 @@ width:580px; padding: 5px; padding-top:0;
 	margin:0px;
 	padding:0px;
 	width:100%;
-	
+
 
 }
 
@@ -78,7 +78,7 @@ width:580px; padding: 5px; padding-top:0;
 @media (max-width:600px){
 
 
- 
+
 .col-lg-7{
 	margin:0px;
 	width:100%;
@@ -100,15 +100,17 @@ width:580px; padding: 5px; padding-top:0;
 
 .well{
 	zoom: .7;
-	
+
 
 }
+
+.well p{ zoom: 1.2;}
 
 
 .image {
 	width:100%;
 	padding:0px;
-	
+
 
 }
 
@@ -128,27 +130,32 @@ width:580px; padding: 5px; padding-top:0;
 
 
 <div class="well" style="background-color:white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
-	
-	
-    
+
+
+
 
 <p style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
 
-       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>  
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
 
 {%if item.price == 0%}
 		<span style="float:right;  color:grey;"> Free </span>
-	
+
 	{%else%}
-	
+
          <span style="float:right;  color:grey;">${{ item.price }} </span>
-	
+
 	{%endif%}
 
 </p>
 
-	
-        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ item.description }}</p>
+
+        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ item.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if item.description|length >= 500 %}
+        <span><a href="{% url 'post_detail' pk=item.pk %}">read more</a></span>
+        {% endif %}
+        </p>
+
 
 
         {% if item.image %}
@@ -156,11 +163,11 @@ width:580px; padding: 5px; padding-top:0;
     <a   href="{% url 'post_detail' pk=item.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ item.image.large.url }}"/></a>
 </div>
 	{% endif %}
-            
+
 <hr>
  <div style="text-align:left; ">
 
-	<p> <b> Date:  </b> {{item.date}}  </p>
+<p> <b>Date</b>: {{item.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{item.time}} </p>
 
 </div>
 
@@ -168,8 +175,8 @@ width:580px; padding: 5px; padding-top:0;
             <div style="overflow: auto;
 	width: 100%;">
 
-  
-     <p > {% likes_widget request.user item %} </p> 
+
+     <p > {% likes_widget request.user item %} </p>
 
 <p style="float:right; ">
 <a href="{% url 'post_detail' pk=item.pk %}"> <i class="fa fa-comment-o"></i>
@@ -177,7 +184,7 @@ width:580px; padding: 5px; padding-top:0;
 
 
 
-  
+
 </div>
 
 </div>
@@ -185,33 +192,33 @@ width:580px; padding: 5px; padding-top:0;
 
 {% elif item.type == 'questions' %}
 
-        	 
-        
+
+
 <div class="well" style="background-color: white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
-	
-	
-    
 
-<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p> 
 
-        <p  id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
-	
-		{{ item.entry}}</p>
-	
+
+
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
+
+        <p  class="text" id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
+
+		{{ item.entry|urlizetrunc:35}}</p>
+
 
 <hr>
 <div  style="overflow: auto;
-	width: 100%;"> 
+	width: 100%;">
 
 <p>
-{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}  </p>    
-                                         
+{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
  <p style="float:right;"> <a href="{% url 'question_detail' pk=item.pk %}">       <i class="fa fa-comment-o"></i> {{ item.questioncomments.count }}</a>  </p>
 </div>
 
 
 
-  
+
 </div>
 
 
@@ -232,7 +239,7 @@ width:580px; padding: 5px; padding-top:0;
  <div class="post" style= "background-color: white;
     width: 600px;
     padding: 5px;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 15px;
     border-bottom: solid lightgrey .5px;
     text-align:center;
@@ -240,45 +247,45 @@ width:580px; padding: 5px; padding-top:0;
 
 <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{item.author}}</p>
 
-       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>  
+       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
 
 {%if item.price == 0%}
 		<span style="float:right; padding-right:20px; color:grey;"> Free </span>
-	
+
 	{%else%}
-	
+
          <span style="float:right; padding-right:20px; color:grey;">${{ item.price }} </span>
-	
+
 	{%endif%}
 
 </p>
 
-	
+
         <p style=" text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px;">{{ item.description }}</p>
 
 
         {% if item.image %}
- 	
+
     <a style= "border-radius:2px; " href="{% url 'post_detail' pk=item.pk %}"><img class="img-responsive" alt="" src="{{ item.image.large.url }}"/></a>
 	{% endif %}
-            
- 
+
+
 <hr style="width:560px;">
             <div style="overflow: auto;
 	width: 100%;">
 
-  
-     <p > {% likes_widget request.user item %} </p> 
+
+     <p > {% likes_widget request.user item %} </p>
 
 <p style="float:right; padding-right:30px;">
 <a href="{% url 'post_detail' pk=item.pk %}"> <i class="fa fa-comment-o"></i>
  {{ item.comments.count }} </a></p>
 
 
-            </div> 
+            </div>
     </div>
-    
- 
+
+
 
     {% elif item.type == 'questions' %}
 
@@ -286,32 +293,32 @@ width:580px; padding: 5px; padding-top:0;
     width: 600px;
     padding: 5px;
     padding-top: 15px;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 15px;
     border-bottom: solid lightgrey .5px;
     text-align:center;
    ">
-        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{item.author}}</p> 
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{item.author}}</p>
 
         <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 20px 20px;" >
-	
+
 		{{ item.entry}}</p>
-	
+
 
 <hr style="width:560px;">
 <div  style="overflow: auto;
-	width: 100%;"> 
+	width: 100%;">
 
 <p>
-{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}     </p>    
-                                         
+{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}     </p>
+
  <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=item.pk %}">       <i class="fa fa-comment-o"></i> {{ item.questioncomments.count }}</a>  </p>
 
 </div>
-            </div> 
-    
+            </div>
 
-   	
+
+
 
 
     {% endif %}

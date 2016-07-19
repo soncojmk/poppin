@@ -6,7 +6,7 @@
 
 {% load pinax_likes_tags %}
 
-{% block content %} 
+{% block content %}
 
 
 
@@ -25,7 +25,7 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 .question-form{
 
 width:620px; padding: 5px; padding-top:0;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 10px;
     text-align:center;
 
@@ -47,7 +47,7 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 .question-form{
 
 width:580px; padding: 5px; padding-top:0;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 10px;
     text-align:center;
 
@@ -67,7 +67,7 @@ width:580px; padding: 5px; padding-top:0;
 	margin:0px;
 	padding:0px;
 	width:100%;
-	
+
 
 }
 
@@ -78,7 +78,7 @@ width:580px; padding: 5px; padding-top:0;
 @media (max-width:600px){
 
 
- 
+
 .col-lg-7{
 	margin:0px;
 	width:100%;
@@ -100,7 +100,7 @@ width:580px; padding: 5px; padding-top:0;
 
 .well{
 	zoom: .7;
-	
+
 
 }
 
@@ -108,7 +108,7 @@ width:580px; padding: 5px; padding-top:0;
 .image {
 	width:100%;
 	padding:0px;
-	
+
 
 }
 
@@ -121,12 +121,12 @@ width:580px; padding: 5px; padding-top:0;
 {% if user.is_authenticated%}
 {% for question in questions %}
 
-{% if request.user == question.author %} 
-         
+{% if request.user == question.author %}
+
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
-	
-	
-    
+
+
+
 <div style="float:right;">
  {% if request.user == question.author %}
     <a  href="{% url 'question_edit' pk=question.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
@@ -136,31 +136,34 @@ width:580px; padding: 5px; padding-top:0;
 
 </div>
 
-<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{question.author}}</p> 
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{question.author}}</p>
 
         <p  id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
-	
+
 		{{ question.entry}}</p>
-	
+
 
 <hr>
 <div  style="overflow: auto;
-	width: 100%;"> 
+	width: 100%;">
 
 <p>
-{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
-                                         
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
  <p style="float:right;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
 </div>
 
 
 
-  
+
 </div>
 
 
-    
+
  {% endif %}
+ {% empty %}
+  <p style="padding-top:45px;" > You have no posted Events</p>
+
 {% endfor %}
  {% endif %}
 </div>

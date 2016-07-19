@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post, EventComment, QuestionComment, Category, Question, Profile
+from .models import Post, EventComment, QuestionComment, Question
 from django.shortcuts import get_object_or_404, render_to_response
-from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, UserProfileForm
+from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm
 #from allauth.account.decorators import verified_email_required
 from haystack.generic_views import SearchView
 from toggles.views import ToggleView
@@ -15,8 +15,15 @@ from django.db.models import Value
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import UpdateView
 from django.utils.decorators import method_decorator
+import account.forms
+import account.views
 #from django.views.generic.list_detail import object_list
 # Create your views here.
+
+
+class LoginView(account.views.LoginView):
+
+    form_class = account.forms.LoginEmailForm
 
 
 def post_list(request):
@@ -26,7 +33,7 @@ def post_list(request):
 def post_detail(request, pk):
     form = EventCommentForm()
     post = get_object_or_404(Post, pk=pk)
-   
+
     if request.method == "POST":
         form = EventCommentForm(request.POST)
         if form.is_valid():
@@ -42,15 +49,14 @@ def post_detail(request, pk):
         'form':form,
         'post':post,
     }
-       
+
     return render(request, 'Post/post_detail.html', context)
 
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-	    post.image=request.FILES['image']
             post.author = request.user
             post.posted_date = timezone.now()
             post.save()
@@ -63,11 +69,10 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.image = request.FILES['image']
             post.published_date = timezone.now()
             post.save()
             return redirect('post_list')
@@ -133,7 +138,7 @@ def category_detail(request, pk):
 def question_list(request):
     questions = Question.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
     form = QuestionForm()
-   
+
     if request.method == "POST":
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -144,7 +149,7 @@ def question_list(request):
             return redirect('question_list')
     else:
         form = QuestionForm()
-    
+
     context = {
         'form':form,
         'questions':questions,
@@ -156,8 +161,8 @@ def question_list(request):
 def question_detail(request, pk):
     form = QuestionCommentForm()
     question = get_object_or_404(Question, pk=pk)
-    
-   
+
+
     if request.method == "POST":
         form = QuestionCommentForm(request.POST)
         if form.is_valid():
@@ -173,9 +178,9 @@ def question_detail(request, pk):
     context = {
         'form':form,
         'question':question,
-        
+
     }
-       
+
     return render(request, 'Post/question_detail.html', context)
 
 def question_new(request):
@@ -236,10 +241,10 @@ def feed(request):
 
     return render(request, 'Post/feed.html', {'all_items_feed': all_items_feed})
 
-
+'''
 def my_profile(request, pk):
     profile = get_object_or_404(UserProfile, pk=pk)
- 
+
     return render(request, 'Post/my_profile.html', {'profile':profile})
 
 def profile_new(request):
@@ -254,7 +259,7 @@ def profile_new(request):
         form = UserProfileForm()
     return render(request, 'Post/profile_edit.html', {'form': form})
 
-'''
+
 def profile_edit(request, pk):
     profile = get_object_or_404(UserProfile pk=pk)
     if request.method == "POST":
@@ -285,7 +290,7 @@ def my_questions(request):
 
 
 
-
+'''
 
 class ProfileObjectMixin(SingleObjectMixin):
     """
@@ -317,5 +322,5 @@ class ProfileUpdateView(ProfileObjectMixin, UpdateView):
     """
     pass  # That's All Folks!
 
-
+'''
 

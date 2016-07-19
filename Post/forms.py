@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post, EventComment, Question, QuestionComment, Profile
+from .models import Post, EventComment, Question, QuestionComment
 from haystack.forms import SearchForm
+from datetimewidget.widgets import DateTimeWidget, DateWidget, TimeWidget
 from taggit_labels.widgets import LabelWidget
 from taggit.forms import *
 from taggit.models import Tag
@@ -9,18 +10,26 @@ from django.contrib.auth.models import User
 from stdimage.models import StdImageField
 
 class PostForm(forms.ModelForm):
-    time = forms.TimeField(required = True, widget=forms.widgets.TimeInput)
+    date = forms.DateField(required=True, widget=forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}))
+    time = forms.TimeField(required=True, widget=forms.TimeInput(attrs={'placeholder': '24 hour clock only'}))
+
     image = forms.ImageField(required = False)
     class Meta:
         model = Post
         fields = ('title','description', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'price', 'image',)
+        widgets = {
+            'price': forms.NumberInput(attrs={'placeholder': 'Price in dollars'}),
+            'description': forms.Textarea()
 
-
+            #'date': DateWidget(usel10n=True, bootstrap_version=3),
+            #'time': TimeWidget(usel10n=True, bootstrap_version=3)
+        }
+'''
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
 	fields = ('about', 'college', 'year_in_school',)
-
+'''
 
 
 
@@ -29,15 +38,6 @@ class QuestionForm(forms.ModelForm):
         model = Question
         fields = ('entry',)
 
-#adds first name and last name to signup form
-class SignupForm(forms.Form):
-    first_name = forms.CharField(max_length=30, label='First Name')
-    last_name = forms.CharField(max_length=30, label='Last Name')
-
-    def signup(self, request, user):
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.save()
 
 
 
@@ -61,7 +61,7 @@ class SearchForm(SearchForm):
         if self.cleaned_data['end_date']:
             sqs = sqs.filter(pub_date__lte=self.cleaned_data['end_date'])
 
-        return 
+        return
 
 class ContentForm(forms.ModelForm):
     tags = TagField(required=False, widget=LabelWidget)

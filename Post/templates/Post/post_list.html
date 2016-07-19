@@ -6,7 +6,7 @@
 
 {% load taggit_templatetags2_tags %}
 
-{% block content %} 
+{% block content %}
 
 <style>
 
@@ -41,7 +41,7 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 @media (max-width:600px){
 
 
- 
+
 .col-lg-7{
 	margin:0px;
 	width:100%;
@@ -54,15 +54,16 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 .well{
 	zoom: .7;
-	
 
 }
+
+.well p{ zoom: 1.2;}
 
 
 .image {
 	width:100%;
 	padding:0px;
-	
+
 
 }
 
@@ -72,29 +73,32 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 <div class="col-lg-7  col-md-7 col-sm-7 " >
           	 {% for post in posts %}
-        
+
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
-	
-	
-    
+
+
+
 
 <p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
 
-       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
 
 {%if post.price == 0%}
 		<span style="float:right;  color:grey;"> Free </span>
-	
+
 	{%else%}
-	
+
          <span style="float:right;  color:grey;">${{ post.price }} </span>
-	
+
 	{%endif%}
 
 </p>
 
-	
-        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description }}</p>
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ post.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if post.description|length >= 500 %}
+        <span><a href="{% url 'post_detail' pk=post.pk %}">read more</a></span>
+        {% endif %}
+        </p>
 
 
         {% if post.image %}
@@ -102,11 +106,11 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
     <a   href="{% url 'post_detail' pk=post.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ post.image.large.url }}"/></a>
 </div>
 	{% endif %}
-            
+
 <hr>
  <div style="text-align:left; ">
 
-	<p> <b> Date:  </b> {{post.date}}  </p>
+<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{post.time}} </p>
 
 </div>
 
@@ -114,8 +118,8 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
             <div style="overflow: auto;
 	width: 100%;">
 
-  
-     <p > {% likes_widget request.user post %} </p> 
+
+     <p > {% likes_widget request.user post %} </p>
 
 <p style="float:right; ">
 <a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
@@ -123,29 +127,29 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 
 
-  
+
 </div>
 
 </div>
-             
-   
+
+
 {% endfor %}
 
-	       
 
-        
+
+
 
 
 
 
 <!--
 <style>
-	
+
  .post{
 	background-color: white;
     width: 600px;
     padding: 5px;
-     
+
     margin-bottom: 15px;
     border-bottom: solid lightgrey .5px;
     text-align:center;
@@ -155,47 +159,47 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 @media screen and (max-width: 767px) {
 
- 
+
 
   .post {
-   
-   
+
+
    margin-left:auto;
-}    
-  
+}
+
 }
 </style>
-	
+
  <div class="list" class="col-md-6" style= "background-color: #F5F5F5; padding-top: 45px;">
 
-           
+
             {% for post in posts %}
     <div class="post">
 
 <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{post.author}}</p>
 
-       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
 
 {%if post.price == 0%}
 		<span style="float:right; padding-right:20px; color:grey;"> Free </span>
-	
+
 	{%else%}
-	
+
          <span style="float:right; padding-right:20px; color:grey;">${{ post.price }} </span>
-	
+
 	{%endif%}
 
 </p>
 
-	
+
         <p style=" text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px;">{{ post.description }}</p>
 
 
         {% if post.image %}
- 	
+
     <a style= "border-radius:2px; " href="{% url 'post_detail' pk=post.pk %}"><img alt="" src="{{ post.image.large.url }}"/></a>
 	{% endif %}
-            
+
 <hr>
  <div style="text-align:left; padding-left:20px;">
 
@@ -207,8 +211,8 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
             <div style="overflow: auto;
 	width: 100%;">
 
-  
-     <p > {% likes_widget request.user post %} </p> 
+
+     <p > {% likes_widget request.user post %} </p>
 
 <p style="float:right; padding-right:30px;">
 <a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
@@ -216,12 +220,12 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 
 
-  
+
 </div>
 
 
-             
-    </div></div> 
+
+    </div></div>
 {% endfor %}
 -->
 {% endblock %}

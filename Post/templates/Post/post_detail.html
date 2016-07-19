@@ -18,7 +18,7 @@
 .container-fluid {
 width:660px;
 margin:auto;
-text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px; 
+text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;
 .well{text-align:center;}
 
 }
@@ -49,7 +49,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 @media (max-width:600px){
 
 
- 
+
 .container-fluid{
 	margin:0px;
 	width:100%;
@@ -57,22 +57,24 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 	padding-right:0px;
 	padding-top: 0px;
 	margin-right:40px;
-	
+
 
 }
 
 .well{
 	zoom: .7;
-	
+
 
 }
+
+.well p{ zoom: 1.2;}
 
 .comments{padding: 0px;}
 
 .image {
 	width:100%;
 	padding:0px;
-	
+
 
 }
 
@@ -82,7 +84,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div class="container-fluid "  >
 
-        
+
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
 
@@ -97,48 +99,48 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
 
-       <p style = "font-size:15px; text-align:left; "><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>  
+       <p style = "font-size:15px; text-align:left; "><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
 
 {%if post.price == 0%}
 		<span style="float:right;  color:grey;"> Free </span>
-	
+
 	{%else%}
-	
+
          <span style="float:right;  color:grey;">${{ post.price }} </span>
-	
+
 	{%endif%}
 
 </p>
 
-	
-        <p style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description }}</p>
+
+        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ post.description|linebreaks|urlizetrunc:35 }}</p>
 
 
         {% if post.image %}
- 	
+
     <a style= "border-radius:2px; " href="{% url 'post_detail' pk=post.pk %}"><img class="img-responsive" alt="" src="{{ post.image.large.url }}"/></a>
 	{% endif %}
-            
- 
-<hr style="width:560px;">
+
+
+<hr >
 
 <div style="text-align:left; padding-left:10px;">
 <P> <b>Location</b>: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
-	<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>When</b>: {{post.time}} </p>
+	<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{post.time}} </p>
 
 </div>
 <hr>
             <div style="overflow: auto;
 	width: 100%;">
 
-  
-     <p > {% likes_widget request.user post %} </p> 
+
+     <p > {% likes_widget request.user post %} </p>
 
 <p style="float:right; padding-right:30px;">
 <a > <i class="fa fa-comment-o"></i>
  {{ post.comments.count }} </a></p> <br>
 
-<hr>   
+<hr>
 
 
 
@@ -147,7 +149,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
     <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
         {{ form|as_bootstrap }}
-        
+
     </form>
 	{% endif %}
 
@@ -156,10 +158,10 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div class="comments" style="float:left; text-align: left;">
 {% for comment in post.comments.all %}
- 
+
     <div class="comment">
-   
-        <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
+
+        <p class= "text" style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
                 <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
             {% endif %}
 
@@ -168,16 +170,16 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
   <div class="date" style="color:#aaa;
     font-family:verdana;
-    font-size:11px;" > 
+    font-size:11px;" >
 	<span>by: <strong>{{ comment.author }}</strong></span> <br>
 	<span>{{ comment.created_date }}</span></div>
 </p>
 
-<hr >
+<hr>
 
 </div>
 {% empty %}
-    <p>No comments here yet :(</p>
+    <p>Be the first to comment</p>
 {% endfor %}
 </div>
 
@@ -185,40 +187,40 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 <a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
 
 </div>
-  
+
 
 </div>
 
 
-             
-    </div></div> 
+
+    </div></div>
 
 <!--
-<div style="overflow:auto; width:700px; margin: auto;">	
-	<h1>{{ post.title }}</h1> 
- 
+<div style="overflow:auto; width:700px; margin: auto;">
+	<h1>{{ post.title }}</h1>
+
 
 
 {% if photo != blank %}
-<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
+<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/>
 {% endif %}
 
 
-<div style="float:left; margin-top:10px; margin-left:10px;"> 
-<p >{{ post.description }}</p> 
- 
+<div style="float:left; margin-top:10px; margin-left:10px;">
+<p >{{ post.description }}</p>
+
 <P>Location: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
 	<p>Time: {{post.time}}</p>
 	{%if post.price == 0%}
 		<p>***Free Event</p>
-	
+
 	{%else%}
-	
+
         <p> price: ${{ post.price }} </p>
 	{%endif%}
 
                <p class= "date" style="padding-bottom: 13px;">posted: {{ post.posted_date }}
- by: {{post.author}} </p> 
+ by: {{post.author}} </p>
 	<p class= "date" style="padding-bottom: 13px;">when: {{ post.date }} </p>
 
 
@@ -238,4 +240,4 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
     </div>
 </div>
 
- {% endblock %}      
+ {% endblock %}

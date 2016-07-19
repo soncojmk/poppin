@@ -6,9 +6,10 @@
 
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title >{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
-	
-        
-	
+
+        <link rel="shortcut icon" type="image/png" sizes="18x16" href="/site_media/media/images/LogoMakr (3).png">
+
+
 	{% block viewport %}
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% endblock %}
@@ -72,7 +73,7 @@
                 <section id="content_body" style="background-color:#F6F9ED;" >
                     <div class="container"  style= "background-color: #F7F7F7 ;">
                         {% include "_messages.html" %}
-			 
+
                         {% block body %}
                         {% endblock %}
                     </div>
@@ -83,7 +84,7 @@
 </div>
 <!--
             {% block footer_base %}
-		
+
 	 <div class="navbar navbar-inverse navbar-fixed-bottom" style= "background-color: #F7F7F7 ;bottom:0;left:0;border-top: solid #F7F7F7 .5px;"role="navigation">
     	<div class="container">
     		<div class="navbar-text pull-left">
@@ -99,13 +100,13 @@
         {% block scripts %}{% endblock %}
 
         {% block theme_script %}
-	    
+
             <script src="{% static "pinax/js/theme.js" %}"></script>
-	    
+
         {% endblock %}
 
         {% block extra_body_base %}
-	
+
             {% block extra_body %}{% endblock %}
         {% endblock %}
     </body>

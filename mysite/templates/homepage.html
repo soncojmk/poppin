@@ -1,21 +1,31 @@
-
+{% load account_tags %}
 {% load staticfiles %}
+{% load i18n %}
+
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
 
+<link rel="shortcut icon" type="image/png" sizes="18x16" href="/site_media/media/images/LogoMakr (3).png">
+
+
+
+
+
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
   <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title >{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
-	
-        
-	
+
+
+
 	{% block viewport %}
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% endblock %}
@@ -58,7 +68,7 @@
   }
   h4 {
       font-size: 21px;
-	
+
       line-height: 1.375em;
       color: #303030;
       font-weight: 400;
@@ -70,7 +80,7 @@
 	font: 400 15px Lato, sans-serif;
       line-height: 1.8;
       color: #818181;
-	
+
 
 }
   .jumbotron {
@@ -80,7 +90,7 @@
       font-family: Montserrat, sans-serif;
   }
   .container-fluid {
-      
+
       padding: 60px 50px;
   }
   .bg-white {
@@ -104,7 +114,7 @@
       height: 100%;
       margin-bottom: 10px;
   }
- 
+
   .item h4 {
       font-size: 19px;
       line-height: 1.375em;
@@ -228,7 +238,13 @@
         font-size: 150px;
     }
   }
+
+  .btn-facebook{color:#3b5998;background-color:#fffs;
+border-color:rgba(0,0,0,0.2)}.btn-facebook:focus,.btn-facebook.focus{color:#2d4373;background-color:#fff;
+border-color:rgba(0,0,0,0.2)}
   </style>
+
+
 
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
@@ -247,17 +263,22 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#about">ABOUT</a></li>
         <li><a href="#services">DISCOVER</a></li>
-
+        {% if not user.is_authenticated %}
         <li><a href="{% url "account_login" %}">LOGIN</a></li>
+        {% else %}
+      <li> <a id="account_logout" href="{% url 'account_logout' %}" > LOG OUT</a></li>
+        {% endif %}
       </ul>
+
     </div>
   </div>
 </nav>
 
 <div class="jumbotron text-center">
-  <h1>What'sPoppin</h1>
+  <h1>What'sPoppin<span style="font-size:12px;">(BETA)</span> </h1>
+
   <p style="color:white;">Connect, Explore, Discover</p>
-  
+
      {% if not user.is_authenticated %}
             {% url "account_login" as login_url %}
             {% url "account_signup" as signup_url %}
@@ -265,15 +286,24 @@
 
 <a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> {% endblocktrans %}</p>
 
+ <a class="btn btn-default btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+    <span class="fa fa-facebook"></span> Login with Facebook
+  </a>
+
+
+
+
+
 	{%else%}
  <p class="form-actions" style="text-align:center;">
-      
-      <a href="{% url 'feed' %}" class="btn btn-primary">Explore</a>
+     <span> Welcome, {% user_display request.user %}</span> <br>
+
+      <a href="{% url 'feed' %}" class="btn btn-default btn-social btn-facebook">Click to Explore</a>
     </p>
             {% endif %}
 
-    
-  
+
+
 </div>
 
 <!-- Container (About Section) -->
@@ -282,53 +312,53 @@
     <div  class ="detail"  style="text-align:center; color: #236B8E; ">
 	<img class="img-circle" width="220" height="210" src="/site_media/media/images/psu.jpg" border="0" alt="penn state stadium"/>
       <h2> Welcome Penn State</h2><br>
-     
+
       	<div class="col-sm-4" style="text-align:left;">
       <h4>We tell you what's hot on campus</h4>
       <p >Parties</p>
       <p>Concerts</p>
       <p>Club events</p>
     </div>
-	
+
 	<div class="col-sm-4" style="text-align:left;">
       <h4>Ask the PSU community</h4>
-   
+
 	<p > About classes you're taking </p>
 	<p > Favorite Spots on Campus </p>
 	<p > ...Anything really</p>
-	
+
     </div>
     <div class="col-sm-4" style="text-align:left;">
       <h4>Post your own or your club's event</h4>
 	<p> Club Events </p>
 	<p> Fundraisers </p>
-	
+
 	<p > Never be bored on a friday night ever again </p>
     </div>
 
-     
+
     </div>
-    
+
   </div>
 </div>
 
 <!-- Container (Services Section) -->
 <div id="services" class="container-fluid text-center bg-white">
   <h2>Discover</h2>
- 
+ {% if user.is_authenticated %}
   <div class="row slideanim">
     <div class="col-sm-4">
-       <img class="img-circle" width="175" height="175" src="/site_media/media/images/party.jpg" border="0" alt="concert photo"/>
+    <a href="{% url 'feed' %}">   <img class="img-circle" width="175" height="175" src="/site_media/media/images/party.jpg" border="0" alt="Party photo"/></a>
       <h4>Parties</h4>
       <p>Local Parties and events</p>
     </div>
     <div class="col-sm-4">
-      <img class="img-circle"width="175" height="175" src="/site_media/media/images/club.jpg" border="0" alt="concert photo"/>
+      <a href="{% url 'feed' %}"> <img class="img-circle"width="175" height="175" src="/site_media/media/images/club.jpg" border="0" alt="club events photo"/> </a>
       <h4>Club Events</h4>
       <p>Find out about club events</p>
     </div>
     <div class="col-sm-4">
-      <img class="img-circle" width="175" height="175" src="/site_media/media/images/concert.jpg" border="0" alt="concert photo"/>
+    <a href="{% url 'feed' %}"><img class="img-circle" width="175" height="175" src="/site_media/media/images/concert.jpg" border="0" alt="concert photo"/> </a>
       <h4>Concerts</h4>
       <p>Explore the local music scene</p>
     </div>
@@ -336,27 +366,78 @@
   <br><br>
   <div class="row slideanim">
     <div class="col-sm-4">
-      <img class="img-circle" width="175" height="175" src="/site_media/media/images/charity.jpg" border="0" alt="concert photo"/>
+     <a href="{% url 'feed' %}">  <img class="img-circle" width="175" height="175" src="/site_media/media/images/charity.jpg" border="0" alt="charity photo"/> </a>
       <h4>Charity Events</h4>
       <p>Fundraising and charity events</p>
     </div>
     <div class="col-sm-4">
-      <img class="img-circle" width="175" height="175" src="/site_media/media/images/sports.jpg" border="0" alt="concert photo"/>
+       <a href="{% url 'feed' %}"> <img class="img-circle" width="175" height="175" src="/site_media/media/images/sports.jpg" border="0" alt="sports photo"/> </a>
       <h4>Sports</h4>
       <p>Find out about local Games</p>
     </div>
     <div class="col-sm-4">
-      <img class="img-circle" width="175" height="175" src="/site_media/media/images/new.jpg" border="0" alt="concert photo"/>
+       <a href="{% url 'feed' %}"> <img class="img-circle" width="175" height="175" src="/site_media/media/images/new.jpg" border="0" alt="post new photo"/> </a>
       <h4 style="color:#303030;">Post</h4>
       <p>Post your own events for free</p>
     </div>
   </div>
+  {% else %}
+  <div class="row slideanim">
+    <div class="col-sm-4">
+    <a href="{% url 'account_login' %}">   <img class="img-circle" width="175" height="175" src="/site_media/media/images/party.jpg" border="0" alt="Party photo"/></a>
+      <h4>Parties</h4>
+      <p>Local Parties and events</p>
+    </div>
+    <div class="col-sm-4">
+      <a href="{% url 'account_login' %}"> <img class="img-circle"width="175" height="175" src="/site_media/media/images/club.jpg" border="0" alt="club events photo"/> </a>
+      <h4>Club Events</h4>
+      <p>Find out about club events</p>
+    </div>
+    <div class="col-sm-4">
+    <a href="{% url 'account_login' %}"><img class="img-circle" width="175" height="175" src="/site_media/media/images/concert.jpg" border="0" alt="concert photo"/> </a>
+      <h4>Concerts</h4>
+      <p>Explore the local music scene</p>
+    </div>
+  </div>
+  <br><br>
+  <div class="row slideanim">
+    <div class="col-sm-4">
+     <a href="{% url 'account_login' %}">  <img class="img-circle" width="175" height="175" src="/site_media/media/images/charity.jpg" border="0" alt="charity photo"/> </a>
+      <h4>Charity Events</h4>
+      <p>Fundraising and charity events</p>
+    </div>
+    <div class="col-sm-4">
+       <a href="{% url 'account_login' %}"> <img class="img-circle" width="175" height="175" src="/site_media/media/images/sports.jpg" border="0" alt="sports photo"/> </a>
+      <h4>Sports</h4>
+      <p>Find out about local Games</p>
+    </div>
+    <div class="col-sm-4">
+       <a href="{% url 'account_login' %}"> <img class="img-circle" width="175" height="175" src="/site_media/media/images/new.jpg" border="0" alt="post new photo"/> </a>
+      <h4 style="color:#303030;">Post</h4>
+      <p>Post your own events for free</p>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 
 
 <!-- Container (Contact Section) -->
 <div id="contact" class="container-fluid ">
+    <div>
+                   {% if not user.is_authenticated %}
+            {% url "account_login" as login_url %}
+            {% url "account_signup" as signup_url %}
+            <p style="text-align:center; color:white;">{% blocktrans %}
+
+<a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> {% endblocktrans %}
+<br><br>
+ <a class="btn btn-default btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+    <span class="fa fa-facebook"></span> Login with Facebook
+  </a></p>
+
+            {% endif %}
+    </div>
   <h2 class="text-center">CONTACT</h2>
   <div class="row">
     <div class="col-sm-5">
@@ -387,7 +468,7 @@
 <!--
 <div id="googleMap" style="height:400px;width:100%;"></div>
 
-<!-- Add Google Maps 
+<!-- Add Google Maps
 <script src="http://maps.googleapis.com/maps/api/js"></script>
 <script>
 var myCenter = new google.maps.LatLng(41.878114, -87.629798);
@@ -417,7 +498,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <a href="#myPage" title="To Top">
     <span class="glyphicon glyphicon-chevron-up"></span>
   </a>
-  
+
 </footer>
 -->
 
@@ -438,25 +519,30 @@ $(document).ready(function(){
       $('html, body').animate({
         scrollTop: $(hash).offset().top
       }, 900, function(){
-   
+
         // Add hash (#) to URL when done scrolling (default click behavior)
         window.location.hash = hash;
       });
     } // End if
   });
-  
+
   $(window).scroll(function() {
     $(".slideanim").each(function(){
       var pos = $(this).offset().top;
 
       var winTop = $(window).scrollTop();
-        if (pos < winTop + 600) {
+        if (pos) {
           $(this).addClass("slide");
         }
     });
   });
 })
 </script>
+
+
+<form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
+    {% csrf_token %}
+</form>
+
+
 </body>
-
-

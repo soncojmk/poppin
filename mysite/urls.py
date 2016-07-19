@@ -16,8 +16,10 @@ urlpatterns = [
     url(r"^search/", include('haystack.urls')),
     #url(r'^comments/', include('django_comments.urls')),
     url(r'^messages/', include("pinax.messages.urls", namespace="pinax_messages")),
-    
-    
+
+
+
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

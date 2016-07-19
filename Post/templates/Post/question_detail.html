@@ -19,7 +19,7 @@
 .container-fluid {
 width:660px;
 margin:auto;
-text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px; 
+text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px;
 .well{text-align:center;}
 
 }
@@ -48,7 +48,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 @media (max-width:600px){
 
 
- 
+
 .container-fluid{
 	margin:0px;
 	width:100%;
@@ -56,21 +56,20 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 	padding-right:0px;
 	padding-top: 0px;
 	margin-right:40px;
-	
+
 
 }
 
 .well{
-	zoom: .9;
-	
-
+	zoom: .7;
 }
 
+.well p{ zoom: 1.2;}
 
 .image {
 	width:100%;
 	padding:0px;
-	
+
 
 }
 
@@ -81,7 +80,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div class="container-fluid "  >
 
-        
+
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
 
@@ -95,23 +94,23 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 </div>
 
 
-        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p> 
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 0px;"> {{question.author}}</p>
 
-        <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 55px 20px;" >
-	
-		{{ question.entry}}</p>
-	
+        <p  class"text" style=" text-align:left; font-size: 15px; color: #504849; padding:0px 0px 55px 0px;" >
+
+		{{ question.entry|urlizetrunc:35|linebreaks}}</p>
+
 
 <hr >
 <div  style="overflow: auto;
-	width: 100%;"> 
+	width: 100%;">
 
 <p>
-{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
-                                         
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
  <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
 
-<br> 
+<br>
 <hr>
 
 
@@ -119,7 +118,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
     <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
         {{ form|as_bootstrap }}
-        
+
     </form>
 	{% endif %}
 
@@ -128,10 +127,10 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div style="float:left; text-align: left; padding: 0px 10px 0px 10px;">
 {% for comment in question.questioncomments.all %}
- 
+
     <div class="comment">
-   
-        <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
+
+        <p class="text" style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
                 <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
             {% endif %}
 
@@ -140,7 +139,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
   <div class="date" style="color:#aaa;
     font-family:verdana;
-    font-size:11px;" > 
+    font-size:11px;" >
 	<span>by: <strong>{{ comment.author }}</strong></span> <br>
 	<span>{{ comment.created_date }}</span></div>
 </p>
@@ -149,7 +148,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 </div>
 {% empty %}
-    <p>No comments here yet :(</p>
+    <p>Be the first to comment</p>
 {% endfor %}
 </div>
 
@@ -157,12 +156,12 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 <a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
 
 </div>
-  
+
 </div>
 
 
 </div>
-            </div> 
+            </div>
 
 
 <!--
@@ -170,7 +169,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
     width: 600px;
     padding: 5px;
     padding-top: 15px;
-    margin: auto; 
+    margin: auto;
     margin-bottom: 10px;
     border-bottom: solid lightgrey .5px;
     text-align:center;
@@ -187,23 +186,23 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 </div>
 
 
-        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p> 
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p>
 
         <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 55px 20px;" >
-	
+
 		{{ question.entry}}</p>
-	
+
 
 <hr style="width:560px;">
 <div  style="overflow: auto;
-	width: 100%;"> 
+	width: 100%;">
 
 <p>
-{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>    
-                                         
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
  <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
 
-<br> 
+<br>
 <hr>
 
 
@@ -211,7 +210,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
     <form method="POST" class="post-form"  style="width:100%; text-align:left; padding: 0px 10px 0px 10px;">{% csrf_token %}
         {{ form|as_bootstrap }}
-        
+
     </form>
 	{% endif %}
 
@@ -220,9 +219,9 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div style="float:left; text-align: left; padding: 0px 10px 0px 10px;">
 {% for comment in question.questioncomments.all %}
- 
+
     <div class="comment">
-   
+
         <p style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
                 <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
             {% endif %}
@@ -232,7 +231,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
   <div class="date" style="color:#aaa;
     font-family:verdana;
-    font-size:11px;" > 
+    font-size:11px;" >
 	<span>by: <strong>{{ comment.author }}</strong></span> <br>
 	<span>{{ comment.created_date }}</span></div>
 </p>
@@ -249,13 +248,13 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 <a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
 
 </div>
-  
+
 </div>
 
 
 </div>
-            </div> 
-    
+            </div>
+
 
 
 <!--
@@ -269,22 +268,22 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 <a class="btn btn-default" href="{% url 'question_remove' pk=question.pk %}" onclick="return makesure();" ><span class="glyphicon glyphicon-remove"></span></a>
 {% endif %}
 {% endif %}
-	
-	 
-<div style="overflow:auto;"> 
+
+
+<div style="overflow:auto;">
 
 <!--
 {% if photo != blank %}
-<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/> 
+<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/>
 {% endif %}
 
 
-<div style="float:left; margin-top:10px; margin-left:10px;"> 
-<p >{{ question.entry}}</p> 
- 
+<div style="float:left; margin-top:10px; margin-left:10px;">
+<p >{{ question.entry}}</p>
+
 
 <p class= "date" style="padding-bottom: 13px;">posted: {{ question.posted_date }}
- by: {{question.author}} </p> 
+ by: {{question.author}} </p>
 
 
 {% who_likes question as question_likes %}
@@ -306,22 +305,22 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 
 {% for comment in question.questioncomments.all %}
- 
+
     <div class="comment">
-        
-           
+
+
 
             {% if request.user == comment.author %}
                 <a class= "glyphicon glyphicon-remove small" href="{% url 'question_comment_remove' pk=comment.pk %}" onclick="return makesure();"></a>
             {% endif %}
 
-        
-    
+
+
         <p style="margin=0;">{{ comment.comment}}  <br>
 
   <div class="date" style="color:#aaa;
     font-family:verdana;
-    font-size:11px;" > 
+    font-size:11px;" >
 	<span>by: <strong>{{ comment.author }}</strong></span> <br>
 	<span>{{ comment.created_date }}</span></div>
 </p>
@@ -336,5 +335,5 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
             </div>
     </div>
 </div>
---> 
- {% endblock %}      
+-->
+ {% endblock %}

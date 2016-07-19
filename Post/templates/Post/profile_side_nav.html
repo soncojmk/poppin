@@ -12,10 +12,10 @@
 
 {% block body_class %}home{% endblock %}
 
-{% block body_base %} 
+{% block body_base %}
 
 
-
+{% if user.is_authenticated %}
 
 
 <style>
@@ -38,15 +38,15 @@ body {
 
 
 @media (max-width: 997px) {
- 
+
 .affix,.affix-top,#midCol.affix,#midCol.affix-top {
       position:static;
   }
 
 .affix-top {
 	top:60px;
-	
-    
+
+
 }
 }
 
@@ -67,7 +67,7 @@ body {
 
 
 /* custom theme */
-    
+
 #midCol.affix-top {
     position:fixed;
   	margin-left:-18px;
@@ -88,7 +88,7 @@ body {
   }
 .affix-top {
 	top:30px;
-   
+
 }
 
 }
@@ -102,16 +102,13 @@ body {
 
 
 @media (max-width:620px) {
-.sidebar-nav-fixed{
-	display:none;
+
+
 
 }
 
 
-}
 
-	
-	
 
 </style>
 
@@ -122,30 +119,33 @@ body {
           <!--sidebar-->
           <div class="sidebar-nav-fixed" style="padding-top:20px; padding-left:60px;" data-spy="affix" data-offset-top="140">
           <ul class="nav nav-list" class="center" style="color:black;">
-	      
+
              <li><a href="{% url 'my_events' %} ">  <i id="icon" class="fa fa-globe"></i> My Events </a></li>
             <li><a href="{% url 'my_questions' %} ">  <i id="icon" class="fa fa-question-circle"></i> My Questions </a> </li>
             <li><a href="{% url 'account_settings' %}" >  <i id="icon" class="fa fa-cog"></i> Settings </a></li>
 		<li class="divider"></li> <hr>
 		<li class="divider"></li>
 	    <li><a href="{% url 'post_new' %}" >  <i id="icon" class="fa fa-pencil-square-o"></i> Post New Event </a></li>
-	    <li><a href="{% url 'question_new' %}" >  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
+	    <li><a href="{% url 'question_list' %}" >  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
           </ul>
           </div>
       	</div>
-      	
-          
-          
-      	
+
+
+
+
 {% block content %}
 {% endblock %}
 
 </div>
 
+
+{% endif %}
+
 {% endblock %}
 
 
-<!--
+
 
 
 

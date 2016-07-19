@@ -10,6 +10,37 @@
 
 {% block body_base %}
 
+<style>
+@media (max-width:800px){
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+
+
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+	zoom:.5;
+
+}
+
+}
+</style>
+
+
 {%if user.is_authenticated %}
 <div style= "background-color: #F7F7F7 ;">
 <form method="POST" class="container" class="form-horizontal" style="width: 500px; text-align:center; border-radius:0px; padding-top: 50px;" enctype="multipart/form-data">

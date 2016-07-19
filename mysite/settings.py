@@ -9,12 +9,16 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dev.db",
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'pop',
+        'USER': 'super',
+        'PASSWORD': 'Munyao25#',
+        'HOST': 'soncojmk-178.postgres.pythonanywhere-services.com',
+        'PORT': '10178',
     }
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.wpoppin.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -47,6 +51,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(PACKAGE_ROOT, "site_media/media/")
 
 
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
@@ -56,7 +61,10 @@ MEDIA_URL = "/site_media/media/"
 # Don"t put anything in this directory yourself; store your static files
 # in apps" "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
+
 STATIC_ROOT = os.path.join(PACKAGE_ROOT, "site_media", "static")
+
+
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -65,6 +73,11 @@ STATIC_URL = "/site_media/static/"
 # Additional locations of static files
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, "static", "dist"),
+    os.path.join(PROJECT_ROOT, "static"),
+    os.path.join(PROJECT_ROOT, "static", "src"),
+    os.path.join(PROJECT_ROOT, "Post", "static"),
+
+
 ]
 
 # List of finder classes that know how to find static files in
@@ -104,7 +117,7 @@ TEMPLATES = [
     },
 ]
 
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email' 
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 
 MIDDLEWARE_CLASSES = [
@@ -130,6 +143,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "pinax.likes",
     "mailer",
     "Post",
@@ -138,12 +152,14 @@ INSTALLED_APPS = [
     "taggit_labels",
     "pinax.messages",
     "stdimage",
-   
+    "datetimewidget",
+
+
     #for search sbar
     "haystack",
 
     # theme
-    
+
     "bootstrapform",
     "pinax_theme_bootstrap",
     "django_forms_bootstrap",
@@ -212,21 +228,37 @@ FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_BACKEND ="mailer.backend.DbBackend"
 
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
-ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "feed"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
 ACCOUNT_USE_AUTH_AUTHENTICATE = True
 
+
 AUTHENTICATION_BACKENDS = [
     "social.backends.twitter.TwitterOAuth",
+    "social.backends.facebook.FacebookOAuth2",
     "pinax.likes.auth_backends.CanLikeBackend",
     "account.auth_backends.UsernameAuthenticationBackend",
+    "account.auth_backends.EmailAuthenticationBackend"
 ]
 
-SOCIAL_AUTH_TWITTER_KEY = ""
-SOCIAL_AUTH_TWITTER_SECRET = ""
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id,name,email',
+}
+
+
+SOCIAL_AUTH_TWITTER_KEY = "tGAWnVvel2WzKp8qGqYFzo1xT"
+SOCIAL_AUTH_TWITTER_SECRET = "Hc1TTdHiPq6qBTYJvFCCalyqeo7CFRPwqjhcerrS4vRjWRRwgL"
+
+SOCIAL_AUTH_FACEBOOK_KEY = "304444299892792"
+SOCIAL_AUTH_FACEBOOK_SECRET = "74a1767c459da522d55a6fc9cd0d4446"
+
+
