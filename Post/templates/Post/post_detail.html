@@ -184,7 +184,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 </div>
 
 </div>
-<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+<a style="margin-left: 10px;"  href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
 
 </div>
 
@@ -194,46 +194,6 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 
     </div></div>
-
-<!--
-<div style="overflow:auto; width:700px; margin: auto;">
-	<h1>{{ post.title }}</h1>
-
-
-
-{% if photo != blank %}
-<img style="float:left; height:300px; width:250px;" src="{{post.photo.url}}"/>
-{% endif %}
-
-
-<div style="float:left; margin-top:10px; margin-left:10px;">
-<p >{{ post.description }}</p>
-
-<P>Location: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
-	<p>Time: {{post.time}}</p>
-	{%if post.price == 0%}
-		<p>***Free Event</p>
-
-	{%else%}
-
-        <p> price: ${{ post.price }} </p>
-	{%endif%}
-
-               <p class= "date" style="padding-bottom: 13px;">posted: {{ post.posted_date }}
- by: {{post.author}} </p>
-	<p class= "date" style="padding-bottom: 13px;">when: {{ post.date }} </p>
-
-
-{% who_likes post as post_likes %}
-
-{% for like in post_likes %}
-    <div class="like">{{ like.sender }} likes</div>
-{% endfor %}
-
--->
-
-
-
 
 
             </div>

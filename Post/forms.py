@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post, EventComment, Question, QuestionComment
+from .models import Post, EventComment, Question, QuestionComment, Concert, ConcertComment
 from haystack.forms import SearchForm
-from datetimewidget.widgets import DateTimeWidget, DateWidget, TimeWidget
+
 from taggit_labels.widgets import LabelWidget
 from taggit.forms import *
 from taggit.models import Tag
@@ -40,6 +40,20 @@ class QuestionForm(forms.ModelForm):
 
 
 
+class ConcertForm(forms.ModelForm):
+    date = forms.DateField(required=True, widget=forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}))
+    time = forms.TimeField(required=True, widget=forms.TimeInput(attrs={'placeholder': '24 hour clock only'}))
+
+    image = forms.ImageField(required = False)
+    class Meta:
+        model = Concert
+        fields = ('title','description', 'street_address', 'city', 'state', 'zip_code', 'date','ticket_link', 'time', 'image',)
+        widgets = {
+            'description': forms.Textarea(),
+
+            #'date': DateWidget(usel10n=True, bootstrap_version=3),
+            #'time': TimeWidget(usel10n=True, bootstrap_version=3)
+        }
 
 
 class SearchForm(SearchForm):
@@ -77,5 +91,11 @@ class QuestionCommentForm(forms.ModelForm):
 
     class Meta:
         model = QuestionComment
+        fields = ('comment',)
+
+class ConcertCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = ConcertComment
         fields = ('comment',)
 

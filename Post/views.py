@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post, EventComment, QuestionComment, Question
+from .models import Post, EventComment, QuestionComment, Question, Concert
 from django.shortcuts import get_object_or_404, render_to_response
-from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm
+from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm
 #from allauth.account.decorators import verified_email_required
 from haystack.generic_views import SearchView
 from toggles.views import ToggleView
@@ -123,6 +123,7 @@ def event_comment_remove(request, pk):
     return redirect('post_detail', pk=post_pk)
 
 
+
 '''
 def category_list(request):
     categories = Category.objects.all() # this will get all categories, you can do some filtering if you need (e.g. excluding categories without posts in it)
@@ -241,39 +242,6 @@ def feed(request):
 
     return render(request, 'Post/feed.html', {'all_items_feed': all_items_feed})
 
-'''
-def my_profile(request, pk):
-    profile = get_object_or_404(UserProfile, pk=pk)
-
-    return render(request, 'Post/my_profile.html', {'profile':profile})
-
-def profile_new(request):
-    if request.method == "POST":
-        form = UserProfileForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-            return redirect('my_profile', pk=profile.pk)
-    else:
-        form = UserProfileForm()
-    return render(request, 'Post/profile_edit.html', {'form': form})
-
-
-def profile_edit(request, pk):
-    profile = get_object_or_404(UserProfile pk=pk)
-    if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-            return redirect('my_profile')
-    else:
-        form = UserProfileForm(instance=profile)
-    return render(request, 'Post/profile_edit.html', {'form': form})
-'''
-
 
 
 
@@ -290,37 +258,71 @@ def my_questions(request):
 
 
 
-'''
+def concert_list(request):
+    concerts = Concert.objects.filter(posted_date__lte=timezone.now()).order_by('-date')
+    return render(request, 'Post/concert_list.html', {'concerts':concerts})
 
-class ProfileObjectMixin(SingleObjectMixin):
-    """
-    Provides views with the current user's profile.
-    """
-    model = Profile
+def concert_detail(request, pk):
+    form = ConcertCommentForm()
+    concert = get_object_or_404(Concert, pk=pk)
 
-    def get_object(self):
-        """Return's the current users profile."""
-        try:
-            return self.request.user.get_profile()
-        except Profile.DoesNotExist:
-            raise NotImplemented(
-                "What if the user doesn't have an associated profile?")
+    if request.method == "POST":
+        form = ConcertCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.concert = concert
+            comment.save()
+            return redirect('concert_detail', pk=concert.pk)
+    else:
+        form = ConcertCommentForm()
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        """Ensures that only authenticated users can access the view."""
-        klass = ProfileObjectMixin
-        return super(klass, self).dispatch(request, *args, **kwargs)
+    context = {
+        'form':form,
+        'concert':concert,
+    }
+
+    return render(request, 'Post/concert_detail.html', context)
+
+def concert_new(request):
+    if request.method == "POST":
+        form = ConcertForm(request.POST, request.FILES)
+        if form.is_valid():
+            concert = form.save(commit=False)
+            concert.author = request.user
+            concert.posted_date = timezone.now()
+            concert.save()
+            return redirect('concert_list')
+    else:
+        form = ConcertForm()
+    return render(request, 'Post/concert_edit.html', {'form': form})
 
 
-class ProfileUpdateView(ProfileObjectMixin, UpdateView):
-    """
-    A view that displays a form for editing a user's profile.
+def concert_edit(request, pk):
+    concert = get_object_or_404(Concert, pk=pk)
+    if request.method == "POST":
+        form = ConcertForm(request.POST, request.FILES, instance=concert)
+        if form.is_valid():
+            concert = form.save(commit=False)
+            concert.author = request.user
+            concert.published_date = timezone.now()
+            concert.save()
+            return redirect('concert_list')
+    else:
+        form = ConcertForm(instance=concert)
+    return render(request, 'Post/concert_edit.html', {'form': form})
 
-    Uses a form dynamically created for the `Profile` model and
-    the default model's update template.
-    """
-    pass  # That's All Folks!
 
-'''
+
+def concert_remove(request, pk):
+    concert = get_object_or_404(Concert, pk=pk)
+    concert.delete()
+    return redirect('Post.views.concert_list')
+
+@login_required
+def concert_comment_remove(request, pk):
+    comment = get_object_or_404(ConcertComment, pk=pk)
+    concert_pk = comment.concert.pk
+    comment.delete()
+    return redirect('concert_detail', pk=concert_pk)
 

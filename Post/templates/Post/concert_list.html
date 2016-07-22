@@ -1,0 +1,165 @@
+{% extends "Post/side_nav.html" %}
+
+{% load i18n %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block content %}
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+}
+.button {
+  background: Orange;
+  float:right;
+  background-image: -webkit-linear-gradient(top, Orange, orange);
+  background-image: -moz-linear-gradient(top, Orange, orange);
+  background-image: -ms-linear-gradient(top, Orange, orange);
+  background-image: -o-linear-gradient(top, Orange, orange);
+  background-image: linear-gradient(to bottom, Orange, orange);
+  border-radius: 4px;
+  font-family: Arial;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: orange;
+  background-image: -webkit-linear-gradient(top, orange, orange);
+  background-image: -moz-linear-gradient(top, orange, orange);
+  background-image: -ms-linear-gradient(top, orange, orange);
+  background-image: -o-linear-gradient(top, orange, orange);
+  background-image: linear-gradient(to bottom, orange, orange);
+  text-decoration: none;
+  color:white;
+}
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.well{
+	zoom: .7;
+
+}
+
+.well p{ zoom: 1.2;}
+
+
+.image {
+	width:100%;
+	padding:0px;
+
+
+}
+
+}
+</style>
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 " >
+          	 {% for concert in concerts %}
+
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{concert.author}}</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'concert_detail' pk=concert.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ concert.title }}</span></a>
+
+
+ <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{concert.ticket_link}}">BUY TICKETS </a></span>
+
+
+         
+
+
+</p>
+
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ concert.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if concert.description|length >= 500 %}
+        <span><a href="{% url 'concert_detail' pk=concert.pk %}">read more</a></span>
+        {% endif %}
+        </p>
+
+
+        {% if concert.image %}
+ <div class= "image">
+    <a   href="{% url 'concert_detail' pk=concert.pk %}"><img class="img-responsive img-center" alt=""  src="{{ concert.image.large.url }}"/></a>
+</div>
+	{% endif %}
+
+<hr>
+ <div style="text-align:left; ">
+
+<p> <b>Date</b>: {{concert.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{concert.time}} </p>
+
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+
+     <p > {% likes_widget request.user concert %} </p>
+
+<p style="float:right; ">
+<a href="{% url 'concert_detail' pk=concert.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ concert.concertcomments.count }} </a></p>
+
+
+
+
+</div>
+
+</div>
+
+
+{% endfor %}
+
+
+
+
+
+
+{% endblock %}

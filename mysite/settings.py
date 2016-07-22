@@ -143,7 +143,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
-    "django.contrib.postgres",
+#    "django.contrib.postgres",
     "pinax.likes",
     "mailer",
     "Post",
@@ -152,7 +152,7 @@ INSTALLED_APPS = [
     "taggit_labels",
     "pinax.messages",
     "stdimage",
-    "datetimewidget",
+    #"datetimewidget",
 
 
     #for search sbar
@@ -177,6 +177,13 @@ SITE_ID = 1
 
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 
+MAILER_EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_USER = "soncojmk"
+SENDGRID_PASSWORD = "jomuki25"
+
+
+
+
 PINAX_LIKES_LIKABLE_MODELS = {
     "Post.Post": {},
     "Post.Question": {},  # can override default config settings for each model here
@@ -186,7 +193,7 @@ PINAX_LIKES_LIKABLE_MODELS = {
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr'
+        'URL': 'http://www.wpoppin.com/solr'
         # ...or for multicore...
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
@@ -228,9 +235,7 @@ FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]
 
-#EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-EMAIL_BACKEND ="mailer.backend.DbBackend"
 
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_EMAIL_UNIQUE = True
@@ -260,5 +265,6 @@ SOCIAL_AUTH_TWITTER_SECRET = "Hc1TTdHiPq6qBTYJvFCCalyqeo7CFRPwqjhcerrS4vRjWRRwgL
 
 SOCIAL_AUTH_FACEBOOK_KEY = "304444299892792"
 SOCIAL_AUTH_FACEBOOK_SECRET = "74a1767c459da522d55a6fc9cd0d4446"
+
 
 

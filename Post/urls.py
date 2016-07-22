@@ -17,6 +17,7 @@ urlpatterns = [
 
     url(r'^eventcomment/(?P<pk>\d+)/remove/$', views.event_comment_remove, name='event_comment_remove'),
     url(r'^questioncomment/(?P<pk>\d+)/remove/$', views.question_comment_remove, name='question_comment_remove'),
+    url(r'^concertcomment/(?P<pk>\d+)/remove/$', views.concert_comment_remove, name='concert_comment_remove'),
     #url(r'^category$', views.category_list, name='category_list'),
     #url(r'^category/(?P<pk>\d+)/$', views.category_detail, name='category_detail'),
 
@@ -26,6 +27,12 @@ urlpatterns = [
     url(r'^question/(?P<pk>\d+)/edit/$', views.question_edit, name='question_edit'),
     url(r'^question/(?P<pk>\d+)/remove/$', views.question_remove, name='question_remove'),
     url(r"^post/question/$", TemplateView.as_view(template_name="Post/post.html"), name="post"),
+
+    url(r'^concert/$', views.concert_list, name='concert_list'),
+    url(r'^concert/(?P<pk>\d+)/$', views.concert_detail, name='concert_detail'),
+    #url(r'^concert/new/$', views.concert_new, name='concert_new'),
+    url(r'^concert/(?P<pk>\d+)/edit/$', views.concert_edit, name='concert_edit'),
+    url(r'^concert/(?P<pk>\d+)/remove/$', views.concert_remove, name='concert_remove'),
 
     #url(r"^myprofile/about/(?P<pk>\d+)/$", views.my_profile, name='my_profile'),
     url(r"^myprofile/myevents/$", views.my_events, name='my_events'),
