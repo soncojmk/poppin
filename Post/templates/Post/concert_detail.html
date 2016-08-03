@@ -116,33 +116,28 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
-<div style="float:right; padding-right: 10px;">
- {% if request.user == concert.author %}
-    <a  href="{% url 'concert_edit' pk=concert.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
-
-<a  href="{% url 'concert_remove' pk=concert.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
-{% endif %}
-
-</div>
 
 
-<p style="color:grey; text-align:left; font-size: 12px; "> {{concert.author}}</p>
+<p style="color:grey; text-align:left; font-size: 12px; "> <span>{{concert.author}}</span>
 
-       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'concert_detail' pk=concert.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ concert.title }}</span></a>
-
-
- <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{concert.ticket_link}}">BUY TICKETS </a></span>
-
-
-         
+<span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{concert.ticket_link}}">BUY TICKETS </a></span>
 
 
 </p>
 
-        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ concert.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
-        {% if concert.description|length >= 500 %}
-        <span><a href="{% url 'concert_detail' pk=concert.pk %}">read more</a></span>
-        {% endif %}
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'concert_detail' pk=concert.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ concert.title }}</span></a>
+
+
+
+
+
+
+
+
+</p>
+
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ concert.description|urlizetrunc:35|linebreaks }}
+
         </p>
 
 

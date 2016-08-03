@@ -15,10 +15,14 @@
 {% block body_base %}
 
 {% if user.is_authenticated %}
+
+
 <style>
 
 
 li a{color:#504849;}
+
+
 
 #icon{
 
@@ -120,14 +124,14 @@ body {
           <div class="sidebar-nav-fixed" style="padding-top:20px; padding-left:60px;" data-spy="affix" data-offset-top="140">
           <ul class="nav nav-list" class="center" style="color:black;">
 	      <li><a href="{% url 'my_events' %} ">  <i id="icon" class="fa fa-user"> </i>   {% user_display request.user %} </a></li>
-             <li><a href="{% url 'feed' %} ">  <i id="icon" class="fa fa-newspaper-o"></i> Feed </a></li>
-            <li><a href="{% url 'post_list' %} ">  <i id="icon" class="fa fa-globe"></i> Events </a> </li>
-            <li><a href="{% url 'concert_list' %} ">  <i id="icon" class="fa fa-music"></i> Concerts </a> </li>
-            <li><a href="{% url 'question_list' %}" >  <i id="icon" class="fa fa-question-circle"></i> Questions </a></li>
+             <li><a href="{% url 'feed' %} "  id="feed">  <i id="icon" class="fa fa-newspaper-o"></i> Feed </a></li>
+            <li><a href="{% url 'post_list' %} "  id="events">  <i id="icon" class="fa fa-globe"></i> Events </a> </li>
+            <li><a href="{% url 'concert_list' %} "  id="concertsnav">  <i id="icon" class="fa fa-music"></i> Concerts </a> </li>
+            <li><a href="{% url 'question_list' %}" id="questions">  <i id="icon" class="fa fa-question-circle"></i> Questions </a></li>
 		<li class="divider"></li> <hr>
 		<li class="divider"></li>
-	    <li><a href="{% url 'post_new' %}" >  <i id="icon" class="fa fa-pencil-square-o"></i> Post New Event </a></li>
-	    <li><a href="{% url 'question_list' %}" >  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
+	    <li><a href="{% url 'post_new' %}" id="postevent">  <i id="icon" class="fa fa-pencil-square-o"></i> Post New Event </a></li>
+	    <li><a href="{% url 'question_list' %}" id="postquestion">  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
           </ul>
           </div>
       	</div>

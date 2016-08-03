@@ -186,7 +186,8 @@ SENDGRID_PASSWORD = "jomuki25"
 
 PINAX_LIKES_LIKABLE_MODELS = {
     "Post.Post": {},
-    "Post.Question": {},  # can override default config settings for each model here
+    "Post.Question": {},
+    "Post.Concert": {}, # can override default config settings for each model here
 }
 
 #search bar

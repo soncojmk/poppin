@@ -5,6 +5,17 @@ from django.views.generic import TemplateView
 
 from django.contrib import admin
 
+from Post import views
+from restapi import views
+from rest_framework.routers import DefaultRouter
+
+# Create a router and register our viewsets with it.
+router = DefaultRouter()
+router.register(r'events', views.PostViewSet)
+router.register(r'users', views.UserViewSet)
+
+
+
 
 urlpatterns = [
     url(r"^$", TemplateView.as_view(template_name="homepage.html"), name="home"),
@@ -18,7 +29,8 @@ urlpatterns = [
     url(r'^messages/', include("pinax.messages.urls", namespace="pinax_messages")),
 
 
-
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 ]
 

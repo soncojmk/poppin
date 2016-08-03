@@ -232,9 +232,10 @@ def feed(request):
     # annotate a type for each model to be used in the template
     events = Post.objects.all().annotate(type=Value('events', CharField()))
     questions = Question.objects.all().annotate(type=Value('questions', CharField()))
+    concerts = Concert.objects.all().annotate(type=Value('concerts', CharField()))
 
 
-    all_items = list(events) + list(questions)
+    all_items = list(events) + list(questions) + list(concerts)
 
     # all items sorted by publication date. Most recent first
     all_items_feed = sorted(all_items, key=lambda obj: obj.posted_date)
@@ -259,7 +260,7 @@ def my_questions(request):
 
 
 def concert_list(request):
-    concerts = Concert.objects.filter(posted_date__lte=timezone.now()).order_by('-date')
+    concerts = Concert.objects.order_by('-date')
     return render(request, 'Post/concert_list.html', {'concerts':concerts})
 
 def concert_detail(request, pk):
