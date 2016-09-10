@@ -6,6 +6,15 @@
 
 {% load pinax_likes_tags %}
 
+ {% block extra_head %}
+
+ <meta content="{{question.entry}}" property='og:description'>
+<meta content="A Question was asked on wpoppin.com" property='og:title'>
+
+
+
+{% endblock %}
+
 {% block head_title %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
@@ -19,8 +28,9 @@
 .container-fluid {
 width:660px;
 margin:auto;
-text-align:center; font-size: 15px; color: #504849;  padding-bottom:5px;
+text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;
 .well{text-align:center;}
+
 
 }
 
@@ -96,7 +106,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
         <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 0px;"> {{question.author}}</p>
 
-        <p  class"text" style=" text-align:left; font-size: 15px; color: #504849; padding:0px 0px 55px 0px;" >
+        <p  class"text" style=" text-align:left; font-size: 15px; color: #504849; padding:0px 10px 5px 0px;" >
 
 		{{ question.entry|urlizetrunc:35|linebreaks}}</p>
 
@@ -153,7 +163,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 </div>
 
 </div>
-<a href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+<a style="margin-left:10px;" href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
 
 </div>
 

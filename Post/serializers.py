@@ -20,11 +20,10 @@ author = serializers.ReadOnlyField(source='author.username')
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
-    highlight = serializers.HyperlinkedIdentityField(view_name='post-highlight', format='html')
 
     class Meta:
         model = Post
-        fields = ('url', 'pk', 'author', 'highlight',
+        fields = ('url', 'pk', 'author',
                   'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image')
 
 

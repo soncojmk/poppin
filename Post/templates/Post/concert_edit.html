@@ -15,7 +15,7 @@
 {%if user.is_authenticated %}
 <div >
 <form  method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px; padding-top: 10px;" enctype="multipart/form-data">
-    <legend>CREATE NEW CONCERT</legend>
+    <legend>CREATE NEW TICKETED EVENT</legend>
     {% csrf_token %}
     {{ form|as_bootstrap }}
     <div class="form-actions">

@@ -165,54 +165,5 @@ width:580px; padding: 5px; padding-top:0;
 
 </div>
 
-<!--
- <div class="list" style= "background-color: #F5F5F5;  padding-bottom: 25px; padding-top: 45px;">
 
-	{% if user.is_authenticated%}
-
-    <form method="POST" class="question-form"  style="width:600px; padding: 5px; padding-top:0;
-    margin: auto;
-    margin-bottom: 10px;
-    text-align:center;">
-		{% csrf_token %}
-        {{ form|as_bootstrap }}
-        <button type="submit" class="save btn btn-primary">Send</button>
-    </form>
-	{% endif %}
-
-
-
-            {% for question in questions %}
-
-    <div class="post" style= "background-color: white;
-    width: 600px;
-    padding: 5px;
-    padding-top: 15px;
-    margin: auto;
-    margin-bottom: 15px;
-    border-bottom: solid lightgrey .5px;
-    text-align:center;
-   ">
-        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{question.author}}</p>
-
-        <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 20px 20px;" >
-
-		{{ question.entry}}</p>
-
-
-<hr style="width:560px;">
-<div  style="overflow: auto;
-	width: 100%;">
-
-<p>
-{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>
-
- <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
-
-</div>
-            </div>
-
-{% endfor %}
-</div>
--->
 {% endblock %}

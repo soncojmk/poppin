@@ -9,7 +9,7 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'pop',
         'USER': 'super',
         'PASSWORD': 'Munyao25#',
@@ -64,6 +64,7 @@ MEDIA_URL = "/site_media/media/"
 
 STATIC_ROOT = os.path.join(PACKAGE_ROOT, "site_media", "static")
 
+LOGIN_URL = "/account/login/"
 
 
 # URL prefix for static files.
@@ -128,6 +129,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -137,6 +139,7 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    "django.contrib.gis",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.messages",
@@ -145,7 +148,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 #    "django.contrib.postgres",
     "pinax.likes",
-    "mailer",
+    #"mailer",
     "Post",
     "taggit",
     "taggit_templatetags2",
@@ -153,6 +156,7 @@ INSTALLED_APPS = [
     "pinax.messages",
     "stdimage",
     #"datetimewidget",
+    "djgeojson",
 
 
     #for search sbar
@@ -175,13 +179,17 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+'''
 EMAIL_BACKEND = "mailer.backend.DbBackend"
-
 MAILER_EMAIL_BACKEND = "sgbackend.SendGridBackend"
+
+
+'''
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
 SENDGRID_USER = "soncojmk"
 SENDGRID_PASSWORD = "jomuki25"
-
-
+DEFAULT_FROM_EMAIL = 'WhatsPoppin <noreply@wpoppin.com>'
+THEME_CONTACT_EMAIL = "kitongajoseph@gmail.com"
 
 
 PINAX_LIKES_LIKABLE_MODELS = {
@@ -240,7 +248,7 @@ FIXTURE_DIRS = [
 
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_EMAIL_UNIQUE = True
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "feed"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2

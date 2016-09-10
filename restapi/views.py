@@ -38,10 +38,6 @@ class PostViewSet(viewsets.ModelViewSet):
                           IsOwnerOrReadOnly,)
 
 
-    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        Post = self.get_object()
-        return Response(Post.highlighted)
 
 
     def perform_create(self, serializer):

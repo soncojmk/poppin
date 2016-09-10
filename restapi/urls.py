@@ -24,7 +24,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^$', api_root),
     url(r'^events/$', post_list, name='post-list'),
     url(r'^events/(?P<pk>[0-9]+)/$', post_detail, name='post-detail'),
-    url(r'^events/(?P<pk>[0-9]+)/highlight/$', post_highlight, name='post-highlight'),
+
     url(r'^users/$', user_list, name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail')
 ])

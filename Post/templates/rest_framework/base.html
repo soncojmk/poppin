@@ -1,58 +1,54 @@
-{% load staticfiles %}
+{% extends "site_base.html" %}
 {% load i18n %}
 {% load rest_framework %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    {% block head %}
 
-      {% block meta %}
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="robots" content="NONE,NOARCHIVE" />
-      {% endblock %}
-
-      <title>{% block title %}{% if name %}{{ name }} – {% endif %}Django REST framework{% endblock %}</title>
-
-      {% block style %}
-        {% block bootstrap_theme %}
-          <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
-          <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>
-        {% endblock %}
-
-        <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
-      {% endblock %}
-
-    {% endblock %}
-  </head>
 
   {% block body %}
+
+  <style>
+
+      .com { color: #93a1a1; }
+.lit { color: #195f91; }
+.pun, .opn, .clo { color: #93a1a1; }
+.fun { color: #dc322f; }
+.str, .atv { color: #D14; }
+.kwd, .prettyprint .tag { color: #1e347b; }
+.typ, .atn, .dec, .var { color: teal; }
+.pln { color: #48484c; }
+
+.prettyprint {
+  padding: 8px;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+}
+.prettyprint.linenums {
+  -webkit-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+     -moz-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+          box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+}
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+  margin: 0 0 0 33px; /* IE indents via margin-left */
+}
+ol.linenums li {
+  padding-left: 12px;
+  color: #bebec5;
+  line-height: 20px;
+  text-shadow: 0 1px 0 #fff;
+}
+
+
+
+
+
+  </style>
+
   <body class="{% block bodyclass %}{% endblock %}">
 
     <div class="wrapper">
-      {% block navbar %}
-        <div class="navbar navbar-static-top {% block bootstrap_navbar_variant %}navbar-inverse{% endblock %}">
-          <div class="container">
-            <span>
-              {% block branding %}
-                <a class='navbar-brand' rel="nofollow" href='http://www.django-rest-framework.org'>
-                    Django REST framework
-                </a>
-              {% endblock %}
-            </span>
-            <ul class="nav navbar-nav pull-right">
-              {% block userlinks %}
-                {% if user.is_authenticated %}
-                  {% optional_logout request user %}
-                {% else %}
-                  {% optional_login request %}
-                {% endif %}
-              {% endblock %}
-            </ul>
-          </div>
-        </div>
-      {% endblock %}
+
 
       <div class="container">
         {% block breadcrumbs %}
@@ -266,12 +262,7 @@
           csrfCookieName: "{{ csrf_cookie_name|default:'csrftoken' }}"
         };
       </script>
-      <script src="{% static "rest_framework/js/jquery-1.12.4.min.js" %}"></script>
-      <script src="{% static "rest_framework/js/ajax-form.js" %}"></script>
-      <script src="{% static "rest_framework/js/csrf.js" %}"></script>
-      <script src="{% static "rest_framework/js/bootstrap.min.js" %}"></script>
-      <script src="{% static "rest_framework/js/prettify-min.js" %}"></script>
-      <script src="{% static "rest_framework/js/default.js" %}"></script>
+
       <script>
         $(document).ready(function() {
           $('form').ajaxForm();

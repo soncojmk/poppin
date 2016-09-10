@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post, EventComment, QuestionComment, Question, Concert
+from .models import Post, EventComment, QuestionComment, Question, Concert, ConcertComment
 from django.shortcuts import get_object_or_404, render_to_response
 from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm
 #from allauth.account.decorators import verified_email_required
@@ -17,15 +17,180 @@ from django.views.generic import UpdateView
 from django.utils.decorators import method_decorator
 import account.forms
 import account.views
+
+from datetime import date, timedelta
+
+from django.views.generic.dates import TodayArchiveView, WeekArchiveView
 #from django.views.generic.list_detail import object_list
+
+from urllib2 import URLError
+
+from django.contrib.gis import geos
+from django.contrib.gis import measure
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from geopy.geocoders import GoogleV3
+
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.contrib.gis.geos import Point
+from djgeojson.serializers import Serializer as GeoJSONSerializer
+#from geopy.geocoders import GQueryError
+
 # Create your views here.
 
 
-class LoginView(account.views.LoginView):
+def EventsToday(request):
+    posts = Post.objects.filter(date=date.today()).order_by('time')
+    return render(request, 'Post/post_archive_day.html', {'posts':posts})
 
-    form_class = account.forms.LoginEmailForm
+
+def EventsTomorrow(request):
+    today = date.today()
+    startdate = today + timedelta(days=1)
+    enddate = startdate + timedelta(days=2)
+
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    return render(request, 'Post/post_tomorrow.html', {'posts':posts})
 
 
+def EventsWeek(request):
+    startdate = date.today()
+    enddate = startdate + timedelta(days=6)
+
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    return render(request, 'Post/post_this_week.html', {'posts':posts})
+
+
+def EventsMonth(request):
+    startdate = date.today()
+    enddate = startdate + timedelta(days=30)
+
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    return render(request, 'Post/post_this_month.html', {'posts':posts})
+
+
+class ConcertsToday(TodayArchiveView):
+    queryset = Concert.objects.all()
+    date_field = "date"
+    allow_future = True
+
+def FeedToday(request):
+    # annotate a type for each model to be used in the template
+    events = Post.objects.filter(date=date.today()).annotate(type=Value('events', CharField())).order_by('time')
+    #questions = Question.objects.filter(posted_date__lte == datetime.now().date).annotate(type=Value('questions', CharField()))
+    concerts = Concert.objects.filter(date=date.today()).annotate(type=Value('concerts', CharField())).order_by('time')
+
+
+    all_items = list(events) + list(concerts)
+
+    # all items sorted by publication date. Most recent first
+    all_items_feed = sorted(all_items, key=lambda obj: obj.time)
+    #all_items_feed.reverse()
+
+    return render(request, 'Post/feed_today.html', {'all_items_feed': all_items_feed})
+
+
+def FeedTomorrow(request):
+    # annotate a type for each model to be used in the template
+    today = date.today()
+    startdate = today + timedelta(days=1)
+    enddate = startdate + timedelta(days=2)
+
+    events = Post.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('events', CharField())).order_by('-date')
+    #questions = Question.objects.filter(posted_date__lte == datetime.now().date).annotate(type=Value('questions', CharField()))
+    concerts = Concert.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('concerts', CharField())).order_by('-date')
+
+
+    all_items = list(events) + list(concerts)
+
+    # all items sorted by publication date. Most recent first
+    all_items_feed = sorted(all_items, key=lambda obj: obj.posted_date)
+    all_items_feed.reverse()
+
+    return render(request, 'Post/feed_tomorrow.html', {'all_items_feed': all_items_feed})
+
+
+def FeedWeek(request):
+    # annotate a type for each model to be used in the template
+    startdate = date.today()
+    enddate = startdate + timedelta(days=6)
+
+    events = Post.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('events', CharField())).order_by('-date')
+    #questions = Question.objects.filter(posted_date__lte == datetime.now().date).annotate(type=Value('questions', CharField()))
+    concerts = Concert.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('concerts', CharField())).order_by('-date')
+
+
+    all_items = list(events) + list(concerts)
+
+    # all items sorted by publication date. Most recent first
+    all_items_feed = sorted(all_items, key=lambda obj: obj.posted_date)
+    all_items_feed.reverse()
+
+    return render(request, 'Post/feed_this_week.html', {'all_items_feed': all_items_feed})
+
+
+
+
+
+def FeedMonth(request):
+    # annotate a type for each model to be used in the template
+    startdate = date.today()
+    enddate = startdate + timedelta(days=30)
+
+    events = Post.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('events', CharField())).order_by('-date')
+    #questions = Question.objects.filter(posted_date__lte == datetime.now().date).annotate(type=Value('questions', CharField()))
+    concerts = Concert.objects.filter(date__range=[startdate, enddate]).annotate(type=Value('concerts', CharField())).order_by('-date')
+
+
+    all_items = list(events) + list(concerts)
+
+    # all items sorted by publication date. Most recent first
+    all_items_feed = sorted(all_items, key=lambda obj: obj.posted_date)
+    all_items_feed.reverse()
+
+    return render(request, 'Post/feed_this_month.html', {'all_items_feed': all_items_feed})
+
+
+
+
+
+
+def geocode_address(address):
+    address = address.encode('utf-8')
+    geocoder = GoogleV3()
+    try:
+        _, latlon = geocoder.geocode(address)
+    except (URLError, ValueError):
+        return None
+    else:
+        return latlon
+
+def get_posts(lon, lat):
+    current_point = geos.fromstr("POINT(%s %s)" % (lon, lat))
+    distance_from_point = {'km': 10}
+    posts = Post.gis.filter(location__distance_lte=(current_point, measure.D(**distance_from_point)))
+    posts = posts.distance(current_point).order_by('distance')
+    return posts.distance(current_point)
+
+def location(request):
+
+    if request.is_ajax():
+        lat = request.GET.get('lat', None)
+        lon = request.GET.get('lon', None)
+
+        if lat and lon:
+            posts = get_posts(lon, lat)
+            geojson_data = GeoJSONSerializer().serialize(
+                posts, use_natural_keys=True)
+
+
+            return HttpResponse(geojson_data,
+                mimetype='application/json')
+    msg = "Bad request: not AJAX or no latlong pair present"
+    return HttpResponseBadRequest(msg)
+
+
+@login_required
 def post_list(request):
     posts = Post.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
     return render(request, 'Post/post_list.html', {'posts':posts})
@@ -52,6 +217,7 @@ def post_detail(request, pk):
 
     return render(request, 'Post/post_detail.html', context)
 
+@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -65,7 +231,7 @@ def post_new(request):
         form = PostForm()
     return render(request, 'Post/post_edit.html', {'form': form})
 
-
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -81,7 +247,7 @@ def post_edit(request, pk):
     return render(request, 'Post/post_edit.html', {'form': form})
 
 
-
+@login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
@@ -135,7 +301,7 @@ def category_detail(request, pk):
 
     return render(request, 'post/post_list.html', {'category': category}) # in this template, you will have access to category and posts under that category by (category.post_set).
 '''
-
+@login_required
 def question_list(request):
     questions = Question.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
     form = QuestionForm()
@@ -184,6 +350,7 @@ def question_detail(request, pk):
 
     return render(request, 'Post/question_detail.html', context)
 
+@login_required
 def question_new(request):
     if request.method == "POST":
         form = QuestionForm(request.POST)
@@ -197,7 +364,7 @@ def question_new(request):
         form = QuestionForm()
     return render(request, 'Post/question_edit.html', {'form': form})
 
-
+@login_required
 def question_edit(request, pk):
     question = get_object_or_404(Question, pk=pk)
     if request.method == "POST":
@@ -214,7 +381,7 @@ def question_edit(request, pk):
     return render(request, 'Post/question_edit.html', {'form': form})
 
 
-
+@login_required
 def question_remove(request, pk):
     question = get_object_or_404(Question, pk=pk)
     question.delete()
@@ -227,7 +394,7 @@ def question_comment_remove(request, pk):
     comment.delete()
     return redirect('question_detail', pk=question_pk)
 
-
+@login_required
 def feed(request):
     # annotate a type for each model to be used in the template
     events = Post.objects.all().annotate(type=Value('events', CharField()))
@@ -258,7 +425,7 @@ def my_questions(request):
 
 
 
-
+@login_required
 def concert_list(request):
     concerts = Concert.objects.order_by('-date')
     return render(request, 'Post/concert_list.html', {'concerts':concerts})
@@ -284,7 +451,7 @@ def concert_detail(request, pk):
     }
 
     return render(request, 'Post/concert_detail.html', context)
-
+@login_required
 def concert_new(request):
     if request.method == "POST":
         form = ConcertForm(request.POST, request.FILES)
@@ -298,7 +465,7 @@ def concert_new(request):
         form = ConcertForm()
     return render(request, 'Post/concert_edit.html', {'form': form})
 
-
+@login_required
 def concert_edit(request, pk):
     concert = get_object_or_404(Concert, pk=pk)
     if request.method == "POST":
@@ -314,7 +481,7 @@ def concert_edit(request, pk):
     return render(request, 'Post/concert_edit.html', {'form': form})
 
 
-
+@login_required
 def concert_remove(request, pk):
     concert = get_object_or_404(Concert, pk=pk)
     concert.delete()

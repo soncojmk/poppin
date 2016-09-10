@@ -1,11 +1,19 @@
 from __future__ import unicode_literals
+#from django.db import models
+from django.contrib.gis.db import models as gis_models
+from django.contrib.gis import geos
 from django.db import models
+from geopy.geocoders import GoogleV3
+#from geopy.geocoders.google import GQueryError
+from urllib2 import URLError
+
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from taggit.managers import TaggableManager
 from localflavor.us.us_states import STATE_CHOICES
 from localflavor.us.models import USStateField
 from stdimage.models import StdImageField
+
 
 # Create your models here.
 '''
@@ -37,8 +45,18 @@ class Post(models.Model):
                           variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
 
     posted_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
+    country = "United States"
 
+    draft = models.BooleanField(default=False)
+
+    location = gis_models.PointField(u"longitude/latitude",
+                                     geography=True, blank=True, null=True)
+
+    gis = gis_models.GeoManager()
+    objects = models.Manager()
+    #draft = models.BooleanField(default=False)
     #tags = TaggableManager()
+
 
 
     def posted(self):
@@ -54,12 +72,29 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def __unicode__(self):
+        return u'{c}/{l}/{p}'.format(c=self.title, l=self.description, p=self.author)
+
     def approved_comments(self):
         return self.comments.filter(approved_comment=True)
 
     #get_absolut_url method for easier urls
     def get_absolute_url(self):
         return reverse('post_detail', args=[self.pk])
+
+    def save(self, **kwargs):
+        if not self.location:
+            address = u'%s %s' % (self.city, self.street_address)
+            address = address.encode('utf-8')
+            geocoder = GoogleV3()
+            try:
+                _, latlon = geocoder.geocode(address)
+            except (URLError, ValueError):
+                pass
+            else:
+                point = "POINT(%s %s)" % (latlon[0], latlon[1])
+                self.location = geos.fromstr(point)
+        super(Post, self).save()
 
 class Question(models.Model):
     author = models.ForeignKey('auth.user')
@@ -100,6 +135,7 @@ class Concert(models.Model):
     time = models.TimeField( help_text="24 hour clock", blank=True, null=True,)
     description = models.TextField()
     ticket_link = models.URLField()
+    starting_price = models.IntegerField(null=True)
     image = StdImageField(upload_to='Post/images', null =True, blank=True,
                           variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
 
@@ -120,6 +156,9 @@ class Concert(models.Model):
 
     def __str__(self):
         return self.title
+
+    def __unicode__(self):
+        return u'{c}/{l}/{p}'.format(c=self.title, l=self.description, p=self.author)
 
     def approved_comments(self):
         return self.comments.filter(approved_comment=True)

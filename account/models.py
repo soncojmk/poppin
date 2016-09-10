@@ -73,8 +73,14 @@ class Account(models.Model):
             EmailAddress.objects.add_email(account.user, account.user.email, **kwargs)
         return account
 
+
+
+    def __unicode__(self):
+        return str(self.user)
+
     def __str__(self):
         return str(self.user)
+
 
     def now(self):
         """

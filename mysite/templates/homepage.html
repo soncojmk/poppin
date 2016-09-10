@@ -177,7 +177,7 @@
   .navbar li a, .navbar .navbar-brand {
       color: #fff !important;
   }
-  .navbar-nav li a:hover {
+  .navbar-nav li a:hover, .navbar-nav li.active a {
       color:  #236B8E !important;
       background-color: #fff !important;
   }
@@ -325,7 +325,7 @@ border-color:rgba(0,0,0,0.2)}
 
 	<p > About classes you're taking </p>
 	<p > Favorite Spots on Campus </p>
-	<p > ...Anything really</p>
+	<p > Anything you want to know</p>
 
     </div>
     <div class="col-sm-4" style="text-align:left;">
@@ -346,7 +346,7 @@ border-color:rgba(0,0,0,0.2)}
 <div id="services" class="container-fluid text-center bg-white">
   <h2>Discover</h2>
  {% if user.is_authenticated %}
-  <div class="row slideanim">
+  <div class="row ">
     <div class="col-sm-4">
     <a href="{% url 'feed' %}">   <img class="img-circle" width="175" height="175" src="/site_media/media/images/party.jpg" border="0" alt="Party photo"/></a>
       <h4>Parties</h4>
@@ -364,7 +364,7 @@ border-color:rgba(0,0,0,0.2)}
     </div>
   </div>
   <br><br>
-  <div class="row slideanim">
+  <div class="row ">
     <div class="col-sm-4">
      <a href="{% url 'feed' %}">  <img class="img-circle" width="175" height="175" src="/site_media/media/images/charity.jpg" border="0" alt="charity photo"/> </a>
       <h4>Charity Events</h4>
@@ -382,7 +382,7 @@ border-color:rgba(0,0,0,0.2)}
     </div>
   </div>
   {% else %}
-  <div class="row slideanim">
+  <div class="row ">
     <div class="col-sm-4">
     <a href="{% url 'account_login' %}">   <img class="img-circle" width="175" height="175" src="/site_media/media/images/party.jpg" border="0" alt="Party photo"/></a>
       <h4>Parties</h4>
@@ -400,7 +400,7 @@ border-color:rgba(0,0,0,0.2)}
     </div>
   </div>
   <br><br>
-  <div class="row slideanim">
+  <div class="row ">
     <div class="col-sm-4">
      <a href="{% url 'account_login' %}">  <img class="img-circle" width="175" height="175" src="/site_media/media/images/charity.jpg" border="0" alt="charity photo"/> </a>
       <h4>Charity Events</h4>
@@ -424,20 +424,8 @@ border-color:rgba(0,0,0,0.2)}
 
 <!-- Container (Contact Section) -->
 <div id="contact" class="container-fluid ">
-    <div>
-                   {% if not user.is_authenticated %}
-            {% url "account_login" as login_url %}
-            {% url "account_signup" as signup_url %}
-            <p style="text-align:center; color:white;">{% blocktrans %}
 
-<a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> {% endblocktrans %}
-<br><br>
- <a class="btn btn-default btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
-    <span class="fa fa-facebook"></span> Login with Facebook
-  </a></p>
 
-            {% endif %}
-    </div>
   <h2 class="text-center">CONTACT</h2>
   <div class="row">
     <div class="col-sm-5">
@@ -445,7 +433,7 @@ border-color:rgba(0,0,0,0.2)}
       <p><span class="glyphicon glyphicon-map-marker"></span> University Park, US</p>
       <p><span class="glyphicon glyphicon-envelope"></span> kitongajoseph@ymail.com</p>
     </div>
-    <div class="col-sm-7 slideanim">
+    <div class="col-sm-7 ">
       <div class="row">
         <div class="col-sm-6 form-group">
           <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
@@ -501,48 +489,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 </footer>
 -->
-
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 900, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-
-  $(window).scroll(function() {
-    $(".slideanim").each(function(){
-      var pos = $(this).offset().top;
-
-      var winTop = $(window).scrollTop();
-        if (pos) {
-          $(this).addClass("slide");
-        }
-    });
-  });
-})
-</script>
-
-
-<form id="accountLogOutForm" style="display: none;" action="{% url 'account_logout' %}" method="POST">
-    {% csrf_token %}
-</form>
 
 
 </body>

@@ -21,6 +21,11 @@ text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-rig
 
 }
 
+.date { color:grey; font-size:13px; display:inline;}
+
+#right {float:right;}
+
+
 
 .button {
   background: Orange;
@@ -119,6 +124,9 @@ width:580px; padding: 5px; padding-top:0;
 }
 
 
+.date {display:block;}
+#right {float:none;}
+
 .question-form{
 	margin:0px;
 	padding:0px;
@@ -150,15 +158,18 @@ width:580px; padding: 5px; padding-top:0;
 
 
 
-<div class="col-lg-7  col-md-7 col-sm-7 " >
+<div class="col-lg-7  col-md-7 col-sm-7 "  >
 
+<a class="btn btn-primary"  href="{% url 'feed' %}">All Posts</a> <a class="btn btn-default"  href="{% url 'FeedToday' %}">Today</a>
+<a class="btn btn-default"  href="{% url 'FeedTomorrow' %}">Tomorrow</a>   <a class="btn btn-default"  href="{% url 'FeedWeek' %}">This Week</a>
+<a class="btn btn-default"  href="{% url 'FeedMonth' %}">This Month</a> <br> <br>
 
 {% for item in all_items_feed %}
 
     {% if item.type == 'concerts' %}
 
 
-<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+<div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
 
 
@@ -190,9 +201,8 @@ width:580px; padding: 5px; padding-top:0;
 
 <hr>
  <div style="text-align:left; ">
-
-<p> <b>Date</b>: {{item.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{item.time}} </p>
-
+<p class="date">{{item.street_address}}, {{item.city}}, {{item.state}} </p>
+<p class="date" id="right"> {{item.date|date:"D d M Y" }} &nbsp  &nbsp  {{item.time}} </p>
 </div>
 
 <hr>
@@ -220,6 +230,7 @@ width:580px; padding: 5px; padding-top:0;
 
     {% elif item.type == 'events' %}
 
+    {% if not item.draft %}
 
 <div class="well" style="background-color:white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
@@ -259,7 +270,10 @@ width:580px; padding: 5px; padding-top:0;
 <hr>
  <div style="text-align:left; ">
 
-<p> <b>Date</b>: {{item.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{item.time}} </p>
+
+
+<p class="date">{{item.street_address}}, {{item.city}}, {{item.state}} </p>
+<p class="date" id="right"> {{item.date|date:"D d M Y" }} &nbsp  &nbsp  {{item.time}} </p>
 
 </div>
 
@@ -281,6 +295,7 @@ width:580px; padding: 5px; padding-top:0;
 
 </div>
 
+{% endif %}
 
 {% elif item.type == 'questions' %}
 

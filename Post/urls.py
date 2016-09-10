@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^search/?$', views.MySearchView, name='search_view'),
     url(r"^likes/", include("pinax.likes.urls", namespace="pinax_likes")),
     url(r'^tag/$', views.categories, name='categories'),
-
+    url(r'^location/$', views.location, name='location'),
     #url(r'^post/(?P<pk>\d+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
     #url(r'^comment/(?P<pk>\d+)/approve/$', views.comment_approve, name='comment_approve'),
 
@@ -30,7 +30,7 @@ urlpatterns = [
 
     url(r'^concert/$', views.concert_list, name='concert_list'),
     url(r'^concert/(?P<pk>\d+)/$', views.concert_detail, name='concert_detail'),
-    #url(r'^concert/new/$', views.concert_new, name='concert_new'),
+    url(r'^concert/new/$', views.concert_new, name='concert_new'),
     url(r'^concert/(?P<pk>\d+)/edit/$', views.concert_edit, name='concert_edit'),
     url(r'^concert/(?P<pk>\d+)/remove/$', views.concert_remove, name='concert_remove'),
 
@@ -40,6 +40,17 @@ urlpatterns = [
     url(r"^feed/$", views.feed, name='feed'),
     #url(r'^myprofile/new/$', views.ProfileObjectMixin, name='profile_new'),
     #url(r'^myprofile/(?P<pk>\d+)/edit/$', views.profile_edit, name='profile_edit'),
+
+    url(r"^feed/today/$", views.FeedToday, name='FeedToday'),
+    url(r"^feed/tomorrow/$", views.FeedTomorrow, name='FeedTomorrow'),
+    url(r"^feed/thisweek/$", views.FeedWeek, name='FeedWeek'),
+    url(r"^feed/thismonth/$", views.FeedMonth, name='FeedMonth'),
+
+    url(r'^events/today/$', views.EventsToday, name='EventsToday'),
+    url(r'^events/tomorrow/$', views.EventsTomorrow, name='EventsTomorrow'),
+    url(r'^events/thisweek/$', views.EventsWeek, name='EventsWeek'),
+    url(r'^events/thismonth/$', views.EventsMonth, name='EventsMonth'),
+    url(r'^today/concert/$', views.ConcertsToday, name='ConcertsToday'),
 
 
 

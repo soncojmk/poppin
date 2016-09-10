@@ -6,6 +6,15 @@
 
 {% load pinax_likes_tags %}
 
+ {% block extra_head %}
+
+ <meta content="{{post.description}}" property='og:description'>
+<meta content="{{post.title}}" property='og:title'>
+<meta content="movie" property='og:type'>
+<meta property="fb:app_id" content="304444299892792">
+
+{% endblock %}
+
 {% block head_title %}{% endblock %}
 
 {% block body_class %}home{% endblock %}

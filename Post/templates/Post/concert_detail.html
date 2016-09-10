@@ -6,11 +6,28 @@
 
 {% load pinax_likes_tags %}
 
+ {% block extra_head %}
+
+ <meta content="{{concert.description}}" property='og:description'>
+<meta content="{{concert.title}}" property='og:title'>
+<meta content="movie" property='og:type'>
+<meta property="fb:app_id" content="304444299892792">
+
+
+
+{% endblock %}
+
 {% block head_title %}{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
 {% block body_base %}
+
+<meta content='' property='fb:appid'>
+<meta content="{{concert.description}}" property='og:description'>
+<meta content="{{concert.title}}" property='og:title'>
+
+<meta content='{{concert.image.large}}' property='og:image'>
 
 
 <style>
@@ -187,7 +204,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
     <div class="comment">
 
         <p class= "text" style="margin=0;">{{ comment.comment}}  {% if request.user == comment.author %}
-                <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'event_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
+                <a class= "glyphicon glyphicon-remove small" style="float:right;" href="{% url 'concert_comment_remove' pk=comment.pk %}" onclick="return makesure();" ></a>
             {% endif %}
 
 

@@ -4,9 +4,17 @@
 
 <style>
 @media (min-width: 768px) {
-	.dropdown:hover .dropdown-menu {
+	.dropdown:hover .dropdown-menu, .dropdown:active .dropdown-menu  {
 		display: block;
+		background-color:transparent;
+		color:black;}
+
+
 	}
+
+	}
+
+
 }
 
 </style>
@@ -44,6 +52,9 @@
                      <ul class="dropdown-menu" style = " background-color:#236B8E;" >
 <li style = " padding: 5px;" >
  <a id="post_list" href="{% url 'post_new' %}"  style = " color:white;"> <i   class="fa fa-globe"></i> <b >{% trans "Event" %}</b></a>
+        </li>
+<li style = " padding: 5px;" >
+ <a id="post_list" href="{% url 'concert_new' %}"  style = " color:white;"> <i   class="fa fa-music"></i> <b >{% trans "Ticketed Event" %}</b></a>
         </li>
 
 <li style = " padding: 5px;">
