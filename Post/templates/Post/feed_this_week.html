@@ -1,0 +1,434 @@
+{% extends "Post/side_nav.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block content %}
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+.date { color:grey; font-size:13px; display:inline;}
+
+#right {float:right;}
+
+
+
+.button {
+  background: Orange;
+  float:right;
+  background-image: -webkit-linear-gradient(top, Orange, orange);
+  background-image: -moz-linear-gradient(top, Orange, orange);
+  background-image: -ms-linear-gradient(top, Orange, orange);
+  background-image: -o-linear-gradient(top, Orange, orange);
+  background-image: linear-gradient(to bottom, Orange, orange);
+  border-radius: 4px;
+  font-family: Arial;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: orange;
+  background-image: -webkit-linear-gradient(top, orange, orange);
+  background-image: -moz-linear-gradient(top, orange, orange);
+  background-image: -ms-linear-gradient(top, orange, orange);
+  background-image: -o-linear-gradient(top, orange, orange);
+  background-image: linear-gradient(to bottom, orange, orange);
+  text-decoration: none;
+  color:white;
+}
+
+
+
+.question-form{
+
+width:620px; padding: 5px; padding-top:0;
+    margin: auto;
+    margin-bottom: 10px;
+    text-align:center;
+
+}
+
+
+#entry{
+
+padding-bottom: 20px;
+}
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+
+
+.question-form{
+
+width:580px; padding: 5px; padding-top:0;
+    margin: auto;
+    margin-bottom: 10px;
+    text-align:center;
+
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+
+
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+
+.date {display:block;}
+#right {float:none;}
+
+.question-form{
+	margin:0px;
+	padding:0px;
+	width:100%;
+	zoom:.5;
+
+}
+
+.well{
+	zoom: .7;
+
+
+}
+
+.well p{ zoom: 1.2;}
+
+
+.image {
+	width:100%;
+	padding:0px;
+
+
+}
+
+}
+</style>
+
+
+
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 "  >
+
+<a class="btn btn-default"  href="{% url 'post_list' %}">All Posts</a> <a class="btn btn-default"  href="{% url 'FeedToday' %}">Today</a>
+<a class="btn btn-default"  href="{% url 'FeedTomorrow' %}">Tomorrow</a>   <a class="btn btn-primary"  href="{% url 'FeedWeek' %}">This Week</a>
+<a class="btn btn-default"  href="{% url 'FeedMonth' %}">This Month</a>  <br> <br>
+
+{% for item in all_items_feed %}
+
+    {% if item.type == 'concerts' %}
+
+
+<div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p style="color:grey; text-align:left; font-size: 12px; "> <span>{{item.author}}</span>
+
+ <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{item.ticket_link}}">BUY TICKETS </a></span>
+
+
+
+</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'concert_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
+
+</p>
+
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ item.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if item.description|length >= 500 %}
+        <span><a href="{% url 'concert_detail' pk=item.pk %}">read more</a></span>
+        {% endif %}
+        </p>
+
+
+        {% if item.image %}
+ <div class= "image">
+    <a   href="{% url 'concert_detail' pk=item.pk %}"><img class="img-responsive img-center" alt=""  src="{{ item.image.large.url }}"/></a>
+</div>
+	{% endif %}
+
+<hr>
+ <div style="text-align:left; ">
+<p class="date">{{item.street_address}}, {{item.city}}, {{item.state}} </p>
+<p class="date" id="right"> {{item.date|date:"D d M Y" }} &nbsp  &nbsp  {{item.time}} </p>
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+
+     <p > {% likes_widget request.user item %} </p>
+
+<p style="float:right; ">
+<a href="{% url 'concert_detail' pk=item.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ item.concertcomments.count }} </a></p>
+
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+    {% elif item.type == 'events' %}
+
+{% if not item.draft %}
+<div class="well" style="background-color:white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
+
+{%if item.price == 0%}
+		<span style="float:right;  color:grey;"> Free </span>
+
+	{%else%}
+
+         <span style="float:right;  color:grey;">${{ item.price }} </span>
+
+	{%endif%}
+
+</p>
+
+
+        <p class="text" style=" text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;">{{ item.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if item.description|length >= 500 %}
+        <span><a href="{% url 'post_detail' pk=item.pk %}">read more</a></span>
+        {% endif %}
+        </p>
+
+
+
+        {% if item.image %}
+ <div class= "image">
+    <a   href="{% url 'post_detail' pk=item.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ item.image.large.url }}"/></a>
+</div>
+	{% endif %}
+
+<hr>
+ <div style="text-align:left; ">
+
+
+
+<p class="date">{{item.street_address}}, {{item.city}}, {{item.state}} </p>
+<p class="date" id="right"> {{item.date|date:"D d M Y" }} &nbsp  &nbsp  {{item.time}} </p>
+
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+
+     <p > {% likes_widget request.user item %} </p>
+
+<p style="float:right; ">
+<a href="{% url 'post_detail' pk=item.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ item.comments.count }} </a></p>
+
+
+
+
+</div>
+
+</div>
+{% endif %}
+
+{% elif item.type == 'questions' %}
+
+
+
+<div class="well" style="background-color: white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
+
+        <p  class="text" id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
+
+		{{ item.entry|urlizetrunc:35}}</p>
+
+
+<hr>
+<div  style="overflow: auto;
+	width: 100%;">
+
+<p>
+{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
+ <p style="float:right;"> <a href="{% url 'question_detail' pk=item.pk %}">       <i class="fa fa-comment-o"></i> {{ item.questioncomments.count }}</a>  </p>
+</div>
+
+
+
+
+</div>
+
+
+ {% endif %}
+{% endfor %}
+</div>
+
+
+<!--
+
+ <div style= "background-color: #F5F5F5;   padding-bottom: 25px; padding-top: 45px;">
+
+
+{% for item in all_items_feed %}
+
+    {% if item.type == 'events' %}
+
+ <div class="post" style= "background-color: white;
+    width: 600px;
+    padding: 5px;
+    margin: auto;
+    margin-bottom: 15px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+   ">
+
+<p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{item.author}}</p>
+
+       <p style = "font-size:15px; text-align:left; padding-left:20px;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
+
+{%if item.price == 0%}
+		<span style="float:right; padding-right:20px; color:grey;"> Free </span>
+
+	{%else%}
+
+         <span style="float:right; padding-right:20px; color:grey;">${{ item.price }} </span>
+
+	{%endif%}
+
+</p>
+
+
+        <p style=" text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px;">{{ item.description }}</p>
+
+
+        {% if item.image %}
+
+    <a style= "border-radius:2px; " href="{% url 'post_detail' pk=item.pk %}"><img class="img-responsive" alt="" src="{{ item.image.large.url }}"/></a>
+	{% endif %}
+
+
+<hr style="width:560px;">
+            <div style="overflow: auto;
+	width: 100%;">
+
+
+     <p > {% likes_widget request.user item %} </p>
+
+<p style="float:right; padding-right:30px;">
+<a href="{% url 'post_detail' pk=item.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ item.comments.count }} </a></p>
+
+
+            </div>
+    </div>
+
+
+
+    {% elif item.type == 'questions' %}
+
+<div class="post" style= "background-color: white;
+    width: 600px;
+    padding: 5px;
+    padding-top: 15px;
+    margin: auto;
+    margin-bottom: 15px;
+    border-bottom: solid lightgrey .5px;
+    text-align:center;
+   ">
+        <p style="color:grey; text-align:left; font-size: 12px; padding:8px 0px 0px 20px;"> {{item.author}}</p>
+
+        <p  style=" text-align:left; font-size: 15px; color: #504849; padding:0px 12px 20px 20px;" >
+
+		{{ item.entry}}</p>
+
+
+<hr style="width:560px;">
+<div  style="overflow: auto;
+	width: 100%;">
+
+<p>
+{% likes_widget request.user item "../templates/pinax/likes/_widget_brief.html" %}     </p>
+
+ <p style="float:right; padding-right:30px;"> <a href="{% url 'question_detail' pk=item.pk %}">       <i class="fa fa-comment-o"></i> {{ item.questioncomments.count }}</a>  </p>
+
+</div>
+            </div>
+
+
+
+
+
+    {% endif %}
+{% endfor %}
+</div>
+-->
+
+{% endblock %}
