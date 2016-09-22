@@ -1,0 +1,21 @@
+{% load activity_tags %}
+<div class="col-lg-7">
+<article class="pin">
+    <figure>
+        <div class="pin-image-holder">
+            {% with activity.object.target as target %}
+            	
+            	<img class="pin-image" src="{{ accounts.github.0.extra_data.avatar_url }}">
+            
+            <figcaption class="follow-caption">
+                <a href="{% url 'profile' activity.actor.username %}">{{ activity.actor.username }}</a> followed <a href="{% url 'profile' target.username %}">{{ target.username }}</a>
+            </figcaption>
+            {% endwith %}
+        </div>
+    </figure>
+    <footer class="pin-attribution">
+    	<i>
+        {{ activity.time|timesince }} ago </i>
+    </footer>
+</article>
+</div>

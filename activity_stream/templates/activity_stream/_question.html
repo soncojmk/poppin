@@ -1,0 +1,31 @@
+{% load pinax_likes_tags %}
+
+
+<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{question.author}}
+
+    </p>
+
+        <p  class="text" id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
+
+		{{ question.entry|urlizetrunc:35|linebreaks}}</p>
+
+
+<hr>
+<div  style="overflow: auto;
+	width: 100%;">
+
+<p>
+{% likes_widget request.user question "../templates/pinax/likes/_widget_brief.html" %}  </p>
+
+ <p style="float:right;"> <a href="{% url 'question_detail' pk=question.pk %}">       <i class="fa fa-comment-o"></i> {{ question.questioncomments.count }}</a>  </p>
+</div>
+
+
+
+
+</div>

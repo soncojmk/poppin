@@ -1,0 +1,10 @@
+{% extends "Post/side_nav.html" %}
+
+
+{% block content %}
+<div class="col-lg-7">
+    {% for profile_user in people %}
+        {% include 'activity_stream/_profile.html' with show_feed=False %}
+    {% endfor %}
+</div>
+{% endblock content %}

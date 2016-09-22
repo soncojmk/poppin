@@ -1,0 +1,13 @@
+{% extends 'Post/side_nav.html' %}
+{% load activity_tags %}
+
+
+{% block content %}
+<div class="col-lg-7">
+    <div id="wrapper">
+        {% for aggregated_activity in activities %}
+            {% render_activity aggregated_activity %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
