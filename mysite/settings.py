@@ -158,6 +158,7 @@ INSTALLED_APPS = [
     #"datetimewidget",
     "djgeojson",
     "stream_django",
+    "activity_stream",
 
 
     #for search sbar
