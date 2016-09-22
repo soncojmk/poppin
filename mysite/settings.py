@@ -157,6 +157,7 @@ INSTALLED_APPS = [
     "stdimage",
     #"datetimewidget",
     "djgeojson",
+    "stream_django",
 
 
     #for search sbar
@@ -274,6 +275,9 @@ SOCIAL_AUTH_TWITTER_SECRET = "Hc1TTdHiPq6qBTYJvFCCalyqeo7CFRPwqjhcerrS4vRjWRRwgL
 
 SOCIAL_AUTH_FACEBOOK_KEY = "304444299892792"
 SOCIAL_AUTH_FACEBOOK_SECRET = "74a1767c459da522d55a6fc9cd0d4446"
+
+STREAM_API_KEY = 'zj4pfe5wds8x'
+STREAM_API_SECRET = '7s8gynn65v6yscphrjnynme3sju7uw72qhmgttzzrvfvkazrp5wvz6met3vt3e7q'
 
 
 

@@ -296,7 +296,7 @@ border-color:rgba(0,0,0,0.2)}
 
 	{%else%}
  <p class="form-actions" style="text-align:center;">
-     <span> Welcome, {% user_display request.user %}</span> <br>
+     <span> Welcome, {% if request.user.first_name %} {{ request.user.first_name }} {{request.user.last_name }} {%else%} {{ request.user }} {% endif %}</span> <br>
 
       <a href="{% url 'feed' %}" class="btn btn-default btn-social btn-facebook">Click to Explore</a>
     </p>

@@ -29,11 +29,16 @@ from account.hooks import hookset
 from account.managers import EmailAddressManager, EmailConfirmationManager
 from account.signals import signup_code_sent, signup_code_used
 
+import hashlib
+from stdimage.models import StdImageField
+from django.contrib.auth.models import User
 
 @python_2_unicode_compatible
 class Account(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="account", verbose_name=_("user"))
+    #avatar = models.ImageField(upload_to='account', blank=True)
+    about = models.TextField(null=True)
     timezone = TimeZoneField(_("timezone"))
     language = models.CharField(
         _("language"),
@@ -42,8 +47,7 @@ class Account(models.Model):
         default=settings.LANGUAGE_CODE
     )
 
-
-
+    '''
     @classmethod
     def for_request(cls, request):
         if request.user.is_authenticated():
@@ -54,6 +58,15 @@ class Account(models.Model):
         else:
             account = AnonymousAccount(request)
         return account
+    '''
+
+    def avatar_url(self):
+        if self.avatar and hasattr(self.avatar, 'url'):
+            return self.avatar.url
+
+        return '/account/default-user-icon-profile.png'
+
+
 
     @classmethod
     def create(cls, request=None, **kwargs):
