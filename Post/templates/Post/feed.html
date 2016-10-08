@@ -174,7 +174,15 @@ width:580px; padding: 5px; padding-top:0;
 
 
 
-<p style="color:grey; text-align:left; font-size: 12px; "> <span>{{item.author}}</span>
+<p style="color:grey; text-align:left; font-size: 12px; "> <span>
+
+        {% if item.author.first_name and item.author.last_name %}
+            {{ item.author.first_name}} {{item.author.last_name}}
+        {% else %}
+        {{item.author}}
+
+        {% endif %}
+        </span>
 
  <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{item.ticket_link}}">BUY TICKETS </a></span>
 
@@ -232,15 +240,29 @@ width:580px; padding: 5px; padding-top:0;
 
     {% if not item.draft %}
 
+
+
 <div class="well" style="background-color:white; border-top: 0px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
 
 
 
-<p style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
+<p style="color:grey; text-align:left; font-size: 12px; "> <span> {% if item.author.first_name and item.author.last_name %}
+            {{ item.author.first_name}} {{item.author.last_name}}
+        {% else %}
+        {{item.author}}
+
+        {% endif %}</span> {% if item.ticket_link %}
+
+ <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{item.ticket_link}}">GET TICKETS: ${{item.price}} </a></span>
+{% endif %}
+
+
+</p>
 
        <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=item.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ item.title }}</span></a>
 
+{% if not item.ticket_link %}
 {%if item.price == 0%}
 		<span style="float:right;  color:grey;"> Free </span>
 
@@ -249,6 +271,7 @@ width:580px; padding: 5px; padding-top:0;
          <span style="float:right;  color:grey;">${{ item.price }} </span>
 
 	{%endif%}
+{% endif %}
 
 </p>
 
@@ -306,7 +329,12 @@ width:580px; padding: 5px; padding-top:0;
 
 
 
-<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {{item.author}}</p>
+<p id="author" style="color:grey; text-align:left; font-size: 12px; "> {% if item.author.first_name and item.author.last_name %}
+            {{ item.author.first_name}} {{item.author.last_name}}
+        {% else %}
+        {{item.author}}
+
+        {% endif %}</p>
 
         <p  class="text" id="entry" style=" text-align:left; font-size: 15px; color: #504849; " >
 

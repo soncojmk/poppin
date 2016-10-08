@@ -52,6 +52,11 @@ urlpatterns = [
     url(r'^events/thismonth/$', views.EventsMonth, name='EventsMonth'),
     url(r'^today/concert/$', views.ConcertsToday, name='ConcertsToday'),
 
+    #url(r"^survey/$", views.survey, name="survey"),
+    url(r"^music/$", views.music, name="music"),
+    url(r"^sports/$", views.sports, name="sports"),
+    url(r"^charity/$", views.charity, name="charity"),
+
 
 
 ]

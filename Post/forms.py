@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post, EventComment, Question, QuestionComment, Concert, ConcertComment
+from .models import Post, EventComment, Question, QuestionComment, Concert, ConcertComment, Survey
 from haystack.forms import SearchForm
 
 from taggit_labels.widgets import LabelWidget
@@ -17,6 +17,15 @@ class TimeInput(forms.TimeInput):
     input_type = 'time'
 
 
+
+class SurveyForm(forms.ModelForm):
+    class Meta:
+        model = Survey
+        fields = ('name', 'email', 'description',)
+
+
+
+
 class PostForm(forms.ModelForm):
    # date = forms.DateField(required=True, widget=forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}))
     #time = forms.TimeField(required=True, widget=forms.TimeInput(attrs={'placeholder': '24 hour clock only'}))
@@ -24,12 +33,14 @@ class PostForm(forms.ModelForm):
     image = forms.ImageField(required = False)
     class Meta:
         model = Post
-        fields = ('title','description', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'price', 'image',)
+        fields = ('category', 'title','description', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'price', 'ticket_link', 'image',)
         widgets = {
             'price': forms.NumberInput(attrs={'placeholder': 'Price in dollars'}),
             'description': forms.Textarea(),
             'date': SelectDateWidget,
-            'time': TimeInput()
+            'end_date': SelectDateWidget,
+            'time': TimeInput(),
+            'ticket_link': forms.TextInput(attrs={'placeholder': 'optional'})
 
 
             #'date': DateWidget(usel10n=True, bootstrap_version=3),

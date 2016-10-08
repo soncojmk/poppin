@@ -14,33 +14,77 @@ from localflavor.us.us_states import STATE_CHOICES
 from localflavor.us.models import USStateField
 from stdimage.models import StdImageField
 
+from stream_django import activity
+from stream_django.feed_manager import feed_manager
+from django.db.models import signals
+from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
+from django.db.models import F
+
 
 # Create your models here.
-'''
-class Category(models.Model):
-    name = models.CharField(max_length=250)
-    slug = models.SlugField(unique=True)
-
-    class Meta:
-       verbose_name_plural='Categories'
-
-    def __unicode__(self):
-        return self.name
-'''
 
 
-class Post(models.Model):
-    #category = models.ManyToManyField(Category)
+
+class Survey(models.Model):
+    name = models.CharField(max_length=40)
+    email = models.CharField(max_length=40)
+    description = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now, blank=True, null=True)
+
+    def posted(self):
+        self.date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.email
+
+#events model/ main model
+class Post(activity.Activity, models.Model):
+
+    MUSIC = '1'
+    SPORTS = '2'
+    FUNDRAISERS = '3'
+    DANCE = '4'
+    THEATRE = '5'
+    POLITICAL = '6'
+    CONCERTS = '7'
+    ARTS = '8'
+    CLUB_EVENT = '9'
+    ACADEMIC = '10'
+    PROFESSIONAL = '11'
+    MOVIES = '12'
+
+    CATEGORIES = (
+    (MUSIC, 'Music'),
+    (SPORTS, 'Sports'),
+    (FUNDRAISERS, 'Fundraisers'),
+    (DANCE, 'Dance'),
+    (THEATRE, 'Theatre'),
+    (POLITICAL, 'Political'),
+    (MOVIES, 'Movies'),
+    (CONCERTS, 'Concerts'),
+    (ARTS, 'Arts'),
+    (CLUB_EVENT, 'Club Event'),
+    (ACADEMIC, 'Academic'),
+    (PROFESSIONAL, 'Professional'),
+)
+
+    category = models.CharField(max_length= 25, choices = CATEGORIES, null=True)
     author = models.ForeignKey('auth.user')
     title = models.CharField(max_length=32)
     street_address = models.CharField(max_length=200)
     city = models.CharField(max_length=64)
     state = USStateField(choices = STATE_CHOICES)
     zip_code = models.CharField(max_length=5)
-    date = models.DateField(help_text= "MM/DD/YYYY", blank=True, null=True)
-    time = models.TimeField( help_text="24 hour clock", blank=True, null=True,)
+    date = models.DateField(help_text= "MM/DD/YYYY", null=True)
+
+    end_date = models.DateField(help_text="not requiered", blank=True, null=True)
+
+    time = models.TimeField( help_text="24 hour clock", null=True,)
     description = models.TextField()
-    price = models.IntegerField()
+    price = models.IntegerField(null=True)
+    ticket_link = models.URLField(null=True, blank=True)
     image = StdImageField(upload_to='Post/images', null =True, blank=True,
                           variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
 
@@ -57,7 +101,7 @@ class Post(models.Model):
     #draft = models.BooleanField(default=False)
     #tags = TaggableManager()
 
-
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def posted(self):
         self.posted_date=timezone.now()
@@ -67,6 +111,10 @@ class Post(models.Model):
     @property
     def time_since(self):
         return (timezone.now()-self.posted_date).total_seconds()
+
+    @property
+    def activity_actor_attr(self):
+        return self.author
 
 
     def __str__(self):
@@ -96,10 +144,12 @@ class Post(models.Model):
                 self.location = geos.fromstr(point)
         super(Post, self).save()
 
-class Question(models.Model):
+class Question(activity.Activity, models.Model):
     author = models.ForeignKey('auth.user')
     entry = models.TextField(max_length=200, blank=False, null=True, verbose_name="")
     posted_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def posted(self):
         self.posted_date=timezone.now()
@@ -108,6 +158,10 @@ class Question(models.Model):
 
     def time_since(self):
         return (timezone.now()-self.posted_date).total_seconds()
+
+    @property
+    def activity_actor_attr(self):
+        return self
 
     def __str__(self):
         return self.entry
@@ -123,7 +177,7 @@ class Question(models.Model):
         verbose_name_plural='questions'
 
 
-class Concert(models.Model):
+class Concert(activity.Activity, models.Model):
     #category = models.ManyToManyField(Category)
     author = models.ForeignKey('auth.user')
     title = models.CharField(max_length=32)
@@ -142,7 +196,7 @@ class Concert(models.Model):
     posted_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
     #tags = TaggableManager()
-
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def posted(self):
         self.posted_date=timezone.now()
@@ -152,6 +206,11 @@ class Concert(models.Model):
     @property
     def time_since(self):
         return (timezone.now()-self.posted_date).total_seconds()
+
+
+    @property
+    def activity_actor_attr(self):
+        return self.author
 
 
     def __str__(self):
@@ -169,47 +228,65 @@ class Concert(models.Model):
 
 
 
-class ConcertComment(models.Model):
+class ConcertComment(activity.Activity, models.Model):
     concert = models.ForeignKey('Post.Concert', related_name='concertcomments', default="")
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
     approved_comment = models.BooleanField(default=False)
 
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
     def approve(self):
         self.approved_comment = True
         self.save()
+
+    @property
+    def activity_actor_attr(self):
+        return self
 
     def __str__(self):
         return self.comment
 
 
-class EventComment(models.Model):
+class EventComment(activity.Activity, models.Model):
     post = models.ForeignKey('Post.Post', related_name='comments')
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
     approved_comment = models.BooleanField(default=False)
 
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
     def approve(self):
         self.approved_comment = True
         self.save()
+
+    @property
+    def activity_actor_attr(self):
+        return self
 
     def __str__(self):
         return self.comment
 
 
 
-class QuestionComment(models.Model):
+class QuestionComment(activity.Activity, models.Model):
     question = models.ForeignKey('Post.Question', related_name='questioncomments')
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
     approved_comment = models.BooleanField(default=False)
 
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
     def approve(self):
         self.approved_comment = True
         self.save()
+
+    @property
+    def activity_actor_attr(self):
+        return self
 
     def __str__(self):
         return self.comment

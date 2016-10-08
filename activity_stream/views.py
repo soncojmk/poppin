@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
-
-# Create your views here.
-
+from activity_stream import forms
+#from activity_stream.models import Item
+from activity_stream.models import Follow
 from django.contrib.auth import authenticate, get_user_model, \
     login as auth_login
 from django.contrib.auth.decorators import login_required
@@ -12,8 +11,6 @@ from django.template.context import RequestContext
 from stream_django.feed_manager import feed_manager
 from activity_stream.enrich import Enrich
 from activity_stream.enrich import do_i_follow_users
-from activity_stream.models import Follow
-from . import forms
 import json
 
 
@@ -40,8 +37,8 @@ def trending(request):
     context = RequestContext(request)
     popular = Item.objects.all()[:50]
     if request.user.is_authenticated():
-        
-        context['popular'] = popular
+        did_i_pin_items(request.user, popular)
+    context['popular'] = popular
     response = render_to_response('activity_stream/trending.html', context)
     return response
 
@@ -53,7 +50,7 @@ def feed(request):
     '''
     enricher = Enrich(request.user)
     context = RequestContext(request)
-    feed = feed_manager.get_news_feeds(request.user.id)['flat']
+    feed = feed_manager.get_news_feeds(request.user.id)['timeline']
     activities = feed.get(limit=25)['results']
     context['activities'] = enricher.enrich_activities(activities)
     response = render_to_response('activity_stream/feed.html', context)
@@ -106,7 +103,7 @@ def people(request):
     context = RequestContext(request)
     people = get_user_model().objects.all()
     people = people.exclude(username__in=['admin', 'bogus'])
-    people = people[:25]
+    people = people[:]
     do_i_follow_users(request.user, people)
     context['people'] = people
     response = render_to_response('activity_stream/people.html', context)
@@ -132,3 +129,6 @@ def follow(request):
         else:
             output['errors'] = dict(form.errors.items())
     return HttpResponse(json.dumps(output), content_type='application/json')
+
+
+

@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.http import base36_to_int, int_to_base36

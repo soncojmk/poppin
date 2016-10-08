@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from django.contrib import admin
 
-from Post import views
+from Post import views as pv
 from restapi import views
 from rest_framework.routers import DefaultRouter
 
@@ -18,7 +18,7 @@ router.register(r'users', views.UserViewSet)
 
 
 urlpatterns = [
-    url(r"^$", TemplateView.as_view(template_name="homepage.html"), name="home"),
+    url(r"^$", pv.survey, name="home"),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^account/", include("account.urls")),
     url(r"^account/social/accounts/$", TemplateView.as_view(template_name="account/social.html"), name="account_social_accounts"),
@@ -28,9 +28,10 @@ urlpatterns = [
     #url(r'^comments/', include('django_comments.urls')),
     url(r'^messages/', include("pinax.messages.urls", namespace="pinax_messages")),
 
-
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    url(r"^profile/", include("activity_stream.urls")),
 
 ]
 

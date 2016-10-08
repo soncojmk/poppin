@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Post, EventComment, QuestionComment, Question, Concert, ConcertComment
+from .models import Post, EventComment, QuestionComment, Question, Concert, ConcertComment, Survey
 from django.shortcuts import get_object_or_404, render_to_response
-from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm
+from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm, SurveyForm
 #from allauth.account.decorators import verified_email_required
 from haystack.generic_views import SearchView
 from toggles.views import ToggleView
@@ -17,6 +17,8 @@ from django.views.generic import UpdateView
 from django.utils.decorators import method_decorator
 import account.forms
 import account.views
+
+from el_pagination.decorators import page_template
 
 from datetime import date, timedelta
 
@@ -37,6 +39,36 @@ from djgeojson.serializers import Serializer as GeoJSONSerializer
 #from geopy.geocoders import GQueryError
 
 # Create your views here.
+
+''' categories '''
+def music(request):
+    posts = Post.objects.filter(category = Post.MUSIC).order_by('-posted_date')
+    return render(request, 'Post/music.html', {'posts':posts})
+
+def sports(request):
+    posts = Post.objects.filter(category = Post.SPORTS).order_by('-posted_date')
+    return render(request, 'Post/sports.html', {'posts':posts})
+
+def charity(request):
+    posts = Post.objects.filter(category = Post.FUNDRAISERS).order_by('-posted_date')
+    return render(request, 'Post/charity.html', {'posts':posts})
+
+
+'''end categories'''
+
+
+def survey(request):
+    if request.method == "POST":
+        form = SurveyForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.date = timezone.now()
+            post.save()
+            return redirect('home')
+    else:
+        form = SurveyForm()
+    return render(request, 'homepage.html', {'form': form})
+
 
 
 def EventsToday(request):
@@ -190,10 +222,27 @@ def location(request):
     return HttpResponseBadRequest(msg)
 
 
+'''
 @login_required
 def post_list(request):
     posts = Post.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date')
     return render(request, 'Post/post_list.html', {'posts':posts})
+'''
+
+
+@page_template('Post/post_list.html')  # just add this decorator
+def post_list(
+        request, template='Post/post_list_scroll.html', extra_context=None):
+    context = {
+        'posts': Post.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date'),
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return render_to_response(
+        template, context, context_instance=RequestContext(request))
+
+
+
 
 def post_detail(request, pk):
     form = EventCommentForm()
@@ -239,7 +288,8 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            post.posted_date = timezone.now()
+            post.created_at = timezone.now()
             post.save()
             return redirect('post_list')
     else:
@@ -373,7 +423,8 @@ def question_edit(request, pk):
             question = form.save(commit=False)
             question.author = request.user
             #question.photo = request.FILES['photo']
-            question.published_date = timezone.now()
+            question.posted_date = timezone.now()
+            question.created_at = timezone.now()
             question.save()
             return redirect('question_list')
     else:
@@ -473,7 +524,8 @@ def concert_edit(request, pk):
         if form.is_valid():
             concert = form.save(commit=False)
             concert.author = request.user
-            concert.published_date = timezone.now()
+            concert.posted_date = timezone.now()
+            concert.created_at = timezone.now()
             concert.save()
             return redirect('concert_list')
     else:

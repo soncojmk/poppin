@@ -113,10 +113,20 @@ TEMPLATES = [
                 "pinax_theme_bootstrap.context_processors.theme",
                 "social.apps.django_app.context_processors.backends",
                 "social.apps.django_app.context_processors.login_redirect",
+
+                "django.core.context_processors.request",
             ],
         },
     },
 ]
+
+
+''' django el_pagination
+from django.conf.global_settings import TEMPLATES
+
+TEMPLATES[0]['OPTIONS']['context_processors'].insert(0, 'django.core.context_processors.request')
+'''
+
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -159,6 +169,8 @@ INSTALLED_APPS = [
     "djgeojson",
     "stream_django",
     "activity_stream",
+
+    "el_pagination",
 
 
     #for search sbar
@@ -267,7 +279,7 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id,name,email',
+    'fields': 'id,name,email,picture',
 }
 
 

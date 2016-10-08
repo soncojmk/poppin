@@ -1,0 +1,31 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+{{ form.media }}
+
+
+<div >
+<form  method="POST" class="container" class="form-horizontal" style="width: 500px; align:center; border-radius:0px; padding-top: 10px;" enctype="multipart/form-data">
+    <legend></legend>
+    {% csrf_token %}
+
+    {{ form|as_bootstrap }}
+
+    <div class="form-actions">
+      <a href="{% url 'home' %}" class="btn" onClick="javascript:history.go(-1);">Go back</a>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+
+</div>
+{% endblock %}

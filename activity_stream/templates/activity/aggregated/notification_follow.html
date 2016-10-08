@@ -8,10 +8,10 @@
         <article>
             <figure>
                 <div>
-                    <img src="{{ accounts.facebook.0.extra_data.avatar_url }}" width="32">
-                    <figcaption>
-                        {{ last_activity.actor.username }} {% if activity.activities|slice:"1:"|length > 1 %}and {{ activity.activities|slice:"1:"|length }} more{% endif %} followed you {{ last_activity.time|timesince }} ago
-                    </figcaption>
+
+                    <div>
+                       <a href="{% url 'profile' last_activity.actor.username %}"> {{ last_activity.actor.username }}</a> {% if activity.activities|slice:"1:"|length > 1 %}and {{ activity.activities|slice:"1:"|length }} more{% endif %} followed you {{ last_activity.time|timesince }} ago
+                    </fdiv>
                 </div>
             </figure>
         </article>

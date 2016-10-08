@@ -1,16 +1,91 @@
 {% load i18n %}
 
 {% load pinax_likes_tags %}
-<div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+.date { color:grey; font-size:13px; display:inline;}
+
+#right {float:right;}
+
+
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.date {display:block;}
+#right {float:none;}
+
+
+.well{
+	zoom: .7;
+
+}
+
+.well p{ zoom: 1.2;}
+
+
+.image {
+	width:100%;
+	padding:0px;
+
+
+}
+
+}
+</style>
 
 
 
 
-<p style="color:grey; text-align:left; font-size: 12px; ">
+ {% if not post.draft %}
 
- <a href="{{ user.get_absolute_url }}">  <img src="{{ user.Account.photo.url }}"></a>
+<div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
- {{post.author}}</p>
+
+
+
+<p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
 
        <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
 
@@ -41,7 +116,8 @@
 <hr>
  <div style="text-align:left; ">
 
-<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{post.time}} </p>
+<p class="date">{{post.street_address}}, {{post.city}}, {{post.state}} </p>
+<p class="date" id="right"> {{post.date|date:"D d M Y" }} &nbsp  &nbsp  {{post.time}} </p>
 
 </div>
 
@@ -62,4 +138,7 @@
 </div>
 
 </div>
+{% endif %}
+
+
 

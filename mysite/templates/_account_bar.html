@@ -53,9 +53,6 @@
 <li style = " padding: 5px;" >
  <a id="post_list" href="{% url 'post_new' %}"  style = " color:white;"> <i   class="fa fa-globe"></i> <b >{% trans "Event" %}</b></a>
         </li>
-<li style = " padding: 5px;" >
- <a id="post_list" href="{% url 'concert_new' %}"  style = " color:white;"> <i   class="fa fa-music"></i> <b >{% trans "Ticketed Event" %}</b></a>
-        </li>
 
 <li style = " padding: 5px;">
  <a id="question_list" href="{% url 'question_list' %}"  style = " color:white;"> <i  class="fa fa-question"></i> <b>{% trans "Question" %}</b></a>
@@ -65,7 +62,12 @@
 </li>
 
         <li>
-            <a href="{% url 'my_events' %}" style = " color:white;"><i  class="fa fa-user"></i> <b  class= "bar">{% user_display request.user %}</b></a>
+            <a href="{% url 'my_events' %}" style = " color:white;"><i  class="fa fa-user"></i> <b  class= "bar"> {% if request.user.first_name and request.user.last_name %}
+            {{ request.user.first_name}} {{request.user.last_name}}
+        {% else %}
+        {{request.user}}
+
+        {% endif %}</b></a>
         </li>
         <li>
             <a id="account_logout" href="{% url 'account_logout' %}" style = " color:white;"><i  class="fa fa-power-off"></i> <b  class= "bar">{% trans "Log out" %}</b></a>

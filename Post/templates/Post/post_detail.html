@@ -32,6 +32,35 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px;
 
 }
 
+.button {
+  background: Orange;
+  float:right;
+  background-image: -webkit-linear-gradient(top, Orange, orange);
+  background-image: -moz-linear-gradient(top, Orange, orange);
+  background-image: -ms-linear-gradient(top, Orange, orange);
+  background-image: -o-linear-gradient(top, Orange, orange);
+  background-image: linear-gradient(to bottom, Orange, orange);
+  border-radius: 4px;
+  font-family: Arial;
+  color: white;
+  font-size: 14px;
+  padding: 10px 12px 10px 12px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: orange;
+  background-image: -webkit-linear-gradient(top, orange, orange);
+  background-image: -moz-linear-gradient(top, orange, orange);
+  background-image: -ms-linear-gradient(top, orange, orange);
+  background-image: -o-linear-gradient(top, orange, orange);
+  background-image: linear-gradient(to bottom, orange, orange);
+  text-decoration: none;
+  color:white;
+}
+
+
+
 .comments{padding: 0px 10px 0px 10px;}
 
 @media (max-width:960px){
@@ -106,10 +135,18 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 </div>
 
-<p style="color:grey; text-align:left; font-size: 12px; "> {{post.author}}</p>
 
-       <p style = "font-size:15px; text-align:left; "><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
+<p style="color:grey; text-align:left; font-size: 12px; "> <span>{{post.author}}</span> {% if post.ticket_link %}
 
+ <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{post.ticket_link}}">BUY TICKETS: ${{post.price}} </a></span>
+{% endif %}
+
+
+</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
+
+{% if not post.ticket_link %}
 {%if post.price == 0%}
 		<span style="float:right;  color:grey;"> Free </span>
 
@@ -118,6 +155,7 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
          <span style="float:right;  color:grey;">${{ post.price }} </span>
 
 	{%endif%}
+{% endif %}
 
 </p>
 

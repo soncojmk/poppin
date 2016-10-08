@@ -1,0 +1,87 @@
+{% load pinax_likes_tags %}
+
+{% load i18n %}
+
+
+                {% if not post.draft %}
+
+<div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
+
+
+
+
+<p style="color:grey; text-align:left; font-size: 12px; "> <span>   {% if post.author.first_name and post.author.last_name %}
+
+     			    {{post.author.first_name}} {{post.author.last_name}}
+     			    {%else %}
+     			    {{post.author}}
+
+     			    {% endif %}</span> {% if post.ticket_link %}
+
+ <span  > <a class="button btn btn" target="_blank" rel="noopener noreferrer" href="{{post.ticket_link}}">BUY TICKETS: ${{post.price}} </a></span>
+{% endif %}
+
+
+</p>
+
+       <p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="{% url 'post_detail' pk=post.pk %}"> <span style = "font-size:20px; color:#236B8E;">{{ post.title }}</span></a>
+
+{% if not post.ticket_link %}
+{%if post.price == 0%}
+		<span style="float:right;  color:grey;"> Free </span>
+
+	{%else%}
+
+         <span style="float:right;  color:grey;">${{ post.price }} </span>
+
+	{%endif%}
+{% endif %}
+
+</p>
+
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ post.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        {% if post.description|length >= 500 %}
+        <span><a href="{% url 'post_detail' pk=post.pk %}">read more</a></span>
+        {% endif %}
+        </p>
+
+
+        {% if post.image %}
+ <div class= "image">
+    <a   href="{% url 'post_detail' pk=post.pk %}"><img style= "   "class="img-responsive img-center" alt=""  src="{{ post.image.large.url }}"/></a>
+</div>
+	{% endif %}
+
+<hr>
+ <div style="text-align:left; ">
+
+<p class="date">{{post.street_address}}, {{post.city}}, {{post.state}} </p>
+<p class="date" id="right"> {{post.date|date:"D d M Y" }} &nbsp  &nbsp  {{post.time}} </p>
+
+</div>
+
+<hr>
+            <div style="overflow: auto;
+	width: 100%;">
+
+
+     <p > {% likes_widget request.user post %} </p>
+
+<p style="float:right; ">
+<a href="{% url 'post_detail' pk=post.pk %}"> <i class="fa fa-comment-o"></i>
+ {{ post.comments.count }} </a></p>
+
+
+
+
+</div>
+
+</div>
+{% endif %}
+
+
+
+
+
+
+

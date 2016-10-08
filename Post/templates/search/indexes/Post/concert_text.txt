@@ -1,0 +1,8 @@
+{{ object.title }}
+{{ object.description }}
+{{ object.author }}
+{{ object.zip_code}}
+{{ object.city }}
+{{ object.state }}
+{{ object.author.first_name }}
+{{ object.author.last_name }}
