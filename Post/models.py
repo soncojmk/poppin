@@ -46,28 +46,36 @@ class Post(activity.Activity, models.Model):
     SPORTS = '2'
     FUNDRAISERS = '3'
     DANCE = '4'
+    PERFORMING_ARTS = '6'
     THEATRE = '5'
-    POLITICAL = '6'
-    CONCERTS = '7'
-    ARTS = '8'
+    ART = '8'
     CLUB_EVENT = '9'
     ACADEMIC = '10'
     PROFESSIONAL = '11'
     MOVIES = '12'
+    COMEDY = '13'
+    POETRY = '14'
+    OTHER = '15'
+    WP = '16'
+    LECTURE = '17'
+    DEBATE = '18'
 
     CATEGORIES = (
     (MUSIC, 'Music'),
-    (SPORTS, 'Sports'),
     (FUNDRAISERS, 'Fundraisers'),
+    (COMEDY, 'Comedy'),
+    (POETRY, 'Poetry'),
     (DANCE, 'Dance'),
     (THEATRE, 'Theatre'),
-    (POLITICAL, 'Political'),
-    (MOVIES, 'Movies'),
-    (CONCERTS, 'Concerts'),
-    (ARTS, 'Arts'),
+    (ART, 'Art'),
+    (PERFORMING_ARTS, 'Performing Arts'),
+    (SPORTS, 'Sports'),
     (CLUB_EVENT, 'Club Event'),
+    (DEBATE, 'Debate'),
+    (LECTURE, 'Lecture'),
     (ACADEMIC, 'Academic'),
     (PROFESSIONAL, 'Professional'),
+    (OTHER, 'Other'),
 )
 
     category = models.CharField(max_length= 25, choices = CATEGORIES, null=True)
@@ -103,6 +111,9 @@ class Post(activity.Activity, models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
+    class Meta:
+        ordering = ['-posted_date']
+
     def posted(self):
         self.posted_date=timezone.now()
         self.save()
@@ -130,6 +141,7 @@ class Post(activity.Activity, models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', args=[self.pk])
 
+    '''
     def save(self, **kwargs):
         if not self.location:
             address = u'%s %s' % (self.city, self.street_address)
@@ -138,11 +150,13 @@ class Post(activity.Activity, models.Model):
             try:
                 _, latlon = geocoder.geocode(address)
             except (URLError, ValueError):
+                latlon = None
                 pass
             else:
                 point = "POINT(%s %s)" % (latlon[0], latlon[1])
                 self.location = geos.fromstr(point)
         super(Post, self).save()
+    '''
 
 class Question(activity.Activity, models.Model):
     author = models.ForeignKey('auth.user')
@@ -290,6 +304,22 @@ class QuestionComment(activity.Activity, models.Model):
 
     def __str__(self):
         return self.comment
+
+
+
+
+class Broadcast_Email(models.Model):
+    subject = models.CharField(max_length=200)
+    created = models.DateTimeField(default=timezone.now)
+
+    html_content = models.TextField(null=True, default=None)
+    text_content = models.TextField(null=True, default=None)
+
+    def __unicode__(self):
+        return self.subject
+
+
+
 
 '''
 class Profile(models.Model):

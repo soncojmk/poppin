@@ -24,6 +24,109 @@
 
 <style>
 
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+.button {
+  background: Orange;
+  float:right;
+  background-image: -webkit-linear-gradient(top, Orange, orange);
+  background-image: -moz-linear-gradient(top, Orange, orange);
+  background-image: -ms-linear-gradient(top, Orange, orange);
+  background-image: -o-linear-gradient(top, Orange, orange);
+  background-image: linear-gradient(to bottom, Orange, orange);
+  border-radius: 4px;
+  font-family: Arial;
+  color: white;
+  font-size: 14px;
+  padding: 10px 12px 10px 12px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: orange;
+  background-image: -webkit-linear-gradient(top, orange, orange);
+  background-image: -moz-linear-gradient(top, orange, orange);
+  background-image: -ms-linear-gradient(top, orange, orange);
+  background-image: -o-linear-gradient(top, orange, orange);
+  background-image: linear-gradient(to bottom, orange, orange);
+  text-decoration: none;
+  color:white;
+}
+
+
+
+
+.date { color:grey; font-size:13px; display:inline;}
+
+#right {float:right;}
+
+
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.date {display:block;}
+#right {float:none;}
+
+
+.well{
+	zoom: .7;
+
+}
+
+.well p{ zoom: 1.2;}
+
+
+.image {
+	width:100%;
+	padding:0px;
+
+
+}
+
+}
+</style>
+
+
+<style>
+
 .container-fluid {
 width:660px;
 margin:auto;
@@ -126,11 +229,11 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 <div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;">
 
 
-<div style="float:right; padding-right: 10px;">
+<div style="float:right; color:grey; text-align:left; font-size: 12px;">
  {% if request.user == post.author %}
-    <a  href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil">&nbsp</span></a>
+    <a  href="{% url 'post_edit' pk=post.pk %}"><span style="color:grey;">edit &nbsp</span></a>
 
-<a  href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span class="glyphicon glyphicon-remove"></span></a>
+<a  href="{% url 'post_remove' pk=post.pk %}" onclick="return makesure();"><span style="color:grey;">delete</span></a>
 {% endif %}
 
 </div>
@@ -171,11 +274,13 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 
 <hr >
 
-<div style="text-align:left; padding-left:10px;">
-<P> <b>Location</b>: {{post.street_address}}, {{post.city}}, {{post.state}} {{post.zip_code}} </p>
-	<p> <b>Date</b>: {{post.date}}   &nbsp  &nbsp  &nbsp <b>Time</b>: {{post.time}} </p>
+<div style="text-align:left; ">
+
+<p class="date">{{post.street_address}}, {{post.city}}, {{post.state}} </p>
+<p class="date" id="right"> {{post.date|date:"D d M Y" }} &nbsp  &nbsp  {{post.time}} </p>
 
 </div>
+
 <hr>
             <div style="overflow: auto;
 	width: 100%;">
@@ -198,10 +303,10 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
         {{ form|as_bootstrap }}
 
     </form>
-	{% endif %}
+
 
  <hr>
-
+	{% endif %}
 
 <div class="comments" style="float:left; text-align: left;">
 {% for comment in post.comments.all %}
@@ -222,16 +327,25 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
 	<span>{{ comment.created_date }}</span></div>
 </p>
 
+
 <hr>
 
 </div>
 {% empty %}
+{% if user.is_authenticated %}
     <p>Be the first to comment</p>
+    {% endif %}
 {% endfor %}
-</div>
+
 
 </div>
-<a style="margin-left: 10px;"  href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+
+<a class="button btn btn"  href="{% url 'post_list' %}">Explore Similar Events</a>
+</div>
+{% if user.is_authenticated %}
+<a style="margin-left: 0px;"  href="{% url 'post_list' %}" class="btn btn-primary" onClick="javascript:history.go(-1);">Go Back</a>
+{% endif %}
+
 
 </div>
 
@@ -246,5 +360,9 @@ text-align:left; font-size: 15px; color: #504849;  padding-bottom:5px; padding-t
             </div>
     </div>
 </div>
+
+
+
+
 
  {% endblock %}

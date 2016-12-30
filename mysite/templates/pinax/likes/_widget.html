@@ -1,3 +1,5 @@
+
+
 <span class="likes" style="float:left; ">
     {% if can_like %}
         <a class="btn ajax"
@@ -10,9 +12,14 @@
 	{% else %}
 		<i class="fa fa-thumbs-o-up"></i>
 	{% endif %}
-    going: {{ like_count }}     </a>
-    {% endif %}
+
+    going: {{like_count}}     </a>
+
+    {% else %}
     <span class="count">
-         
+
+     <a>going: {{like_count}}</a>
+
     </span>
+    {% endif %}
 </span>

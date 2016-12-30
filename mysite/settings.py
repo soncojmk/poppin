@@ -111,6 +111,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "account.context_processors.account",
                 "pinax_theme_bootstrap.context_processors.theme",
+
                 "social.apps.django_app.context_processors.backends",
                 "social.apps.django_app.context_processors.login_redirect",
 
@@ -159,7 +160,10 @@ INSTALLED_APPS = [
 #    "django.contrib.postgres",
     "pinax.likes",
     #"mailer",
+
     "Post",
+    "blog",
+
     "taggit",
     "taggit_templatetags2",
     "taggit_labels",
@@ -171,6 +175,10 @@ INSTALLED_APPS = [
     "activity_stream",
 
     "el_pagination",
+    "rest_framework",
+    "rest_framework.authtoken",
+
+    "rest_auth",
 
 
     #for search sbar
@@ -185,7 +193,10 @@ INSTALLED_APPS = [
     "account",
     "pinax.eventlog",
     "pinax.webanalytics",
+
     "social.apps.django_app.default",
+    "oauth2_provider",
+    "rest_framework_social_oauth2",
 
     # project
     "mysite",
@@ -220,6 +231,30 @@ HAYSTACK_CONNECTIONS = {
         # ...or for multicore...
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
+}
+
+#restapi
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+
+    '''
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    '''
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
+
+        'rest_framework.authentication.TokenAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
+}
+
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
 }
 
 
@@ -263,7 +298,7 @@ FIXTURE_DIRS = [
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_EMAIL_UNIQUE = True
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
-ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "feed"
+ACCOUNT_LOGIN_REDIRECT_URL = LOGIN_REDIRECT_URL = "post_list"
 ACCOUNT_LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
 ACCOUNT_USE_AUTH_AUTHENTICATE = True
@@ -274,7 +309,14 @@ AUTHENTICATION_BACKENDS = [
     "social.backends.facebook.FacebookOAuth2",
     "pinax.likes.auth_backends.CanLikeBackend",
     "account.auth_backends.UsernameAuthenticationBackend",
-    "account.auth_backends.EmailAuthenticationBackend"
+    "account.auth_backends.EmailAuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+
+    "rest_framework_social_oauth2.backends.DjangoOAuth2",
+
+    'social.backends.facebook.FacebookAppOAuth2',
+
+
 ]
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']

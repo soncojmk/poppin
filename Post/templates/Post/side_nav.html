@@ -141,11 +141,13 @@ body {
         {{request.user}}
 
         {% endif %} </a></li>
-             <li class="{% navactive request 'feed' %}"><a href="{% url 'feed' %} "  id="feed">  <i id="icon" class="fa fa-newspaper-o"></i> Home </a></li>
-            <li class="{% navactive request 'post_list' %}"><a href="{% url 'post_list' %} " id="events">  <i id="icon" class="fa fa-globe"></i> All Events </a> </li>
+             {# <li class="{% navactive request 'feed' %}"><a href="{% url 'feed' %} "  id="feednav">  <i id="icon" class="fa fa-globe"></i> All Events </a></li> #}
+            <li class="{% navactive request 'post_list' %}"><a href="{% url 'post_list' %} " id="eventsnav">  <i id="icon" class="fa fa-newspaper-o"></i> Home </a> </li>
             <li class="{% navactive request 'music' %}"><a href="{% url 'music' %} "  id="concertsnav">  <i id="icon" class="fa fa-music"></i> Music </a> </li>
-            <li class="{% navactive request 'sports' %}"><a href="{% url 'sports' %} "  id="concertsnav">  <i id="icon" class="fa fa-futbol-o"></i> Sports </a> </li>
-            <li class="{% navactive request 'charity' %}"><a href="{% url 'charity' %} "  id="concertsnav">  <i id="icon" class="fa fa-heart"></i> Fundraisers </a> </li>
+           {# <li class="{% navactive request 'sports' %}"><a href="{% url 'sports' %} "  id="sportsnav">  <i id="icon" class="fa fa-futbol-o"></i> Sports </a> </li> #}
+            <li class="{% navactive request 'arts' %}"><a href="{% url 'arts' %} "  id="artsnav">  <i id="icon" class="fa fa-street-view"></i> Arts </a> </li>
+            <li class="{% navactive request 'academic' %}"><a href="{% url 'academic' %} "  id="academicnav">  <i id="icon" class="fa fa-folder-open-o"></i> Academic </a> </li>
+            <li class="{% navactive request 'charity' %}"><a href="{% url 'charity' %} "  id="charitynav">  <i id="icon" class="fa fa-heart"></i> Fundraisers </a> </li>
             <li class="{% navactive request 'question_list' %}"><a href="{% url 'question_list' %}"  id="questions">  <i id="icon" class="fa fa-question-circle"></i> Questions </a></li>
 		<li class="divider"></li> <hr>
 		<li class="divider"></li>

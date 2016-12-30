@@ -54,4 +54,4 @@ class LikeToggleView(LoginRequiredMixin, View):
             return JsonResponse(data)
         # HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 	return HttpResponse(json.dumps(data), content_type="application/json")
-    
+

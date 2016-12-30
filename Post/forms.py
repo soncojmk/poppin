@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Post, EventComment, Question, QuestionComment, Concert, ConcertComment, Survey
+from .models import Post, EventComment, Question, QuestionComment, Concert, ConcertComment, Survey, Broadcast_Email
 from haystack.forms import SearchForm
 
 from taggit_labels.widgets import LabelWidget
@@ -23,6 +23,11 @@ class SurveyForm(forms.ModelForm):
         model = Survey
         fields = ('name', 'email', 'description',)
 
+
+class BroadCastForm(forms.ModelForm):
+    class Meta:
+        model = Broadcast_Email
+        fields = ('subject', 'text_content', 'html_content',)
 
 
 

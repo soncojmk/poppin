@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Post, EventComment, QuestionComment, Question, Concert, ConcertComment, Survey
 from django.shortcuts import get_object_or_404, render_to_response
-from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm, SurveyForm
+from .forms import PostForm, EventCommentForm, QuestionCommentForm, QuestionForm, ConcertForm, ConcertCommentForm, SurveyForm, BroadCastForm
 #from allauth.account.decorators import verified_email_required
 from haystack.generic_views import SearchView
 from toggles.views import ToggleView
@@ -36,9 +36,49 @@ from geopy.geocoders import GoogleV3
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.gis.geos import Point
 from djgeojson.serializers import Serializer as GeoJSONSerializer
+
+from django.db.models import Q
+
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
+from django.contrib.auth.models import User
 #from geopy.geocoders import GQueryError
 
 # Create your views here.
+
+'''mass email'''
+def send_email(request):
+
+    from_email = "What'sPoppin@wpoppin.com"
+    to = []
+
+    #for user in User.objects.all():
+       # email = str.strip(str(user.email))
+        #to.append(email)
+
+
+
+    email = BroadCastForm(request.POST)
+
+    email.created = timezone.now()
+    subject = "Events This Week"
+
+    text_content = 'This is an important message.'
+    html_content = '<div style="width: 660px; margin: auto; text-align: left; font-size: 15px; color: #504849; padding: 20px 20px 5px 20px;"><h1>What&#39;sPoppin BIG 10 CHAMPS, Penn State,</h1><h4>Check out these events poppin this week around campus:</h4><div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom: 15px; padding-bottom: 5px; width: 100%;"><p style="color: light-grey; text-align: left; font-size: 12px;">&nbsp;</p><p style="font-size: 15px; text-align: left;"><a style="font-size: 20px;" href="http://wpoppin.com/account/login"> <span style="font-size: 20px; color: #236b8e;">WORDS Presents:Identity+ *Poetry</span></a><span style="float: right; color: grey;"> Free </span></p><p style="color: grey;">Identity+ *A Slam Poetry Show Exploring Intersectionality*</p><p style="color: grey;">The purpose of "Identity +" is to use poetry to explore our inner and outer diversity and complexity. This event hopes to shatter stereotypes surrounding various biological, social and cultural categories (i.e. gender, race, religion, class, sexual orientation, etc.); and to encourage self-love by demonstrating, through various performances and dialogues, the importance of accepting and being comfortable with one&#39;s identities.</p><div class="image"><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" src="http://wpoppin.com/site_media/media/Post/images/words.large.jpg" alt="" /></a></div><p id="right" class="date"><a href="http://wpoppin.com/account/login">More information... </a></p></div><h4>&nbsp;</h4><div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom: 15px; padding-bottom: 5px; width: 100%;"><p style="color: light-grey; text-align: left; font-size: 12px;">&nbsp;</p><p style="font-size: 15px; text-align: left;"><a style="font-size: 20px;" href="http://wpoppin.com/account/login"> <span style="font-size: 20px; color: #236b8e;">Ballroom Dance Lessons</span></a><span style="float: right; color: grey;"> Free </span></p><p style="color: grey;">Dances Covered: Two Step, Waltz, Tango, Quickstep, Rumba, Cha Cha, Jive. All experience levels welcome. The beginner lesson provides an introduction to ballroom dancing. Lessons are based around giving dancers a basic knowledge of all dances with the goal of feeling comfortable dancing in social settings.</p><div class="image"><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" src="http://www.wpoppin.com/site_media/media/Post/images/ballroom-dance-feet2.large.jpg" alt="" /></a></div><p id="right" class="date"><a href="http://wpoppin.com/account/login">More information... </a></p></div><div class="well" style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom: 15px; padding-bottom: 5px; width: 100%;"><p style="color: light-grey; text-align: left; font-size: 12px;">&nbsp;</p><p style="font-size: 15px; text-align: left;"><a style="font-size: 20px;" href="http://wpoppin.com/account/login"> <span style="font-size: 20px; color: #236b8e;">FREE YOGA</span></a><span style="float: right; color: grey;"> Free </span></p><p style="color: grey;">FREE YOGA in the Student Health Center. Bring a friend! Learn yoga basics with local yoga instructors. Yoga can help you relax and improve fitness &amp; flexibility.Contact us with questions: 814-863-0461 or promotinghealth@psu.edu</p><div class="image"><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" src="http://www.wpoppin.com/site_media/media/Post/imageslily_yoga_CepMfSq.large.jpg" alt="" /></a></div><p id="right" class="date"><a href="http://wpoppin.com/account/login">More information... </a></p></div><div><p><a href="http://wpoppin.com/account/login">More Events...</a></p></div></div>'
+    #'<div style="width:660px;margin:auto;text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;"> <h1>What&#39;sPoppin Penn State, </h1><h4>Check out these events poppin this week around campus:<h4> <div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;"><p style="color:light-grey; text-align:left; font-size: 12px; "></p><p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="http://wpoppin.com"> <span style = "font-size:20px; color:#236B8E;">What&#39;sPoppin: Debate Night</span></a><span style="float:right;  color:grey;"> Free </span></p><p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;"><p style="color:grey;">Willard Preacher vs Sam Richards Debate! </p><p style="color:grey;">You do not want to miss the event of the semester. Come out and watch the Willard Preacher take on Sam Richards as they debate various topics, which if you&#39;ve passed by the Willard building, you already know what they are.</p></p><div class= "image"><a   href="http://wpoppin.com"><img style= "   "class="img-responsive img-center" alt=""  src="http://wpoppin.com/site_media/media/Post/images/willardPreacher.large.jpg"/></a></div><p class="date" id="right"> Mon 28 Nov 2016 7 p.m. </p></div> <br> <div class="well"  style="background-color: white; border-top: .5px; border-left: 0px; border-right: 0px; border-bottom: solid lightgrey .5px; border-radius: 0px; margin-bottom:15px; padding-bottom: 5px; width:100%;"><p style="color:light-grey; text-align:left; font-size: 12px; "></p><p style = "font-size:15px; text-align:left;"><a style = "font-size:20px; " href="http://wpoppin.com"> <span style = "font-size:20px; color:#236B8E;">Saturday School Exhibition</span></a><span style="float:right;  color:grey;"> Free </span></p><p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;"><p style="color:grey;">Artworks created by students in SoVA&#39;s FA16 Saturday School Program</p><p style="color:grey;">10:00 am - 4:00 pm</p> </p></p><div class= "image"><a   href="http://wpoppin.com"><img style= "   "class="img-responsive img-center" alt=""  src="http://www.wpoppin.com/site_media/media/Post/images/date_night_sRu9dkw.large.jpg"/></a></div><p class="date" id="right"> Mon 28 Nov 2016 10 a.m - 4:00 pm. </p></div></div>'
+
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [], to)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+
+    return render(request, 'Post/email_edit.html', {'email': email})
+
+
+
 
 ''' categories '''
 def music(request):
@@ -52,6 +92,31 @@ def sports(request):
 def charity(request):
     posts = Post.objects.filter(category = Post.FUNDRAISERS).order_by('-posted_date')
     return render(request, 'Post/charity.html', {'posts':posts})
+
+def art(request):
+    posts = Post.objects.filter(category = Post.ART).order_by('-posted_date')
+    return render(request, 'Post/Art.html', {'posts':posts})
+
+def comedy(request):
+    posts = Post.objects.filter(category = Post.COMEDY).order_by('-posted_date')
+    return render(request, 'Post/comedy.html', {'posts':posts})
+
+def poetry(request):
+    posts = Post.objects.filter(category = Post.POETRY).order_by('-posted_date')
+    return render(request, 'Post/poetry.html', {'posts':posts})
+
+
+def performing_arts(request):
+    posts = Post.objects.filter(Q(category = Post.DANCE) | Q(category=Post.ARTS) | Q(category = Post.THEATRE)).order_by('-posted_date')
+    return render(request, 'Post/arts.html', {'posts':posts})
+
+def academic(request):
+    posts = Post.objects.filter(Q(category = Post.ACADEMIC) | Q(category=Post.PROFESSIONAL) | Q(category = Post.CLUB_EVENT) | Q(category = Post.LECTURE) | Q(category = Post.DEBATE)).order_by('-posted_date')
+    return render(request, 'Post/academic.html', {'posts':posts})
+
+def wpoppin(request):
+    posts = Post.objects.filter(category = Post.WP).order_by('-posted_date')
+    return render(request, 'Post/wp.html', {'posts': posts})
 
 
 '''end categories'''
@@ -81,7 +146,7 @@ def EventsTomorrow(request):
     startdate = today + timedelta(days=1)
     enddate = startdate + timedelta(days=2)
 
-    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('date')
     return render(request, 'Post/post_tomorrow.html', {'posts':posts})
 
 
@@ -89,7 +154,7 @@ def EventsWeek(request):
     startdate = date.today()
     enddate = startdate + timedelta(days=6)
 
-    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('date')
     return render(request, 'Post/post_this_week.html', {'posts':posts})
 
 
@@ -97,7 +162,7 @@ def EventsMonth(request):
     startdate = date.today()
     enddate = startdate + timedelta(days=30)
 
-    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    posts = Post.objects.filter(date__range=[startdate, enddate]).order_by('date')
     return render(request, 'Post/post_this_month.html', {'posts':posts})
 
 
@@ -229,7 +294,7 @@ def post_list(request):
     return render(request, 'Post/post_list.html', {'posts':posts})
 '''
 
-
+@login_required
 @page_template('Post/post_list.html')  # just add this decorator
 def post_list(
         request, template='Post/post_list_scroll.html', extra_context=None):

@@ -56,8 +56,12 @@ urlpatterns = [
     url(r"^music/$", views.music, name="music"),
     url(r"^sports/$", views.sports, name="sports"),
     url(r"^charity/$", views.charity, name="charity"),
+    url(r"^arts/$", views.performing_arts, name="arts"),
+    url(r"^academic/$", views.academic, name="academic"),
 
+    #sending mass emails
 
+    url(r"^send_email/$", views.send_email, name='send_email'),
 
 ]
 

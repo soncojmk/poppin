@@ -28,37 +28,30 @@
 
 
 <li class="dropdown" >
-                        <a href="{% url 'feed' %}" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"><b >Nearby</b> <b class="caret"></b></a>
+                        <a href="{% url 'feed' %}" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"><b >Explore</b> <b class="caret"></b></a>
                      <ul class="dropdown-menu"  style = " background-color:#236B8E;">
 <li style = " padding: 5px;" >
- <a id="post_list" href="{% url 'post_list' %}" style = " color:white;" > <i   class="fa fa-globe"></i> <b >{% trans "Events" %}</b></a>
+ <a id="post_list" href="{% url 'post_list' %}" style = " color:white;" > <i   class="fa fa-globe"></i> <b >{% trans "All Events" %}</b></a>
         </li>
 
 <li style = " padding: 5px;" >
- <a id="concert_list" href="{% url 'concert_list' %}" style = " color:white;" > <i   class="fa fa-music"></i> <b >{% trans "Concerts" %}</b></a>
+ <a id="concert_list" href="{% url 'music' %}" style = " color:white;" > <i   class="fa fa-music"></i> <b >{% trans "Music" %}</b></a>
         </li>
 
-<li style = " padding: 5px;">
- <a id="question_list" href="{% url 'question_list' %}" style = " color:white;"> <i  class="fa fa-question"></i> <b>{% trans "Questions" %}</b></a>
-        </li>
+{#<li style = " padding: 5px;"><a id="question_list" href="{% url 'sports' %}" style = " color:white;"> <i  class="fa fa-futbol-o"></i> <b>{% trans "Sports" %}</b></a></li> #}
+
+<li style = " padding: 5px;"><a href="{% url 'arts' %} " style = " color:white;"  id="concert_list">  <i  class="fa fa-street-view"></i> <b>{% trans "Arts" %}</b> </a> </li>
+<li style = " padding: 5px;"><a href="{% url 'academic' %} " style = " color:white;" id="concert_list">  <i  class="fa fa-folder-open-o"></i> <b>{% trans "Academic" %} </b></a> </li>
+<li style = " padding: 5px;"><a href="{% url 'charity' %} " style = " color:white;" id="concert_list">  <i class="fa fa-heart"></i> <b> {% trans "Fundraisers" %} </b></a> </li>
 
  </ul>
 </li>
 
 
 
-<li class="dropdown" >
-                        <a href="{% url 'feed' %}" class="dropdown-toggle" data-toggle="dropdown" style = " color:white;"><b >Post</b> <b class="caret"></b></a>
-                     <ul class="dropdown-menu" style = " background-color:#236B8E;" >
-<li style = " padding: 5px;" >
- <a id="post_list" href="{% url 'post_new' %}"  style = " color:white;"> <i   class="fa fa-globe"></i> <b >{% trans "Event" %}</b></a>
-        </li>
 
-<li style = " padding: 5px;">
- <a id="question_list" href="{% url 'question_list' %}"  style = " color:white;"> <i  class="fa fa-question"></i> <b>{% trans "Question" %}</b></a>
-        </li>
-
- </ul>
+<li>
+    <a id="post_list" href="{% url 'post_new' %}" style = " color:white;"><i  class="fa fa-pencil-square-o"></i> <b  class= "bar">{% trans "Post" %}</b></a>
 </li>
 
         <li>
