@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 #REST API
 from Post.serializers import PostSerializer
+from blog.serializers import BlogSerializer
 from rest_framework import generics
 from Post.serializers import UserSerializer
 from django.contrib.auth.models import User
@@ -19,9 +20,16 @@ from rest_framework import viewsets
 from rest_framework.decorators import detail_route
 from rest_framework import status
 from Post.models import Post
+from blog.models import Blog
 from django.db.models import Q
+from rest_framework.permissions import AllowAny
+
+from Post.permissions import IsStaffOrTargetUser
 
 from datetime import date, timedelta
+from rest_framework.generics import CreateAPIView
+from rest_framework.authentication import TokenAuthentication
+
 
 '''
 # API authentication
@@ -124,12 +132,37 @@ class ObtainLogout(APIView):
 
 
 #REST API VIEWSETS
+
+
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    model = User
+
+    def get_permissions(self):
+        # allow non-authenticated user to create via POST
+        return (AllowAny() if self.request.method == 'POST'
+                else IsStaffOrTargetUser()),
+
+class BlogViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -224,7 +257,7 @@ class CharityViewSet(viewsets.ModelViewSet):
 
 class PerformingArtsViewSet(viewsets.ModelViewSet):
 
-    queryset = Post.objects.filter(Q(category = Post.DANCE) | Q(category=Post.PERFORMING_ARTS) | Q(category = Post.THEATRE)).order_by('-posted_date')
+    queryset = Post.objects.filter(Q(category = Post.DANCE) | Q(category=Post.PERFORMING_ARTS)  | Q(category=Post.ARTS) | Q(category = Post.THEATRE)).order_by('-posted_date')
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
@@ -270,6 +303,8 @@ class ThinkViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
+
+
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

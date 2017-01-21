@@ -5,7 +5,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = PACKAGE_ROOT
 
-DEBUG = True
+DEBUG = False
 
 DATABASES = {
     "default": {
@@ -179,6 +179,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
 
     "rest_auth",
+    "djoser",
 
 
     #for search sbar
@@ -207,6 +208,8 @@ SITE_ID = 1
 '''
 EMAIL_BACKEND = "mailer.backend.DbBackend"
 MAILER_EMAIL_BACKEND = "sgbackend.SendGridBackend"
+
+SEND_CONFIRMATION_EMAIL = True;
 
 
 '''
@@ -237,6 +240,8 @@ HAYSTACK_CONNECTIONS = {
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 
+
+
     '''
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -245,10 +250,10 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
-        'rest_framework_social_oauth2.authentication.SocialAuthentication',
-
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.BasicAuthentication',
     )
 }
 

@@ -117,6 +117,7 @@
       padding-right: 0px;
   	}
 
+
   	.container-fluid {
       padding: 60px 50px;
   	}
@@ -290,6 +291,9 @@
 			font-size: 18px !important;
 			padding-top: 5px !important;
 		}
+		.jumbotron {
+			padding: 0px 25px;
+		}
   	}
   	@media screen and (max-width: 480px) {
     	.logo {
@@ -360,7 +364,7 @@
 		z-index: 2;
 		overflow-x: hidden !important;
 	}
-	.jumbotron img {
+	.jumbotron #back {
 		position: absolute;
     	left: 0;
     	top: 0;
@@ -368,6 +372,21 @@
     	height: 100%;
     	opacity: 0.4;
 	}
+	#apps {
+		padding-top: 15px;
+		position: relative;
+		display: block;
+		z-index: 2;
+		font-size: 20px;
+
+	}
+	#apple {
+		height: 50px;
+	}
+	#google {
+		height: 75px;
+	}
+
 	#title {
 		padding-top: 15vh;
 
@@ -530,11 +549,10 @@
 		<div id='jumbotron-inner'>
 
 
-  		<h1 id='title'>What'sPoppin<span style="font-size:12px;">(BETA)</span> </h1>
+  		<h1 id='title'>What'sPoppin</h1>
 
   		<h2 style='color: white' id='subtitle'>connect, explore, discover</h2>
-
-     	{% if not user.is_authenticated %}
+{% if not user.is_authenticated %}
       	{% url "account_login" as login_url %}
          {% url "account_signup" as signup_url %}
 
@@ -574,9 +592,18 @@
     		</p>
                         <!--src="/site_media/media/images/thon.jpg" -->
       {% endif %}
+
       </div>
 
-		<img align='middle' src="http://mailout.co/wp-content/uploads/Performing-Arts.jpg" >
+      <!-- images for app links-->
+
+      <div id='apps'>
+      	Coming Soon<br>
+      	<img id='apple' src='/site_media/media/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'>
+      	<img id='google' src='/site_media/media/images/google-play-badge.png'>
+      </div>
+
+		<img id='back' align='middle' src="http://mailout.co/wp-content/uploads/Performing-Arts.jpg" >
 
 	</div>
 
@@ -745,6 +772,8 @@
 
 
             </p>
+
+            <p><a style="color:grey;"  href='{% url 'join' %}'><span>Join Our Team</span></a></p>
     		</div>
 
 <div class="col-md-5">
@@ -771,6 +800,7 @@
 
 
 <script>
+    if ($(window).width() > 768) {
 	$(window).on('beforeunload', function(){$(this).scrollTop(0)});
 	$(document).ready(function() {
 		var pos;
@@ -826,6 +856,7 @@
 		});
 
 	});
+    }
 
 </script>
 

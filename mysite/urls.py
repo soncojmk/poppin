@@ -26,8 +26,10 @@ router.register(r'wpoppin', views.WpoppinViewSet, 'wpoppin')
 router.register(r'events_today', views.PostTodayViewSet, 'events_today')
 router.register(r'events_tomorrow', views.PostTomorrowViewSet, 'events_tomorrow')
 router.register(r'events_this_week', views.PostThisWeekViewSet, 'events_this_week')
-router.register(r'users', views.UserViewSet)
+router.register(r'accounts', views.UserViewSet)
 router.register(r'events_this_month', views.PostThisMonthViewSet, 'events_this_month')
+
+router.register(r'blog', views.BlogViewSet, 'blog')
 
 
 urlpatterns = [
@@ -37,6 +39,7 @@ urlpatterns = [
     url(r"^account/social/accounts/$", TemplateView.as_view(template_name="account/social.html"), name="account_social_accounts"),
     url(r"^account/social/", include("social.apps.django_app.urls", namespace="social")),
     url(r"^post/", include('Post.urls')),
+    url(r"^stories/", include('blog.urls')),
     url(r"^search/", include('haystack.urls')),
     #url(r'^comments/', include('django_comments.urls')),
     url(r'^messages/', include("pinax.messages.urls", namespace="pinax_messages")),
@@ -44,6 +47,7 @@ urlpatterns = [
     #api endpoints and oauth2
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/wp/auth/', include('djoser.urls')), #use for wpoppin registration with email/username/password
     url(r'^api-token-auth/', v.obtain_auth_token), #Convert Username and Password to What'sPoppin Token
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')), #our oath2 app
@@ -57,6 +61,8 @@ urlpatterns = [
     url(r"^music", TemplateView.as_view(template_name="music_homepage.html"), name="music_home"),
     url(r"^arts", TemplateView.as_view(template_name="performing_arts_homepage.html"), name="performing_arts_home"),
     url(r"^academics", TemplateView.as_view(template_name="academics_homepage.html"), name="academics_home"),
+    url(r"^joinourteam", TemplateView.as_view(template_name="join.html"), name="join"),
+    url(r"^privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
 
 
 

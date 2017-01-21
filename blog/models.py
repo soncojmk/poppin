@@ -24,42 +24,26 @@ from django.db.models import F
 
 class Blog(models.Model):
 
-    MUSIC = '1'
-    COMEDY = '2'
-    FUNDRAISERS = '3'
-    DANCE = '4'
-    THEATRE = '5'
-    IMPROV = '6'
-    DEBATES = '7'
-    ARTS = '8'
-    CLUB_EVENT = '9'
-    ACADEMIC = '10'
-    PROFESSIONAL = '11'
-    MOVIES = '12'
-
-    CATEGORIES = (
-    (MUSIC, 'Music'),
-    (COMEDY, 'Comedy'),
-    (FUNDRAISERS, 'Fundraisers'),
-    (DANCE, 'Dance'),
-    (THEATRE, 'Theatre'),
-    (IMPROV, 'Improv'),
-    (MOVIES, 'Movies'),
-    (DEBATES, 'Debates'),
-    (ARTS, 'Arts'),
-    (CLUB_EVENT, 'Club Event'),
-    (ACADEMIC, 'Academic'),
-    (PROFESSIONAL, 'Professional'),
-)
-
-    category = models.CharField(max_length= 25, choices = CATEGORIES, null=True)
-    title = models.CharField(max_length=32)
+    author = models.ForeignKey('auth.user', default="")
+    title = models.CharField(max_length=64)
     description = models.TextField()
     image = StdImageField(upload_to='Post/images', null =True, blank=True,
                           variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
 
-    video = models.URLField(null=True, blank=True)
+    #video = models.URLField(null=True, blank=True)
 
     posted_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
+    class Meta:
+        ordering = ['-posted_date']
+
+    def posted(self):
+        self.posted_date=timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.title
+
+    def __unicode__(self):
+        return u'{c}/{l}'.format(c=self.title, l=self.description)
 

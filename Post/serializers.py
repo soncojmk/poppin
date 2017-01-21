@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from Post.models import Post
 from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,6 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'author')
+
+    def get_permissions(self):
+        # allow non-authenticated user to create via POST
+        return (AllowAny() if self.request.method == 'POST'
+                else IsStaffOrTargetUser()),
 
 author = serializers.ReadOnlyField(source='author.username')
 

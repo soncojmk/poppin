@@ -1,0 +1,64 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% load bootstrap_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+{{ form.media }}
+<link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" media="all" />
+
+<style>
+.col{
+
+    width: 500px;
+    margin: auto;
+    border-radius:0px;
+    padding-top:10px;
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col{
+	margin:0px;
+	width:100%;
+
+
+}
+}
+</style>
+
+{%if user.is_authenticated %}
+<div class="container">
+<form  method="POST" class="col" class="form-horizontal"  enctype="multipart/form-data">
+    <legend>CREATE NEW BLOG POST</legend>
+    {% csrf_token %}
+    {{ form|as_bootstrap }}
+    <div class="form-actions">
+      <a href="{% url 'home' %}" class="btn" onClick="javascript:history.go(-1);">Go back</a>
+      <button type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
+
+
+{% endif %}
+</div>
+
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+    $('.datepicker').datepicker();
+});
+</script>
+{% endblock %}

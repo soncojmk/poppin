@@ -1,6 +1,19 @@
 from Post.views import PostViewSet, UserViewSet, MusicViewSet, SportsViewSet, CharityViewSet, PostTodayViewSet, PostTomorrowViewSet, PostThisWeekViewSet, PostThisMonthViewSet, api_root
 from rest_framework import renderers
+from blog.views import BlogViewSet
 #from .views import ObtainAuthToken
+
+blog_list = BlogViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+blog_detail = BlogViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
 
 post_list = PostViewSet.as_view({
     'get': 'list',
@@ -72,7 +85,7 @@ events_this_month = PostThisMonthViewSet.as_view({
 
 
 user_list = UserViewSet.as_view({
-    'get': 'list'
+    'post': 'create'
 })
 user_detail = UserViewSet.as_view({
     'get': 'retrieve'
@@ -103,5 +116,10 @@ urlpatterns = format_suffix_patterns([
     url(r'^users/$', user_list, name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$', user_detail, name='user-detail'),
 
+
     #url(r'^api-token/login/(?P[^/]+)/$', ObtainAuthToken.as_view(), name='token'),
+
+    url(r'^blog/$', blog_list, name='blog_list'),
+    url(r'^blog/(?P<pk>[0-9]+)/$', blog_detail, name='blog-detail'),
+
 ])

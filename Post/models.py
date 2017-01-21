@@ -48,6 +48,7 @@ class Post(activity.Activity, models.Model):
     DANCE = '4'
     PERFORMING_ARTS = '6'
     THEATRE = '5'
+    ARTS = '7'
     ART = '8'
     CLUB_EVENT = '9'
     ACADEMIC = '10'
