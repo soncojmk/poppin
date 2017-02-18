@@ -10,6 +10,9 @@ from restapi import views
 from rest_framework import routers
 from rest_framework.authtoken import views as v
 
+from push_notifications.api.rest_framework import APNSDeviceViewSet, GCMDeviceViewSet
+from rest_framework.routers import DefaultRouter
+
 # Create a router and register our viewsets with it.
 router = routers.DefaultRouter()
 router.register(r'events', views.PostViewSet)
@@ -30,6 +33,10 @@ router.register(r'accounts', views.UserViewSet)
 router.register(r'events_this_month', views.PostThisMonthViewSet, 'events_this_month')
 
 router.register(r'blog', views.BlogViewSet, 'blog')
+
+#notifications
+router.register(r'device/apns', APNSDeviceViewSet)
+router.register(r'device/gcm', GCMDeviceViewSet)
 
 
 urlpatterns = [

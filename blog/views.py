@@ -56,8 +56,6 @@ def blog_edit(request, pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
-            post.posted_date = timezone.now()
             post.save()
             return redirect('blog_list')
     else:

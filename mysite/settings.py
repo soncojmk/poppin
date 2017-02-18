@@ -180,6 +180,7 @@ INSTALLED_APPS = [
 
     "rest_auth",
     "djoser",
+    "push_notifications",
 
 
     #for search sbar
@@ -204,6 +205,13 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
+
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+        "GCM_API_KEY": "AIzaSyAm7FKTqKh81_f1FiPQZfOt7tHsf801wgY",
+        #"APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+
+}
 
 '''
 EMAIL_BACKEND = "mailer.backend.DbBackend"

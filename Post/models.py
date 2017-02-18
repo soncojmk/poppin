@@ -60,6 +60,9 @@ class Post(activity.Activity, models.Model):
     WP = '16'
     LECTURE = '17'
     DEBATE = '18'
+    HEALTH ='19'
+    GAMING ='20'
+    POLITICAL ='21'
 
     CATEGORIES = (
     (MUSIC, 'Music'),
@@ -67,12 +70,15 @@ class Post(activity.Activity, models.Model):
     (COMEDY, 'Comedy'),
     (POETRY, 'Poetry'),
     (DANCE, 'Dance'),
+    (HEALTH, 'Health/Wellbeing'),
     (THEATRE, 'Theatre'),
     (ART, 'Art'),
+    (MOVIES, 'Films'),
     (PERFORMING_ARTS, 'Performing Arts'),
     (SPORTS, 'Sports'),
-    (CLUB_EVENT, 'Club Event'),
+    (POLITICAL, 'Political'),
     (DEBATE, 'Debate'),
+    (GAMING, 'Gaming'),
     (LECTURE, 'Lecture'),
     (ACADEMIC, 'Academic'),
     (PROFESSIONAL, 'Professional'),
@@ -104,6 +110,8 @@ class Post(activity.Activity, models.Model):
 
     location = gis_models.PointField(u"longitude/latitude",
                                      geography=True, blank=True, null=True)
+
+    saves = models.IntegerField(null=True)
 
     gis = gis_models.GeoManager()
     objects = models.Manager()

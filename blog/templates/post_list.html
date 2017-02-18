@@ -71,14 +71,456 @@
 	{% load i18n %}
 
 
+<style>
+	html, body {height:100%;}
+	html {
+		position: relative;
+    	min-height: 100%;
+	}
+	body {
+      font: 400 15px Lato, sans-serif;
+      line-height: 1.8;
+      color: #818181;
+		background-color: white;
+		max-width: 100%;
+		overflow-x: hidden;
+		height: 100%;
+		margin: 0 0 60px;
+  	}
+  	h2 {
+      font-size: 24px;
+      text-transform: uppercase;
+      color: #303030;
+      font-weight: 600;
+      margin-bottom: 30px;
+  	}
+  	h4 {
+      font-size: 21px;
+      line-height: 1.375em;
+      color: #303030;
+      font-weight: 400;
+      margin-bottom: 10px;
+  	}
+
+
+	.detail p{
+		font-size: 15px;
+		font: 400 15px Lato, sans-serif;
+      line-height: 1.8;
+      color: #818181;
+	}
+  	.jumbotron {
+      background-color: #236B8E;
+      color: #fff;
+      padding: 100px 25px;
+      font-family: Montserrat, sans-serif;
+      padding-left: 0px;
+      padding-right: 0px;
+  	}
+
+
+  	.container-fluid {
+      padding: 60px 50px;
+  	}
+  	.bg-white {
+      background-color: white;
+  	}
+  	.logo-small {
+      color: #236B8E;
+      font-size: 50px;
+  	}
+  	.logo {
+      color: #236B8E;
+      font-size: 200px;
+  	}
+  	.thumbnail {
+      padding: 0 0 15px 0;
+      border: none;
+      border-radius: 0;
+  	}
+  	.thumbnail img {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 10px;
+  	}
+  	.item h4 {
+      font-size: 19px;
+      line-height: 1.375em;
+      font-weight: 400;
+      font-style: italic;
+      margin: 70px 0;
+  	}
+  	.item span {
+      font-style: normal;
+  	}
+  	.panel {
+      border: 1px solid  #236B8E;
+      border-radius:0 !important;
+      transition: box-shadow 0.5s;
+  	}
+  	.panel:hover {
+      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+  	}
+  	.panel-footer .btn:hover {
+      border: 1px solid  #236B8E;
+      background-color: #fff !important;
+      color:#236B8E;
+  	}
+  	.panel-heading {
+      color: #fff !important;
+      background-color:  #236B8E !important;
+      padding: 25px;
+      border-bottom: 1px solid transparent;
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+  	}
+  	.panel-footer {
+      background-color: white !important;
+  	}
+  	.panel-footer h3 {
+      font-size: 32px;
+  	}
+  	.panel-footer h4 {
+      color: #aaa;
+      font-size: 14px;
+  	}
+  	.panel-footer .btn {
+      margin: 15px 0;
+      background-color:  #236B8E;
+      color: #fff;
+  	}
+  	.navbar {
+  		width: 100vw;
+      margin-bottom: 0;
+		background-color:  rgba(35, 107, 142, 0);
+      z-index: 9999;
+      border: 0;
+      font-size: 12px !important;
+      line-height: 1.42857143 !important;
+      letter-spacing: 4px;
+      border-radius: 0;
+      font-family: Montserrat, sans-serif;
+
+  	}
+  	.navbar li a {
+		font-size: 16px;
+	}
+	.navbar-brand {
+		font-size: 25px;
+	}
+  	.navbar li a, .navbar .navbar-brand {
+      color: #fff !important;
+  	}
+  	.navbar-nav li a:hover, .navbar-nav li.active a {
+      color:  #236B8E !important;
+      background-color: #fff !important;
+  	}
+
+	.navbar-nav li a {
+      color: #fff !important;
+      background-color: rgba(35, 107, 142, 0)  !important;
+  	}
+  	.navbar-default .navbar-toggle {
+      border-color: transparent;
+      color: #fff !important;
+  	}
+  	/*footer .glyphicon {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color:  #236B8E;
+  	}*/
+  	.slideanim {
+  		visibility: hidden;
+  	}
+  	.slide {
+      animation-name: slide;
+      -webkit-animation-name: slide;
+      animation-duration: 1s;
+      -webkit-animation-duration: 1s;
+      visibility: visible;
+  	}
+
+
+  	@keyframes slide {
+   	0% {
+      	opacity: 0;
+      	-webkit-transform: translateY(70%);
+    	}
+    	100% {
+      	opacity: 1;
+      	-webkit-transform: translateY(0%);
+    	}
+  	}
+  	@-webkit-keyframes slide {
+    	0% {
+      	opacity: 0;
+      	-webkit-transform: translateY(70%);
+    	}
+    	100% {
+      	opacity: 1;
+      	-webkit-transform: translateY(0%);
+    	}
+  	}
+
+
+	#subtitle {
+	    font-size: 19px;
+	}
+  	@media screen and (max-width: 768px) {
+    	.col-sm-4 {
+      	text-align: center;
+      	margin: 25px 0;
+    	}
+    	.btn-lg {
+        	width: 100%;
+        	margin-bottom: 35px;
+    	}
+    	.navbar {
+			background-color:  rgba(35, 107, 142, 1) !important;
+		}
+
+		#services div div img{
+			opacity: 0.3 !important;
+		}
+		.description {
+			display: block !important;
+			font-size: 18px !important;
+			padding-top: 5px !important;
+		}
+		.jumbotron {
+			padding: 0px 25px;
+		}
+  	}
+  	@media screen and (max-width: 480px) {
+    	.logo {
+        	font-size: 150px;
+    	}
+
+    	#subtitle {
+	        font-size: 12px;
+	}
+	#contact .col-sm-5 {
+			font-size: 23px;
+			float: left;
+			padding-top: 20px;
+		}
+
+
+  	}
+  	@media screen and (min-width: 1025px) {
+
+		#contact .col-sm-5 {
+			font-size: 23px;
+			float: right;
+			padding-top: 20px;
+		}
+		#contact .col-sm-7 {
+			padding-top: 20px;
+		}
+		#contact .col-sm-7 input {
+			font-size: 20px;
+		}
+		#contact .row {
+			padding-top: 20px;
+		}
+
+	}
+
+  	.btn-facebook{
+  		color: #3b5998;
+  		background-color: #fffs;
+		border-color:rgba(0,0,0,0.2)
+	}
+	.btn-facebook:focus,.btn-facebook.focus{
+		color: #2d4373;
+		background-color:#fff;
+		border-color:rgba(0,0,0,0.2)
+	}
+
+
+
+
+ 	#contact {
+		background-color: #f6f6f6;
+		width: 100%;
+ 	}
+
+ 	.col-sm-5 {
+		color: white;
+ 	}
+
+  	.content {
+		min-height: 100vh !important;
+
+	}
+
+	#jumbotron-inner {
+		position: relative;
+		display: block;
+		z-index: 2;
+		overflow-x: hidden !important;
+	}
+	.jumbotron #back {
+		position: absolute;
+    	left: 0;
+    	top: 0;
+    	width: 100vw;
+    	height: 100%;
+    	opacity: 0.4;
+	}
+	#apps {
+		padding-top: 15px;
+		position: relative;
+		display: block;
+		z-index: 2;
+		font-size: 20px;
+
+	}
+	#apple {
+		height: 50px;
+	}
+	#google {
+		height: 75px;
+	}
+
+	#title {
+		padding-top: 15vh;
+
+	}
+
+	.btn-primary {
+		background-color: #D47E36;
+		border-color: #D47E36;
+	}
+	.btn-primary:hover {
+		background-color: #B25D16;
+		border-color: #B25D16
+	}
+	#contact p{
+	    color: gray;
+	    font-size: 15px;
+	}
+	#contact button {
+		background-color: #D47E36;
+		border-color: #D47E36;
+	}
+	#contact button:hover {
+		background-color: #B25D16;
+		border-color: #B25D16
+	}
+	#about {
+
+	}
+
+
+	#div1 {
+		height: auto;
+		margin-top: 25px;
+	}
+	#div2 {
+		margin-top: 25px;
+	}
+
+	#div2 div {
+		margin-left: 7%;
+		max-width: 100vw;
+		height: auto;
+	}
+	#about .row {
+		margin-left: 0px;
+		padding-right:15px;
+		text-align: center;
+
+		max-width: 100vw;
+	}
+	#about .row div #comp {
+		border: 3px solid #05405D;
+		border-radius: 25px;
+		width: 100%;
+		height: auto;
+	}
+	#about .row div #mobile {
+		position: absolute;
+		bottom: 10px;
+		right: 15px;
+		float: left;
+		padding:0px;
+		border: 3px solid #05405D;
+		border-radius: 25px;
+		width: 30%;
+		height: auto;
+	}
+	#services, #services div {
+		padding: 0px;
+		margin: 0px;
+	}
+	#services .row {
+		width: 100vw;
+	}
+	#services div div {
+		position: relative;
+		background-color: rgb(5, 64, 93);
+		box-shadow: 0 0 50px rgb(10, 128, 186) inset;
+		height: 50vh;
+		max-width: 100vw;
+		min-width: 50vw;
+	}
+	#services div div img{
+		position: absolute;
+		left: 0px;
+		width: 100%;
+		height: 100%;
+		opacity: 0.4;
+		z-index: 0;
+	}
+	#services div div > p{
+		position: relative;
+		color: white;
+		z-index: 2;
+		font-size: 25px;
+		padding-top: 15%;
+		font-weight: bold;
+	}
+	.description {
+		display: none;
+		font-size: 18px !important;
+		padding-top: 5px !important;
+	}
+	.img-hover {
+		opacity: 0.3 !important;
+	}
+
+	html {
+		position: relative;
+    	min-height: 100%;
+	}
+	body {
+		margin: 0 0 60px;
+  	}
+
+
+
+</style>
+
 
 <style>
 
+
+html {
+		position: relative !important;
+    	min-height: 100% !important;
+	}
 	body {
       font: 400 15px Lato, sans-serif;
       line-height: 1.8;
 
 		background-color: #f6f6f6;
+		margin: 0 0 60px !important;
+		overflow-x: hidden !important;
+		width: 100vw !important;
+
   	}
   	h2 {
       font-size: 24px;
@@ -217,11 +659,11 @@
       border-color: transparent;
       color: #fff !important;
   	}
-  	footer .glyphicon {
+  	/*footer .glyphicon {
       font-size: 20px;
       margin-bottom: 20px;
       color:  #236B8E;
-  	}
+  	}*/
   	.slideanim {
   		visibility: hidden;
   	}
@@ -267,9 +709,7 @@
 			background-color:  rgba(35, 107, 142, 1) !important;
 		}
 
-		.jumbotron img {
-        display:none;
-	}
+
 
 	    #subtitle {
 	        font-size:12px;
@@ -284,6 +724,7 @@
 		}
 
 
+
   	}
   	@media screen and (max-width: 480px) {
     	.logo {
@@ -294,18 +735,24 @@
 	    width="330"
 	    height="220"
 	}
+
+	#about .row{
+	    padding:0px;
+	}
+
+
+	.container-fluid {
+      padding: 30px 2px;
+  	}
+
+
+  	.col-sm-4 {
+  	    text-align:left;  margin-bottom:50px; padding-left:10px; padding-right:10px;"
+  	}
+
   	}
   	@media screen and (min-width: 1025px) {
-		#about .col-sm-4 p {
-			font-size: 17px;
-		}
-		#about h2 {
-			font-size: 30px;
-		}
-		#about h4 {
-			font-size: 20px;
-			font-weight: bold;
-		}
+
 		.jumbotron h1 {
 			font-size: 90px !important;
 		}
@@ -374,8 +821,8 @@
     	left: 0;
     	top: 0;
     	min-width: 100%;
-    	width: auto;
-    	height: 100%;
+    	width: 100%;
+    	height: 100vh;
     	opacity: 0.4;
 	}
 	#title {
@@ -390,11 +837,15 @@
 	}
 
 
-	.col-sm-10 p {
-	    color: #434343;
-	    font-size: 17px;
-	    font:sans-serif;
+    #about	.col-sm-4  {
+        text-align:left;  margin:auto;   margin-bottom:50px; padding-left:10px; padding-right:10px;
 
+	    font-size: 12px;
+	    font:sans-serif;
+	}
+
+	#about .col-sm-4 p{
+	    color: #333;
 	}
 
 	.img-square {
@@ -402,11 +853,64 @@
 	    height="220"
 	}
 
+	.navbar-fixed-top { position: absolute!important; }
+    @import "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css";
+	@media screen and (max-width: 600px) {
+		footer {
+    		background-color: #F8F8F8;
+    		border-top: 1px solid #E7E7E7;
+    		text-align: center !important;
+
+    		position: fixed;
+    		left: 0;
+    		bottom: 0;
+    		height: 60px;
+    		width: 100%;
+		}
+		#apple {
+		    height: 35px !important;
+		    position: relative !important;
+	    }
+	    #google {
+		    height: 52px !important;
+		    position: relative !important;
+	    }
+	}
+
+
+	@media (min-width:1200px){
+    .auto-clear .col-lg-1:nth-child(12n+1){clear:left;}
+    .auto-clear .col-lg-2:nth-child(6n+1){clear:left;}
+    .auto-clear .col-lg-3:nth-child(4n+1){clear:left;}
+    .auto-clear .col-lg-4:nth-child(3n+1){clear:left;}
+    .auto-clear .col-lg-6:nth-child(odd){clear:left;}
+}
+@media (min-width:992px) and (max-width:1199px){
+    .auto-clear .col-md-1:nth-child(12n+1){clear:left;}
+    .auto-clear .col-md-2:nth-child(6n+1){clear:left;}
+    .auto-clear .col-md-3:nth-child(4n+1){clear:left;}
+    .auto-clear .col-md-4:nth-child(3n+1){clear:left;}
+    .auto-clear .col-md-6:nth-child(odd){clear:left;}
+}
+@media (min-width:768px) and (max-width:991px){
+    .auto-clear .col-sm-1:nth-child(12n+1){clear:left;}
+    .auto-clear .col-sm-2:nth-child(6n+1){clear:left;}
+    .auto-clear .col-sm-3:nth-child(4n+1){clear:left;}
+    .auto-clear .col-sm-4:nth-child(3n+1){clear:left;}
+    .auto-clear .col-sm-6:nth-child(odd){clear:left;}
+}
+@media (max-width:767px){
+    .auto-clear .col-xs-1:nth-child(12n+1){clear:left;}
+    .auto-clear .col-xs-2:nth-child(6n+1){clear:left;}
+    .auto-clear .col-xs-3:nth-child(4n+1){clear:left;}
+    .auto-clear .col-xs-4:nth-child(3n+1){clear:left;}
+    .auto-clear .col-xs-6:nth-child(odd){clear:left;}
+}
 
 </style>
 
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60" style="background-color:white;">
 
 	<nav id='navbar' class="navbar navbar-default navbar-fixed-top">
 
@@ -430,9 +934,9 @@
 
       		<ul id="nav-items" class="nav navbar-nav navbar-right">
 
-        			<li><a id="nav-discover" href="/#services">DISCOVER</a></li>
-        			<li><a id="nav-about" href="/#about">ABOUT</a></li>
-        			<li><a id="nav-contact" href="/#contact">CONTACT</a></li>
+
+        			<li><a id="nav-about" href="{% url 'join' %}">JOIN US</a></li>
+        			<li><a id="nav-contact" href="{% url 'post_list' %}">EVENTS</a></li>
         			{% if not user.is_authenticated %}
         				<li><a href="{% url "account_login" %}">LOGIN</a></li>
         			{% else %}
@@ -456,11 +960,14 @@
 
   		<h1 id='title'>What'sPoppin<span style="font-size:30px;"> Stories</span> </h1>
 
-  		<h2 style='color: white' id='subtitle'>Bringing the hidden gems events to you</h2>
+  		<h2 style='color: white' id='subtitle'>Explore Culture</h2>
+  		<br>
+  		<a href="{% url 'join' %}" class="btn btn-default btn-social btn-facebook">Become a Stories Writer</a>
+  		<br>
 
      	</div>
 
-		<img align='middle' src="/site_media/media/images/u2ukri4lci8-nasa.jpg" >
+		<img id='back-img' align='middle' src="/site_media/media/images/agvoj0dixz4-miguel-salgado.jpg" >
 
 	</div>
 
@@ -468,52 +975,53 @@
 <!-- Container (About Section) -->
 
 
-	<div class="container-fluid content bg-white">
+	<div id="about" class="container-fluid content bg-white">
 
   		<div id='about-inner' >
 
     		<div  class="detail"  style="text-align:center; color: #236B8E; ">
 
-
-      		<h2 style="color:#236B8E;">What'sPoppin Stories</h2><br>
-
-
+<div class = "row auto-clear">
             {% for post in posts %}
-      		<div class="col-sm-10" style="text-align:left; float:right; margin:auto; align:center; font: sans serif;  margin-bottom:50px;">
 
-      		    <div class="col-sm-5" style="text-align:left;">
+      		<div class="col-sm-4 col-xs-6 col-sm-4 col-md-4 col-lg-3" >
 
-      		    <img class="img-responsive img-center"  src="{{post.image.large.url}}" border="0" alt="penn state stadium"/>
-
-
-      		    </div>
+      		 <a  href="{% url 'blog_detail' pk=post.pk %}"><img style="border-radius: 5px;" class="img-responsive img-center" src="{{post.image.large.url}}" border="0" alt="penn state stadium"/></a>
 
 
-                <div class="col-sm-5">
-      			<h4 style="color:#236B8E;"><a href="{% url 'blog_detail' pk=post.pk %}"><span>{{ post.title }}</span></a></h4>
 
 
-      			<p >{{post.description|urlizetrunc:35|truncatechars_html:225|linebreaks }}
+
+                <div class="" style="text-align:left; border: 1px solid  #f8f8f8; border-radius: 5px;padding:20px; padding-top:0px;">
+
+      			<h4 style="color:#236B8E; "><a href="{% url 'blog_detail' pk=post.pk %}"><span>{{ post.title }}</span></a></h4>
+
+<hr>
+      			<p style="line-height: 70%; font-size:12px">{{post.description|urlizetrunc:35|truncatechars_html:70|linebreaks }}
 
                     </div>
+
     			</div>
+{% endfor %}
 
-            {% endfor %}
-
-    	   </div>
-
-
-    		</div>
-
+</div>
 
 
   		</div>
 
 	</div>
+	<footer>
+
+      <a href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img id='apple' src='/site_media/media/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'></a>
+      <a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id='google' src='/site_media/media/images/google-play-badge.png'></a>
+
+    </footer>
+	</body>
 
 <script>
-    if ($(window).width() > 768) {
+    if ($(window).width() > 600) {
 	$(window).on('beforeunload', function(){$(this).scrollTop(0)});
+	$('footer').css({'display': 'none'});
 	$(document).ready(function() {
 		var pos;
 		var navVis = false;
@@ -521,19 +1029,6 @@
 		var delta;
 		var contactTop = 2 * $('#contact .row').css('margin-top').replace("px", "") + 2 * $(window).height();
 
-		$(window).scroll(function() {
-			delta = $(this).scrollTop() - pos;
-			pos = $(this).scrollTop();
-			if (pos <= $(window).height()) {
-				a = pos/$(window).height();
-				$('#jumbotron-inner').css({marginTop: -pos/2 + 'px'});
-
-			}
-
-
-			$('.navbar').css({backgroundColor: 'rgba(5, 64, 93,' + a + ')'});
-
-		});
 
 
 		$('#navbar-brand').click(function() {
@@ -568,6 +1063,8 @@
 		});
 
 	});
+    } else if ($(window).width() < 600) {
+        document.getElementById('back-img').src = '/site_media/media/images/agvoj0dixz4-miguel-salgado_mobile';
     }
 
 </script>

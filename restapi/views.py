@@ -23,6 +23,8 @@ from Post.models import Post
 from blog.models import Blog
 from django.db.models import Q
 from rest_framework.permissions import AllowAny
+from django.utils import timezone
+
 
 from Post.permissions import IsStaffOrTargetUser
 
@@ -172,7 +174,8 @@ class PostViewSet(viewsets.ModelViewSet):
 
     Additionally we also provide an extra `highlight` action.
     """
-    queryset = Post.objects.all()
+    now = timezone.localtime(timezone.now())
+    queryset = Post.objects.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).order_by('-posted_date')
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)

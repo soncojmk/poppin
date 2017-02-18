@@ -303,11 +303,8 @@
     	#subtitle {
 	        font-size: 12px;
 	}
-	#contact .col-sm-5 {
-			font-size: 23px;
-			float: left;
-			padding-top: 20px;
-		}
+
+
 
 
   	}
@@ -365,11 +362,12 @@
 		overflow-x: hidden !important;
 	}
 	.jumbotron #back {
+	    display: block;
 		position: absolute;
     	left: 0;
     	top: 0;
     	width: 100vw;
-    	height: 100%;
+    	height: 100vh;
     	opacity: 0.4;
 	}
 	#apps {
@@ -497,6 +495,16 @@
 	.img-hover {
 		opacity: 0.3 !important;
 	}
+	#slides-sub {
+		height: 80vh;
+		margin-top: 25px;
+	}
+	#slides-sub img {
+		width: 33%;
+		height: auto;
+		box-shadow: 10px 10px 5px #000000;
+		padding: 5px;
+	}
 
 </style>
 
@@ -528,6 +536,7 @@
         			<li><a id="nav-about" href="#about">ABOUT</a></li>
         			<li><a id="nav-discover" href="#services">DISCOVER</a></li>
         			<li><a id="nav-contact" href="#contact">CONTACT</a></li>
+        			<li><a id="stories" href="{% url 'blog_list' %}">STORIES</a></li>
         			{% if not user.is_authenticated %}
         				<li><a href="{% url "account_login" %}">LOGIN</a></li>
         			{% else %}
@@ -548,11 +557,21 @@
 
 		<div id='jumbotron-inner'>
 
-
   		<h1 id='title'>What'sPoppin</h1>
 
   		<h2 style='color: white' id='subtitle'>connect, explore, discover</h2>
+
+
+
 {% if not user.is_authenticated %}
+
+<br>
+<h3 style="color:white;">Discover interesting events <br>going on at Penn State</h3>
+
+
+
+<!-- <br> <a href="http://www.wpoppin.com/stories/post/7/" class="btn btn-default btn-social btn-facebook">See our Valentine's event "Gatsby Formal"</a> -->
+<!--
       	{% url "account_login" as login_url %}
          {% url "account_signup" as signup_url %}
 
@@ -571,7 +590,7 @@
  			<a class="btn btn-default btn-social btn-facebook" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
     			<span class="fa fa-facebook"></span> Login with Facebook
   			</a>
-
+-->
 		{%else%}
 
  			<p class="form-actions" style="text-align:center;">
@@ -590,7 +609,7 @@
 
       		<a href="{% url 'post_list' %}" class="btn btn-default btn-social btn-facebook">Click to Explore</a>
     		</p>
-                        <!--src="/site_media/media/images/thon.jpg" -->
+                        <!--src="http://mailout.co/wp-content/uploads/Performing-Arts.jpg  /site_media/media/images/cf6fz9qwfry-william-white.jpg /site_media/media/images/thon.jpg"-->
       {% endif %}
 
       </div>
@@ -598,12 +617,15 @@
       <!-- images for app links-->
 
       <div id='apps'>
-      	Coming Soon<br>
-      	<img id='apple' src='/site_media/media/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'>
-      	<img id='google' src='/site_media/media/images/google-play-badge.png'>
+
+
+      <a href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img id='apple' src='/site_media/media/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg'></a>
+      <a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id='google' src='/site_media/media/images/google-play-badge.png'></a>
+
       </div>
 
-		<img id='back' align='middle' src="http://mailout.co/wp-content/uploads/Performing-Arts.jpg" >
+
+		<img id='back' align='middle' src="/site_media/media/images/Performing-Arts.jpg" >
 
 	</div>
 
@@ -616,39 +638,44 @@
 
 	<div id='about' class='container-fluid bg-white content text-center'>
 
-			<h2>About</h2>
 
 			<div class='row'>
 
-				<div class='col-sm-6' id='div1'>
-
-					<img id='comp' src='/site_media/media/images/wpoppinSite.PNG'>
-					<img id='mobile' src='/site_media/media/images/mobile_screenshot.png'>
-
+				<div class='col-sm-6' id="slides-sub">
+  					<img src="/site_media/media/images/3.png" alt="">
+  					<img src="/site_media/media/images/1.png" alt="">
+  					<img src="/site_media/media/images/2.png" alt="">
 				</div>
 
 				<div class='col-sm-6' id='div2'>
 
-					<div class="col-sm-7" style="text-align:left;">
-
+					<div class="col-sm-6" style="text-align:left;">
+                    <br><br>
 	      			<h4>Discover Events that Inspire you</h4>
-	      			<p><i id="icon" class="fa fa-music"></i> Music</p>
+
+	      			<p style="font-size:17px;">There is a lot to do at Penn State, but it doesn't feel like that during most days. Find interesting events around campus all while meeting other people with the same interests.</p>
+
+	      			<!--<p><i id="icon" class="fa fa-music"></i> Music</p>
 	      			<p><i id="icon" class="fa fa-street-view"></i> Arts</p>
 	      			<p><i id="icon" class="fa fa-futbol-o"></i> Sports</p>
 	      			<p><i id="icon" class="fa fa-folder-open-o"></i> Academic</p>
-
-	    			</div>
-
-
-	    			<div class="col-sm-7" style="text-align:left;">
-
-	      			<h4>Post your own or your club's event</h4>
-						<p> Club Events </p>
-						<p> Fundraisers</p>
+<p> Fundraisers</p>
 						<p> Personal Events </p>
 						<p> Public Events</p>
+	      		-->
 
 	    			</div>
+
+	    				<div class="col-sm-6" style="text-align:left;">
+                        <br><br>
+	      			<h4>Post your own or your club's event</h4>
+						<p style="font-size:17px;"> Get students excited about your event through the premier events platform in State College for <b>FREE</b>. </p>
+
+
+	    			</div>
+
+
+
 
 				</div>
 
@@ -663,7 +690,6 @@
 
 	<div id="services" class="container-fluid text-center content">
 
-		<h2>Discover</h2>
 
 		<div class='row'>
 
@@ -696,8 +722,8 @@
 			<a href='{% url 'post_list' %}'><div class='col-sm-5'>
 
 				<img  src="/site_media/media/Post/images/the-color-run.jpg">
-				<p>CLUB EVENTS</p>
-				<p class='description'>Get involved around Penn State</p>
+				<p>FUNDRAISERS</p>
+				<p class='description'>Learn about funraisers going on in the area</p>
 			</div></a>
 		</div>
 	</div>
@@ -706,8 +732,6 @@
 {% else %}
 
 <div id="services" class="container-fluid text-center content">
-
-		<h2>Discover</h2>
 
 		<div class='row'>
 
@@ -762,18 +786,24 @@
     		<div class="col-sm-5">
 
 
-      		<p id='first-p'>Contact us and we'll get back to you within 48 hours.</p>
-      		<p><span class="glyphicon glyphicon-map-marker"></span> University Park, PA</p>
-      		<p><span class="glyphicon glyphicon-envelope"></span> us.wpoppin@gmail.com</p>
+            <p><a style="color:grey;"  href='{% url 'blog_list' %}'><span>Stories</span></a></p>
+            <p><a style="color:grey;"  href='{% url 'join' %}'><span>Join Our Team</span></a></p>
+            <hr>
+
 
             <p><a style="color:grey;" href="https://facebook.com/wpoppin" target="_blank" rel="noopener noreferrer"><i  class="fa fa-facebook-square fa-2x" aria-hidden="true">&nbsp</i></a>
-               <a style="color:grey;" href="https://instagram.com/w_poppin" target="_blank" rel="noopener noreferrer"><i  class="fa fa-instagram fa-2x" aria-hidden="true">&nbsp</i></a>
-               <a style="color:grey;" href="https://twitter.com/w__poppin" target="_blank" rel="noopener noreferrer"><i  class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
+               <a style="color:grey;" href="https://instagram.com/wpoppin_" target="_blank" rel="noopener noreferrer"><i  class="fa fa-instagram fa-2x" aria-hidden="true">&nbsp</i></a>
+               <a style="color:grey;" href="https://twitter.com/wpoppin_" target="_blank" rel="noopener noreferrer"><i  class="fa fa-twitter fa-2x" aria-hidden="true"></i></a>
 
 
             </p>
 
-            <p><a style="color:grey;"  href='{% url 'join' %}'><span>Join Our Team</span></a></p>
+      		<p><span class="glyphicon glyphicon-map-marker"></span> University Park, PA</p>
+      		<p><span class="glyphicon glyphicon-envelope"></span> us.wpoppin@gmail.com</p>
+
+
+
+            <p><a style="color:grey;" ><span>&copy; 2017 What'sPoppin LLC</span></a></p>
     		</div>
 
 <div class="col-md-5">
@@ -800,6 +830,7 @@
 
 
 <script>
+
     if ($(window).width() > 768) {
 	$(window).on('beforeunload', function(){$(this).scrollTop(0)});
 	$(document).ready(function() {
@@ -856,6 +887,8 @@
 		});
 
 	});
+    } else if ($(window).width() < 600) {
+        document.getElementById('back').src = '/site_media/media/images/performing-arts_mobile.png';
     }
 
 </script>
