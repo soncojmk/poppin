@@ -172,7 +172,7 @@ INSTALLED_APPS = [
     "stdimage",
     #"datetimewidget",
     "djgeojson",
-    "stream_django",
+    #"stream_django",
     "activity_stream",
 
     "el_pagination",
