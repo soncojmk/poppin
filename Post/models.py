@@ -14,8 +14,8 @@ from localflavor.us.us_states import STATE_CHOICES
 from localflavor.us.models import USStateField
 from stdimage.models import StdImageField
 
-from stream_django import activity
-from stream_django.feed_manager import feed_manager
+#from stream_django import activity
+#from stream_django.feed_manager import feed_manager
 from django.db.models import signals
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -41,7 +41,7 @@ class Survey(models.Model):
         return self.email
 
 #events model/ main model
-class Post(activity.Activity, models.Model):
+class Post(models.Model):
 
     MUSIC = '1'
     SPORTS = '2'
@@ -183,7 +183,7 @@ class Post(activity.Activity, models.Model):
 
 
 
-class Question(activity.Activity, models.Model):
+class Question(models.Model):
     author = models.ForeignKey('auth.user')
     entry = models.TextField(max_length=200, blank=False, null=True, verbose_name="")
     posted_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
@@ -216,7 +216,7 @@ class Question(activity.Activity, models.Model):
         verbose_name_plural='questions'
 
 
-class Concert(activity.Activity, models.Model):
+class Concert(models.Model):
     #category = models.ManyToManyField(Category)
     author = models.ForeignKey('auth.user')
     title = models.CharField(max_length=32)
@@ -267,7 +267,7 @@ class Concert(activity.Activity, models.Model):
 
 
 
-class ConcertComment(activity.Activity, models.Model):
+class ConcertComment(models.Model):
     concert = models.ForeignKey('Post.Concert', related_name='concertcomments', default="")
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
@@ -288,7 +288,7 @@ class ConcertComment(activity.Activity, models.Model):
         return self.comment
 
 
-class EventComment(activity.Activity, models.Model):
+class EventComment(models.Model):
     post = models.ForeignKey('Post.Post', related_name='comments')
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
@@ -310,7 +310,7 @@ class EventComment(activity.Activity, models.Model):
 
 
 
-class QuestionComment(activity.Activity, models.Model):
+class QuestionComment(models.Model):
     question = models.ForeignKey('Post.Question', related_name='questioncomments')
     author = models.ForeignKey('auth.user')
     comment = models.CharField(max_length=200)
