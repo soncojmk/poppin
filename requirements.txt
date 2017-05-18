@@ -34,7 +34,6 @@ django-push-notifications
 django-extra-fields
 django-haystack
 django-bootstrap-form
-pinax-theme-bootstrap
 django-forms-bootstrap
 pinax-eventlog
 pinax-webanalytics
