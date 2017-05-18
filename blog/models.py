@@ -14,8 +14,8 @@ from localflavor.us.us_states import STATE_CHOICES
 from localflavor.us.models import USStateField
 from stdimage.models import StdImageField
 
-from stream_django import activity
-from stream_django.feed_manager import feed_manager
+#from stream_django import activity
+#from stream_django.feed_manager import feed_manager
 from django.db.models import signals
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
