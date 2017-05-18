@@ -46,9 +46,9 @@
 
 </p>
 
-        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ post.description|urlizetrunc:35|truncatechars_html:500|linebreaks }}
+        <p class="text" style=" text-align:left;  font-size:15px; color: #504849;  padding-bottom:5px;">{{ post.description|urlizetrunc:35|truncatechars_html:200|linebreaks }}
         {% if post.description|length >= 500 %}
-        <span><a href="{% url 'post_detail' pk=post.pk %}">read more</a></span>
+
         {% endif %}
         </p>
 

@@ -5,7 +5,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = PACKAGE_ROOT
 
-DEBUG = False
+DEBUG = True
 
 DATABASES = {
     "default": {
@@ -141,6 +141,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    #"account.middleware.MethodOverrideMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -182,6 +183,8 @@ INSTALLED_APPS = [
     "djoser",
     "push_notifications",
 
+    "drf_extra_fields",
+
 
     #for search sbar
     "haystack",
@@ -208,8 +211,10 @@ SITE_ID = 1
 
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-        "GCM_API_KEY": "AIzaSyAm7FKTqKh81_f1FiPQZfOt7tHsf801wgY",
+        "FCM_API_KEY": "AAAAJTpiJK8:APA91bH2fUiskht4a057qGICOnzykkGyHMpcKc4uAr5EoBDCA9OK1sWrBjlKPvXXAbVxZFrVRUaJUub4GqJ12hfQWasI9nR9KqW2CTaQZZTjvETwnIjt0QLxhcjx2WOwctycn9xSncwO",
         #"APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+        "FCM_POST_URL": 'https://fcm.googleapis.com/fcm/send',
+
 
 }
 
@@ -249,12 +254,27 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 
 
-
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
     '''
+
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+
+
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     '''
+
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
@@ -267,8 +287,28 @@ REST_FRAMEWORK = {
 
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
-    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'}
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope'},
+
+    #'AUTHORIZATION_CODE_EXPIRE_SECONDS' : 315400000000,
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 315400000,
 }
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.mail.mail_validation',
+    'Post.utils.associate_by_email',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
 
 
 

@@ -175,6 +175,7 @@ class SignupView(FormView):
             User = get_user_model()
         user = User(**kwargs)
         username = form.cleaned_data.get("username")
+        #organization = form.cleaned_data.get("organization")
         if username is None:
             username = self.generate_username(form)
         user.username = username

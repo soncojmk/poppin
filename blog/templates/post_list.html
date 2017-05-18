@@ -1,74 +1,21 @@
-{% load account_tags %}
-{% load staticfiles %}
+{% extends "site_base.html" %}
+
 {% load i18n %}
-{% load bootstrap_tags %}
-{{ form.media }}
 
-<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+{% load base_extras %}
 
-	<head>
+{% load account_tags %}
 
-		<link rel="shortcut icon" type="image/png" sizes="18x16" href="/site_media/media/images/LogoMakr (3).png">
+{% load pinax_likes_tags %}
 
+{% load taggit_templatetags2_tags %}
 
-<!--not sure what this one does-->
-		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+{% block head_title %}{% endblock %}
 
-        <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+{% block body_class %}home{% endblock %}
 
-  ga('create', 'UA-84946467-1', 'auto');
-  ga('send', 'pageview');
+{% block body_base %}
 
-</script>
-
-
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  		<link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  		<link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-  		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-      <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-      <title >{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
-
-
-		{% block viewport %}
-
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-      {% endblock %}
-
-      {% block styles %}
-
-		{% endblock %}
-
-      {% block html5shim %}
-
-      	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
-         <!--[if lt IE 9]>
-         	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-         <![endif]-->
-
-      {% endblock %}
-
-      {% block extra_head_base %}
-
-      	{% block extra_head %}{% endblock %}
-
-      {% endblock %}
-
-	</head>
-
-	{% load i18n %}
 
 
 <style>
@@ -153,29 +100,7 @@
   	.item span {
       font-style: normal;
   	}
-  	.panel {
-      border: 1px solid  #236B8E;
-      border-radius:0 !important;
-      transition: box-shadow 0.5s;
-  	}
-  	.panel:hover {
-      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  	}
-  	.panel-footer .btn:hover {
-      border: 1px solid  #236B8E;
-      background-color: #fff !important;
-      color:#236B8E;
-  	}
-  	.panel-heading {
-      color: #fff !important;
-      background-color:  #236B8E !important;
-      padding: 25px;
-      border-bottom: 1px solid transparent;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-  	}
+
   	.panel-footer {
       background-color: white !important;
   	}
@@ -191,56 +116,12 @@
       background-color:  #236B8E;
       color: #fff;
   	}
-  	.navbar {
-  		width: 100vw;
-      margin-bottom: 0;
-		background-color:  rgba(35, 107, 142, 0);
-      z-index: 9999;
-      border: 0;
-      font-size: 12px !important;
-      line-height: 1.42857143 !important;
-      letter-spacing: 4px;
-      border-radius: 0;
-      font-family: Montserrat, sans-serif;
 
-  	}
-  	.navbar li a {
-		font-size: 16px;
-	}
-	.navbar-brand {
-		font-size: 25px;
-	}
-  	.navbar li a, .navbar .navbar-brand {
-      color: #fff !important;
-  	}
-  	.navbar-nav li a:hover, .navbar-nav li.active a {
-      color:  #236B8E !important;
-      background-color: #fff !important;
-  	}
-
-	.navbar-nav li a {
-      color: #fff !important;
-      background-color: rgba(35, 107, 142, 0)  !important;
-  	}
-  	.navbar-default .navbar-toggle {
-      border-color: transparent;
-      color: #fff !important;
-  	}
   	/*footer .glyphicon {
       font-size: 20px;
       margin-bottom: 20px;
       color:  #236B8E;
   	}*/
-  	.slideanim {
-  		visibility: hidden;
-  	}
-  	.slide {
-      animation-name: slide;
-      -webkit-animation-name: slide;
-      animation-duration: 1s;
-      -webkit-animation-duration: 1s;
-      visibility: visible;
-  	}
 
 
   	@keyframes slide {
@@ -277,9 +158,7 @@
         	width: 100%;
         	margin-bottom: 35px;
     	}
-    	.navbar {
-			background-color:  rgba(35, 107, 142, 1) !important;
-		}
+
 
 		#services div div img{
 			opacity: 0.3 !important;
@@ -323,7 +202,7 @@
 			font-size: 20px;
 		}
 		#contact .row {
-			padding-top: 20px;
+			padding-top: 10px;
 		}
 
 	}
@@ -586,29 +465,7 @@ html {
   	.item span {
       font-style: normal;
   	}
-  	.panel {
-      border: 1px solid  #236B8E;
-      border-radius:0 !important;
-      transition: box-shadow 0.5s;
-  	}
-  	.panel:hover {
-      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  	}
-  	.panel-footer .btn:hover {
-      border: 1px solid  #236B8E;
-      background-color: #fff !important;
-      color:#236B8E;
-  	}
-  	.panel-heading {
-      color: #fff !important;
-      background-color:  #236B8E !important;
-      padding: 25px;
-      border-bottom: 1px solid transparent;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-  	}
+
   	.panel-footer {
       background-color: white !important;
   	}
@@ -624,41 +481,7 @@ html {
       background-color:  #236B8E;
       color: #fff;
   	}
-  	.navbar {
-  		width: 100vw;
-      margin-bottom: 0;
-		background-color:  rgba(35, 107, 142, 0);
-      z-index: 9999;
-      border: 0;
-      font-size: 12px !important;
-      line-height: 1.42857143 !important;
-      letter-spacing: 4px;
-      border-radius: 0;
-      font-family: Montserrat, sans-serif;
 
-  	}
-  	.navbar li a {
-		font-size: 16px;
-	}
-	.navbar-brand {
-		font-size: 25px;
-	}
-  	.navbar li a, .navbar .navbar-brand {
-      color: #fff !important;
-  	}
-  	.navbar-nav li a:hover, .navbar-nav li.active a {
-      color:  #236B8E !important;
-      background-color: #fff !important;
-  	}
-
-	.navbar-nav li a {
-      color: #fff !important;
-      background-color: rgba(35, 107, 142, 0)  !important;
-  	}
-  	.navbar-default .navbar-toggle {
-      border-color: transparent;
-      color: #fff !important;
-  	}
   	/*footer .glyphicon {
       font-size: 20px;
       margin-bottom: 20px;
@@ -696,6 +519,14 @@ html {
       	-webkit-transform: translateY(0%);
     	}
   	}
+
+  	@media screen and (min-width: 800px) {
+
+  	 footer{
+  	     display:none;
+  	 }
+  	}
+
   	@media screen and (max-width: 800px) {
     	.col-sm-4 {
       	text-align: center;
@@ -705,9 +536,10 @@ html {
         	width: 100%;
         	margin-bottom: 35px;
     	}
-    	.navbar {
-			background-color:  rgba(35, 107, 142, 1) !important;
-		}
+
+        #title1{
+            font-size:18px;
+        }
 
 
 
@@ -853,7 +685,6 @@ html {
 	    height="220"
 	}
 
-	.navbar-fixed-top { position: absolute!important; }
     @import "//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css";
 	@media screen and (max-width: 600px) {
 		footer {
@@ -910,67 +741,6 @@ html {
 </style>
 
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60" style="background-color:white;">
-
-	<nav id='navbar' class="navbar navbar-default navbar-fixed-top">
-
-  		<div class="container">
-
-    		<div class="navbar-header">
-
-      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-
-      		</button>
-
-      		<a class="navbar-brand" id="navbar-brand" href="/"> <span style="font:verdana;">WP</span></a>
-
-    		</div>
-
-    		<div class="collapse navbar-collapse" id="myNavbar">
-
-      		<ul id="nav-items" class="nav navbar-nav navbar-right">
-
-
-        			<li><a id="nav-about" href="{% url 'join' %}">JOIN US</a></li>
-        			<li><a id="nav-contact" href="{% url 'post_list' %}">EVENTS</a></li>
-        			{% if not user.is_authenticated %}
-        				<li><a href="{% url "account_login" %}">LOGIN</a></li>
-        			{% else %}
-      				<li> <a id="account_logout" href="{% url 'account_logout' %}" > LOG OUT</a></li>
-        			{% endif %}
-
-      		</ul>
-
-    		</div>
-
-  		</div>
-
-	</nav>
-
-
-	<div class="jumbotron text-center content">
-
-
-		<div id='jumbotron-inner'>
-
-
-  		<h1 id='title'>What'sPoppin<span style="font-size:30px;"> Stories</span> </h1>
-
-  		<h2 style='color: white' id='subtitle'>Explore Culture</h2>
-  		<br>
-  		<a href="{% url 'join' %}" class="btn btn-default btn-social btn-facebook">Become a Stories Writer</a>
-  		<br>
-
-     	</div>
-
-		<img id='back-img' align='middle' src="/site_media/media/images/agvoj0dixz4-miguel-salgado.jpg" >
-
-	</div>
-
 
 <!-- Container (About Section) -->
 
@@ -981,12 +751,12 @@ html {
 
     		<div  class="detail"  style="text-align:center; color: #236B8E; ">
 
-<div class = "row auto-clear">
+<div class = "row auto-clear" style="padding-top:-10px;">
             {% for post in posts %}
 
       		<div class="col-sm-4 col-xs-6 col-sm-4 col-md-4 col-lg-3" >
 
-      		 <a  href="{% url 'blog_detail' pk=post.pk %}"><img style="border-radius: 5px;" class="img-responsive img-center" src="{{post.image.large.url}}" border="0" alt="penn state stadium"/></a>
+      		 <a  href="{% url 'blog_detail' pk=post.pk %}"><img style="border-radius: 2px;" class="img-responsive img-center" src="{{post.image.large.url}}" border="0" alt="penn state stadium"/></a>
 
 
 
@@ -994,10 +764,9 @@ html {
 
                 <div class="" style="text-align:left; border: 1px solid  #f8f8f8; border-radius: 5px;padding:20px; padding-top:0px;">
 
-      			<h4 style="color:#236B8E; "><a href="{% url 'blog_detail' pk=post.pk %}"><span>{{ post.title }}</span></a></h4>
+      			<h4  id="title1"><a href="{% url 'blog_detail' pk=post.pk %}"><span style="color:#424242; "><b>{{ post.title }}</b></span></a></h4>
+      			<hr>
 
-<hr>
-      			<p style="line-height: 70%; font-size:12px">{{post.description|urlizetrunc:35|truncatechars_html:70|linebreaks }}
 
                     </div>
 
@@ -1069,6 +838,6 @@ html {
 
 </script>
 
-
+{% endblock %}
 
 

@@ -51,28 +51,31 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
+
+
 '''mass email'''
 def send_email(request):
 
     from_email = "us.wpoppin@gmail.com"
+
     to = []
 
     '''
     for user in User.objects.all():
         email = str.strip(str(user.email))
-        to.append(email)
+        if not email == 'maxweberh@gmail.com' and not email == 'mathoff25@aol.com' and not email == 'spamarketing.psu@gmail.com':
+            to.append(email)
     '''
 
 
     email = BroadCastForm(request.POST)
 
     email.created = timezone.now()
-    subject = "Experience THON like Never Before"
+    subject = "WhatsPoppin Weekly Digest"
 
     text_content = 'This is an important message.'
-    html_content = '<div class="row" style="text-align: left; margin: auto; margin-bottom: 50px; padding-left: 10px; padding-right: 10px; font-size: 12px; font: sans-serif;"><h2 style="color: #236b8e;">What&#39;sPoppin Penn State! It&#39;s THON Weekend!  </h2> <br><h2>Experience THON Like Never Before </h2><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/THON17_gU5dilU.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">THON 2017: Dancers Stand</h4><hr /><p style="font-size: 18px;">After introductions of the THON 2017 Executive Committee, the dancers will stand for the first time at 6 p.m...</p></div></div><div class="col-sm-4 "><div class=""><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/THON2.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">THON 2017: 1st Line Dance</h4><hr /><p style="font-size: 18px;">Bring your dancing shoes. This year’s line dance will get its public debut Friday at 6:25 p.m. and will take place throughout the weekend almost every hour....</p></div></div><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/account/login"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/THON17_gU5dilU.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">THON 2017: Kids Fashion Show</h4><hr /><p style="font-size: 18px;">Glam. Four Diamonds children will showcase their favorite outfits on stage Saturday at 11:50 a.m....</p></div></div><h3>Don&#39;t miss any THON event. See more events on the What&#39;sPoppin app </h3><div id="apps"><br><a style="padding-left:12px;" href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img style="height: 50px;" id="apple" src="http://wpoppin.com/site_media/media/images/Download_on_the_App_Store_Badge_US-UK_135x40.svg"></a><br><a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id="google" style="height: 75px; "src="http://wpoppin.com/site_media/media/images/google-play-badge.png"></a></div></div></div></div>'
-
-
+    html_content = '<div class="row" style="text-align: left; margin: auto; margin-bottom: 50px; padding-left: 10px; padding-right: 10px; font-size: 12px; font: sans-serif;"><h2 style="color: #236b8e;">What&#39;sPoppin Penn State!   </h2> <br><h2>There are tons of great events going on this week. <br><br> We will also be releasing v2.0 of our app soon. We will keep you updated. </h2><div class="col-sm-4"><div class=""><a href="http://www.wpoppin.com/post/post/365/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/17504398_1840028592988252_194014189263726394_o.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">MELA 2017</h4><hr /><p style="font-size: 18px;">Mohona- Bangladesh Cultural Club invites you to celebrate the Bengali New Year for the first time on campus. Join us for a night of festivity, filled with cultural performances such as Bengali musi...</p></div></div><div class="col-sm-4 "><div class=""><a href="http://www.wpoppin.com/post/post/334/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/WILLARD.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">Sam Richards vs Willard Preacher</h4><hr /><p style="font-size: 18px;">Come out and watch Sociology professor Sam Richards debate the one and only Willard Preacher. The event is FREE but donations to our Haiti project would be greatly appreciated (both cash and venmo ...</p></div></div><div class="col-sm-4"><div class=""><a href="http://www.wpoppin.com/post/post/333/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/LAVERNECOX.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">Laverne Cox</h4><hr /><p style="font-size: 18px;"></p></div></div><h3>Spring out and do something exciting this week...it is Spring after all (who knows how long this nice weather will last). See more events on the What&#39;sPoppin app </h3><div id="apps"><br><a style="padding-left:12px;" href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img style="height: 50px;" id="apple" src="http://www.lexialearning.com/sites/default/files/logo-app_store.png"></a><br><a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id="google" style="height: 75px; "src="http://wpoppin.com/site_media/media/images/google-play-badge.png"></a></div></div></div></div>'
+    #'<div class="row" style="text-align: left; margin: auto; margin-bottom: 50px; padding-left: 10px; padding-right: 10px; font-size: 12px; font: sans-serif;"><h2 style="color: #236b8e;">What&#39;sPoppin Penn State!   </h2> <br><h2>There are tons of great events going on this week. <br><br> We will also be releasing v2.0 of our app soon. We will keep you updated. </h2><div class="col-sm-4"><div class=""><a href="http://www.wpoppin.com/post/post/339/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/arabmusic.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">Arab Music Night: Connecting Cultures</h4><hr /><p style="font-size: 18px;">Join us for a night of Arab music and food at Webster&#39;s Bookstore Cafe! الموسيقي لغة تقرب الشعوب ...</p></div></div><div class="col-sm-4 "><div class=""><a href="http://www.wpoppin.com/post/post/331/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/NRTSPA.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">"NRT and SPA Latenight Present: Short Term 12"</h4><hr /><p style="font-size: 18px;">Based off of the movie of the same title "Short Term 12" was written and adapted for the stage by the original cast and directo....</p></div></div><div class="col-sm-4"><div class=""><a href="http://www.wpoppin.com/post/post/342/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/psda.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">PSDAs 4th Annual Spring Showcase</h4><hr /><p style="font-size: 18px;">Penn State Dance Alliance invites you to our 4th Annual Spring Showcase! The showcase will feature a variety of pieces choreographed by our members. Come out and see what we have been working on al......</p></div></div><h3>Spring out and do something exciting this week...it is Spring after all (who knows how long this nice weather will last). See more events on the What&#39;sPoppin app </h3><div id="apps"><br><a style="padding-left:12px;" href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img style="height: 50px;" id="apple" src="http://www.lexialearning.com/sites/default/files/logo-app_store.png"></a><br><a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id="google" style="height: 75px; "src="http://wpoppin.com/site_media/media/images/google-play-badge.png"></a></div></div></div></div>'
     #'<div class="row" style="text-align: left; margin: auto; margin-bottom: 50px; padding-left: 10px; padding-right: 10px; font-size: 12px; font: sans-serif;"><h2 style="color: #236b8e;">What&#39;sPoppin Penn State!  </h2> <br><h3>Stories you might have missed this week </h3><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/stories/post/11"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/phpThumb_generated_thumbnailjpg_wnpYtKs.large" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">MEGAShabbat Welcomes You</h4><hr /><p style="font-size: 18px;">Did you go to Megashabbat on Friday? What did you think of the music, the food, and the speeches? Wasn’t it fun? If you weren’t there and haven’t heard of it, you missed out on a good time to share with other students...</p></div></div><div class="col-sm-4 "><div class=""><a href="http://wpoppin.com/stories/post/10"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/5386981024_d26891d95a_b.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">Explore Teenage Angst post 9/11</h4><hr /><p style="font-size: 18px;">American Idiot lies in the time period during which American Idiot takes place. Imagine being a teen post 9/11… How do you act? What do you feel? Who do you blame? And how do you handle...</p></div></div><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/stories/post/8"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/Screen_Shot_2017-02-06_at_9.53.02_PM.large.png" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">What&#39;sPoppin Presents: TV Dinners</h4><hr /><p style="font-size: 18px;">One campus. 50,000 students. Hundreds of organizations. Dozens of events each day. It’s overwhelming. How can I sift through this endless amount of options to meet the right people, to find organizations and events worth...</p></div></div><h.3Read more on the What&#39;sPoppin app </h3><div id="apps"><br><a style="padding-left:12px;" href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img style="height: 50px;" id="apple" src="http://www.lexialearning.com/sites/default/files/logo-app_store.png"></a><br><a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id="google" style="height: 75px; "src="http://wpoppin.com/site_media/media/images/google-play-badge.png"></a></div></div></div></div>'
 
     #'<div class="row" style="text-align: left; margin: auto; margin-bottom: 50px; padding-left: 10px; padding-right: 10px; font-size: 12px; font: sans-serif;"><h2 style="color: #236b8e;">What&#39;sPoppin Penn State: Launch Week. It&#39;s Poppin!!! <br> <br>We are officially launching our iOS and android apps today. We thank you for joining our journey early on. Your feedback has been central to our progress. Download the app below. <div id="apps"><a href="https://itunes.apple.com/us/app/whatspoppin/id1198513124?ls=1&mt=8" target="_blank" rel="noopener noreferrer">	<img style="height: 50px;" id="apple" src="http://www.lexialearning.com/sites/default/files/logo-app_store.png"></a><a href="https://play.google.com/store/apps/details?id=com.wpoppin.whatspoppin" target="_blank" rel="noopener noreferrer">	<img id="google" style="height: 75px; "src="http://wpoppin.com/site_media/media/images/google-play-badge.png"></a></div></h2> <br><h2> See Our Launch Week Events Below. More Events this week on our app! </h2><br><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/post/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/gatsby.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">What&#39;sPoppin Presents: Gatsby Formal</h4><hr /><p style="font-size: 18px;">Celebrate Valentine&#39;s Day a little early, with an experience like no other and relive the roaring 20&#39;s. Jazz and flappers abound, break out your fancy clothes and join WhatsPoppin for our very first 2017 event! Admission is free with a download of the WhatsPoppin app, located at www.wpoppin.com. Alternatively, tickets can be bought at the door for $10...</p></div></div><div class="col-sm-4 "><div class=""><a href="http://wpoppin.com/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/bangra.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">What&#39;sPoppin Presents: Bangra Dance Flash Mob</h4><hr /><p style="font-size: 18px;">Stop by the HUB at 12:30pm to watch as one of the most talented and colorful Penn State Dance Clubs at Penn State perform in a pop-up performance.</p></div></div><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/post/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/tv_dinners.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">What&#39;sPoppin Presents: TV Dinners</h4><hr /><p style="font-size: 18px;">Join us for another one of our Launch Week pop-up performances. TV Dinners, one of the most talented Penn State student bands will be performing at the HUB on Wednesday at 1:30pm</p></div></div><div class="col-sm-4"><div class=""><a href="http://wpoppin.com/stories/post/4/"><img class="img-responsive img-center" style="border-radius: 5px;" src="http://www.wpoppin.com/site_media/media/Post/images/flashmob.large.jpg" alt="penn state stadium" border="0" /></a></div><div class="" style="text-align: left; border: 1px solid  #f8f8f8; border-radius: 5px; padding: 20px;"><h4 style="color: #236b8e; font-size: 18px;">What&#39;sPoppin Presents: Dance Flash Mob</h4><hr /><p style="font-size: 18px;">On Wednesday, at 2:30pm, stop by the HUB and watch one of the biggest and grandest flash mobs to ever be organised at Penn State. Download our app to know who is performing.</p></div></div></div>'
@@ -106,7 +109,7 @@ def charity(request):
 
 def art(request):
     posts = Post.objects.filter(category = Post.ART).order_by('-posted_date')
-    return render(request, 'Post/Art.html', {'posts':posts})
+    return render(request, 'Post/arts.html', {'posts':posts})
 
 def comedy(request):
     posts = Post.objects.filter(category = Post.COMEDY).order_by('-posted_date')
@@ -118,8 +121,8 @@ def poetry(request):
 
 
 def performing_arts(request):
-    posts = Post.objects.filter(Q(category = Post.DANCE) | Q(category=Post.ARTS) | Q(category = Post.THEATRE)).order_by('-posted_date')
-    return render(request, 'Post/arts.html', {'posts':posts})
+    posts = Post.objects.filter(Q(category = Post.DANCE) | Q(category=Post.ARTS) | Q(category = Post.THEATRE) | Q(category = Post.COMEDY) | Q(category = Post.POETRY)).order_by('-posted_date')
+    return render(request, 'Post/performing_arts.html', {'posts':posts})
 
 def academic(request):
     posts = Post.objects.filter(Q(category = Post.ACADEMIC) | Q(category=Post.PROFESSIONAL) | Q(category = Post.CLUB_EVENT) | Q(category = Post.LECTURE) | Q(category = Post.DEBATE)).order_by('-posted_date')
@@ -128,6 +131,22 @@ def academic(request):
 def wpoppin(request):
     posts = Post.objects.filter(category = Post.WP).order_by('-posted_date')
     return render(request, 'Post/wp.html', {'posts': posts})
+
+def health(request):
+    posts = Post.objects.filter(category = Post.HEALTH).order_by('-posted_date')
+    return render(request, 'Post/health.html', {'posts': posts})
+
+def gaming(request):
+    posts = Post.objects.filter(category = Post.GAMING).order_by('-posted_date')
+    return render(request, 'Post/gaming.html', {'posts': posts})
+
+def films(request):
+    posts = Post.objects.filter(category = Post.MOVIES).order_by('-posted_date')
+    return render(request, 'Post/films.html', {'posts': posts})
+
+def think(request):
+    posts = Post.objects.filter(Q(category = Post.ACADEMIC) | Q(category = Post.PROFESSIONAL) | Q(category = Post.LECTURE) | Q(category = Post.POLITICAL)).order_by('-posted_date')
+    return render(request, 'Post/think.html', {'posts': posts})
 
 
 '''end categories'''
@@ -305,7 +324,7 @@ def post_list(request):
     return render(request, 'Post/post_list.html', {'posts':posts})
 '''
 
-@login_required
+
 @page_template('Post/post_list.html')  # just add this decorator
 def post_list(
         request, template='Post/post_list_scroll.html', extra_context=None):
@@ -334,9 +353,13 @@ def post_list(
         '''
     now = timezone.now()
     #.filter(Q(date__gt=now.date()))
+    #.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).
+    #Post.objects.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).order_by('-posted_date')
+    startdate = date.today()
+    enddate = startdate + timedelta(days=365)
 
     context = {
-        'posts': Post.objects.filter(posted_date__lte=timezone.now()).order_by('-posted_date'),
+        'posts': Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date'),
     }
     if extra_context is not None:
         context.update(extra_context)

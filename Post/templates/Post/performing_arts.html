@@ -1,0 +1,134 @@
+{% extends "Post/side_nav.html" %}
+
+{% load i18n %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block content %}
+
+
+<style>
+
+.col-lg-7 {
+width:660px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+
+
+
+}
+
+.button {
+  background: Orange;
+  float:right;
+  background-image: -webkit-linear-gradient(top, Orange, orange);
+  background-image: -moz-linear-gradient(top, Orange, orange);
+  background-image: -ms-linear-gradient(top, Orange, orange);
+  background-image: -o-linear-gradient(top, Orange, orange);
+  background-image: linear-gradient(to bottom, Orange, orange);
+  border-radius: 4px;
+  font-family: Arial;
+  color: white;
+  font-size: 14px;
+  padding: 10px 12px 10px 12px;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: orange;
+  background-image: -webkit-linear-gradient(top, orange, orange);
+  background-image: -moz-linear-gradient(top, orange, orange);
+  background-image: -ms-linear-gradient(top, orange, orange);
+  background-image: -o-linear-gradient(top, orange, orange);
+  background-image: linear-gradient(to bottom, orange, orange);
+  text-decoration: none;
+  color:white;
+}
+
+
+
+
+.date { color:grey; font-size:13px; display:inline;}
+
+#right {float:right;}
+
+
+
+@media (max-width:960px){
+.col-lg-7 .col-md-7{
+	width:600px;
+margin:auto;
+text-align:left; font-size: 15px; color: #504849; padding-left:20px; padding-right:20px; padding-bottom:5px; padding-top: 20px;
+}
+}
+
+@media (max-width:800px){
+.col-lg-7 .col-md-7{
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+
+}
+
+
+@media (max-width:600px){
+
+
+
+.col-lg-7{
+	margin:0px;
+	width:100%;
+	padding-left:0px;
+	padding-right:3px;
+	padding-top: 0px;
+	margin-right:40px;
+
+}
+
+.date {display:block;}
+#right {float:none;}
+
+
+.well{
+	zoom: .7;
+
+}
+
+.well p{ zoom: 1.2;}
+
+
+.image {
+	width:100%;
+	padding:0px;
+
+
+}
+
+}
+</style>
+
+
+<div class="col-lg-7  col-md-7 col-sm-7 " id="events" class="tab-pane">
+
+    <!-- <a class="btn btn-primary"  href="{% url 'post_list' %}">All Events</a>  <a class="btn btn-default"  href="{% url 'EventsToday' %}">Today</a>
+      <a class="btn btn-default"  href="{% url 'EventsTomorrow' %}">Tomorrow</a> <a class="btn btn-default"  href="{% url 'EventsWeek' %}">This Week</a>
+      <a class="btn btn-default"  href="{% url 'EventsMonth' %}">This Month</a>   <br> <br> -->
+
+          	 {% for post in posts %}
+
+                {% include 'Post/_post.html' %}
+
+{% endfor %}
+
+
+
+
+
+
+
+
+{% endblock %}

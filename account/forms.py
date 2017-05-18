@@ -42,6 +42,13 @@ class SignupForm(forms.Form):
         label=_("Email"),
         widget=forms.TextInput(), required=True)
 
+
+    organization = forms.BooleanField(
+            label = _("Are you an organization or club? Check if true."),
+        widget=forms.CheckboxInput(), required=False
+        )
+
+
     code = forms.CharField(
         max_length=64,
         required=False,
@@ -105,7 +112,7 @@ class LoginForm(forms.Form):
 
 class LoginUsernameForm(LoginForm):
 
-    username = forms.CharField(label=_("Username"), max_length=30)
+    username = forms.CharField(label=_("Username or Email"), max_length=30)
     authentication_fail_message = _("The username and/or password you specified are not correct.")
     identifier_field = "username"
 
@@ -219,6 +226,6 @@ class SettingsForm(forms.Form):
 
 
 
-    
-       	
-    
+
+
+

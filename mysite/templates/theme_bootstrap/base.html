@@ -48,7 +48,7 @@
 
             {% block topbar_base %}
                 <header>
-                    <div style="background-color:#236B8E;" class="navbar navbar-default {% block navbar_class %}navbar-fixed-top{% endblock %}">
+                    <div style="background-color:#fff;" class="navbar navbar-default {% block navbar_class %}navbar-fixed-top{% endblock %}">
                         <div class="container">
                         {% block topbar %}
                             <div class="navbar-header">
@@ -57,9 +57,9 @@
                                 </button>
                                 {% block site_brand %}
 {% if not user.is_authenticated %}
-<a class="navbar-brand" href="{% url "home" %}" style = " color:white;"><b>{{ SITE_NAME }}</b></a>
+<a class="navbar-brand" href="{% url "home" %}" style = " color:#236B8E;"><b>{{ SITE_NAME }}</b></a>
 {% else %}
-<a class="navbar-brand" href="{% url "post_list" %}" style = " color:white;"><b>{{ SITE_NAME }}</b></a>
+<a class="navbar-brand" href="{% url "post_list" %}" style = " color:#236B8E;"><b>{{ SITE_NAME }}</b></a>
 {% endif %}
 {% endblock %}
                             </div>

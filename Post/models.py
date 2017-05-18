@@ -20,7 +20,8 @@ from django.db.models import signals
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.db.models import F
-
+from account.models import Account
+from django.shortcuts import get_object_or_404
 
 # Create your models here.
 
@@ -111,7 +112,7 @@ class Post(activity.Activity, models.Model):
     location = gis_models.PointField(u"longitude/latitude",
                                      geography=True, blank=True, null=True)
 
-    saves = models.IntegerField(null=True)
+    #saves = models.IntegerField(null=True)
 
     gis = gis_models.GeoManager()
     objects = models.Manager()
@@ -119,6 +120,10 @@ class Post(activity.Activity, models.Model):
     #tags = TaggableManager()
 
     created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+
+    #the attendees many-to-many relationship with the account model
+    attending = models.ManyToManyField('account.Account', blank=True, related_name="attending")
 
     class Meta:
         ordering = ['-posted_date']
@@ -150,6 +155,15 @@ class Post(activity.Activity, models.Model):
     def get_absolute_url(self):
         return reverse('post_detail', args=[self.pk])
 
+
+    @property
+    def account(self):
+        return get_object_or_404(Account.objects.all(), user=self.author)
+
+    @property
+    def num_comments(self):
+        return self.comments.count()
+
     '''
     def save(self, **kwargs):
         if not self.location:
@@ -166,6 +180,8 @@ class Post(activity.Activity, models.Model):
                 self.location = geos.fromstr(point)
         super(Post, self).save()
     '''
+
+
 
 class Question(activity.Activity, models.Model):
     author = models.ForeignKey('auth.user')

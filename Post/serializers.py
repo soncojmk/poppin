@@ -1,12 +1,31 @@
 from rest_framework import serializers
-from Post.models import Post
+from Post.models import Post, EventComment
+from account.models import Account
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
+from drf_extra_fields.fields import Base64ImageField
+from account.serializers import AccountSerializer
 
-class PostSerializer(serializers.ModelSerializer):
+
+class attendingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link')
+        fields = ('attending',)
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventComment
+        fields = ('author', 'comment', 'created_date',)
+
+
+class PostSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(required=False)
+    attending = attendingSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Post
+        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,13 +43,30 @@ class UserSerializer(serializers.ModelSerializer):
 author = serializers.ReadOnlyField(source='author.username')
 
 
+
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
+    image = Base64ImageField(required=False)
+    attending = attendingSerializer(read_only=True, many=True)
 
     class Meta:
         model = Post
         fields = ('url', 'pk', 'author', 'category',
-                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link')
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending')
+
+
+
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    account = AccountSerializer()
+    image = Base64ImageField(required=False)
+    attending = attendingSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Post
+        fields = ('url', 'pk', 'author', 'account', 'category',
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments',)
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -39,3 +75,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ('url', 'pk', 'username')
+
+

@@ -16,7 +16,6 @@
 
 {% block body_base %}
 
-{% if user.is_authenticated %}
 
 
 
@@ -112,48 +111,38 @@ body {
 }
 
 
-
-
 @media (max-width:620px) {
 .sidebar-nav-fixed{
 	display:none;
-
 }
-
-
 }
-
-
 
 
 </style>
 
 
+<!--  data-spy="affix"  -->
+
 <div class="container" >
 	<div class="row" >
   		<div class="col-lg-3 col-md-3  " >
           <!--sidebar-->
-          <div class="sidebar-nav-fixed" style="padding-top:20px; padding-left:60px;" data-spy="affix" data-offset-top="140">
+          <div class="sidebar-nav-fixed" style="padding-top:20px; padding-left:60px;" data-offset-top="140">
           <ul class="nav nav-list" class="center" style="color:black;">
-	      <li><a href="{% url 'my_events' %} ">  <i id="icon" class="fa fa-user"> </i>   {% if request.user.first_name and request.user.last_name %}
-            {{ request.user.first_name}} {{request.user.last_name}}
-        {% else %}
-        {{request.user}}
-
-        {% endif %} </a></li>
-             {# <li class="{% navactive request 'feed' %}"><a href="{% url 'feed' %} "  id="feednav">  <i id="icon" class="fa fa-globe"></i> All Events </a></li> #}
+              {# <li class="{% navactive request 'feed' %}"><a href="{% url 'feed' %} "  id="feednav">  <i id="icon" class="fa fa-globe"></i> All Events </a></li> #}
             <li class="{% navactive request 'post_list' %}"><a href="{% url 'post_list' %} " id="eventsnav">  <i id="icon" class="fa fa-newspaper-o"></i> Home </a> </li>
             <li class="{% navactive request 'music' %}"><a href="{% url 'music' %} "  id="concertsnav">  <i id="icon" class="fa fa-music"></i> Music </a> </li>
-           {# <li class="{% navactive request 'sports' %}"><a href="{% url 'sports' %} "  id="sportsnav">  <i id="icon" class="fa fa-futbol-o"></i> Sports </a> </li> #}
-            <li class="{% navactive request 'arts' %}"><a href="{% url 'arts' %} "  id="artsnav">  <i id="icon" class="fa fa-street-view"></i> Arts </a> </li>
-            <li class="{% navactive request 'academic' %}"><a href="{% url 'academic' %} "  id="academicnav">  <i id="icon" class="fa fa-folder-open-o"></i> Academic </a> </li>
+            <li class="{% navactive request 'performingArts' %}"><a href="{% url 'performingArts' %} "  id="performingartsnav">  <i id="icon" class="fa fa-street-view"></i> Performing Arts </a> </li>
+            <li class="{% navactive request 'arts' %}"><a href="{% url 'arts' %} "  id="artnav">  <i id="icon" class="fa fa-folder-open-o"></i> Art </a> </li>
+            <li class="{% navactive request 'sports' %}"><a href="{% url 'sports' %} "  id="sportsnav">  <i id="icon" class="fa fa-futbol-o"></i> Sports </a> </li>
             <li class="{% navactive request 'charity' %}"><a href="{% url 'charity' %} "  id="charitynav">  <i id="icon" class="fa fa-heart"></i> Fundraisers </a> </li>
-            <li class="{% navactive request 'blog_list' %}"><a href="{% url 'blog_list' %} "  id="blognav">  <i id="icon" class="fa fa-file-text-o"></i> Stories </a> </li>
-            <li class="{% navactive request 'question_list' %}"><a href="{% url 'question_list' %}"  id="questions">  <i id="icon" class="fa fa-question-circle"></i> Questions </a></li>
-		<li class="divider"></li> <hr>
-		<li class="divider"></li>
+            <li class="{% navactive request 'health' %}"><a href="{% url 'health' %}"  id="healthnav">  <i id="icon" class="fa fa-medkit"></i> Health/Well-being </a></li>
+            <li class="{% navactive request 'gaming' %}"><a href="{% url 'gaming' %}"  id="gamingnav">  <i id="icon" class="fa fa-gamepad"></i> Gaming </a></li>
+            <li class="{% navactive request 'films' %}"><a href="{% url 'films' %}"  id="filmsnav">  <i id="icon" class="fa fa-film"></i> Films </a></li>
+            <li class="{% navactive request 'think' %}"><a href="{% url 'think' %}"  id="thinknav">  <i id="icon" class="fa fa-lightbulb-o"></i> Think </a></li>
+             <hr>
+		       <li class="{% navactive request 'blog_list' %}"><a href="{% url 'blog_list' %} "  id="blognav">  <i id="icon" class="fa fa-file-text-o"></i> Stories </a> </li>
 	    <li><a href="{% url 'post_new' %}" id="postevent">  <i id="icon" class="fa fa-pencil-square-o"></i> Post New Event </a></li>
-	    <li><a href="{% url 'question_list' %}" id="postquestion">  <i id="icon" class="fa fa-plus-circle"></i> Post New Question </a></li>
           </ul>
           </div>
       	</div>
@@ -163,10 +152,14 @@ body {
 
 {% block content %}
 {% endblock %}
+  <!--  <li><a href="{% url 'my_events' %} ">  <i id="icon" class="fa fa-user"> </i>  {% if request.user.first_name and request.user.last_name %}
+            {{ request.user.first_name}} {{request.user.last_name}}
+        {% else %}
+        {{request.user}}  {% endif %}   </a></li>-->
+
 
 </div>
 
-{% endif %}
 
 
 

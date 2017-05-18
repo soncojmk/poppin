@@ -29,14 +29,25 @@ router.register(r'wpoppin', views.WpoppinViewSet, 'wpoppin')
 router.register(r'events_today', views.PostTodayViewSet, 'events_today')
 router.register(r'events_tomorrow', views.PostTomorrowViewSet, 'events_tomorrow')
 router.register(r'events_this_week', views.PostThisWeekViewSet, 'events_this_week')
-router.register(r'accounts', views.UserViewSet)
+router.register(r'accounts', views.AccountViewSet)
 router.register(r'events_this_month', views.PostThisMonthViewSet, 'events_this_month')
 
+#router.register(r'token-auth', views.CustomObtainAuthToken, 'token-auth')
+
 router.register(r'blog', views.BlogViewSet, 'blog')
+
+router.register(r'organizations', views.OrganizationsViewSet, 'organizations')
+router.register(r'account', views.AccountViewSet, 'accounts')
+router.register(r'myaccount', views.MyAccountViewSet, 'myaccounts')
+#router.register(r'users', views.UserViewSet, 'users')
+router.register(r'myfeed', views.FeedViewSet, 'myfeed')
+router.register(r'filteredevents', views.FilteredEventViewSet, 'filteredevents')
+router.register(r'myrecommended', views.MyRecommendedViewSet, 'myrecommended')
 
 #notifications
 router.register(r'device/apns', APNSDeviceViewSet)
 router.register(r'device/gcm', GCMDeviceViewSet)
+
 
 
 urlpatterns = [
@@ -55,7 +66,13 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/wp/auth/', include('djoser.urls')), #use for wpoppin registration with email/username/password
+
+    #only returned the token: returns token and user id
     url(r'^api-token-auth/', v.obtain_auth_token), #Convert Username and Password to What'sPoppin Token
+
+    #being currently used
+    url(r'^token-auth/', views.CustomObtainAuthToken.as_view()),  #Convert Username and Password to What'sPoppin Token and id
+
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')), #our oath2 app
 
@@ -70,7 +87,9 @@ urlpatterns = [
     url(r"^academics", TemplateView.as_view(template_name="academics_homepage.html"), name="academics_home"),
     url(r"^joinourteam", TemplateView.as_view(template_name="join.html"), name="join"),
     url(r"^privacy", TemplateView.as_view(template_name="privacy.html"), name="privacy"),
-
+    url(r"^about", TemplateView.as_view(template_name="about.html"), name="about"),
+    url(r"^storieswriter", TemplateView.as_view(template_name="stories-writer.html"), name="storieswriter"),
+    url(r"^marketingintern", TemplateView.as_view(template_name="marketing-intern.html"), name="marketingintern"),
 
 
 ]

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import datetime
 import operator
 
+
 try:
     from urllib.parse import urlencode
 except ImportError:  # python 2
@@ -33,12 +34,22 @@ import hashlib
 from stdimage.models import StdImageField
 from django.contrib.auth.models import User
 
+
+
 @python_2_unicode_compatible
 class Account(models.Model):
 
+    PSU = '1'
+    TEMPLE = '2'
+
+
+    COLLEGES = (
+    (PSU, 'Penn State University'),
+    (TEMPLE, 'Temple University'),
+)
+
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="account", verbose_name=_("user"))
-    #avatar = models.ImageField(upload_to='account', blank=True)
-    about = models.TextField(null=True)
     timezone = TimeZoneField(_("timezone"))
     language = models.CharField(
         _("language"),
@@ -47,18 +58,38 @@ class Account(models.Model):
         default=settings.LANGUAGE_CODE
     )
 
-    '''
-    @classmethod
-    def for_request(cls, request):
-        if request.user.is_authenticated():
-            try:
-                account = Account._default_manager.get(user=request.user)
-            except Account.DoesNotExist:
-                account = AnonymousAccount(request)
-        else:
-            account = AnonymousAccount(request)
-        return account
-    '''
+    avatar = StdImageField(upload_to='account', null =True, blank=True,
+                          variations={'thumbnail': {"width": 100, "height": 100, "crop": True}})
+    about = models.TextField(max_length=500, default="Hi I'm just a cool bean")
+    following = models.ManyToManyField('self', symmetrical=False, related_name="followers", blank=True)
+    requesting = models.ManyToManyField('self', symmetrical=False, related_name="requested", blank=True)
+    college = models.CharField(max_length= 25, choices = COLLEGES, default=1)
+
+    #to allow organizations/clubs to create accounts
+    organization = models.BooleanField(blank=True, default=False)
+    paid = models.BooleanField(default=False)
+
+
+
+    def _num_posted(self):
+        from Post.models import Post
+        return Post.objects.filter(author=self.user).count()
+
+    num_posted = property(_num_posted)
+
+
+    @property
+    def num_followers(self):
+        return self.followers.count()
+
+    @property
+    def num_following(self):
+        return self.following.count()
+
+    @property
+    def num_requesting(self):
+        return self.requesting.count()
+
 
     def avatar_url(self):
         if self.avatar and hasattr(self.avatar, 'url'):

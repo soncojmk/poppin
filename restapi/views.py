@@ -5,25 +5,28 @@ from django.shortcuts import render
 
 
 #REST API
-from Post.serializers import PostSerializer
+from Post.serializers import PostSerializer, EventSerializer
 from blog.serializers import BlogSerializer
 from rest_framework import generics
 from Post.serializers import UserSerializer
+from account.serializers import AccountSerializer
 from django.contrib.auth.models import User
 from rest_framework import permissions
-from Post.permissions import IsOwnerOrReadOnly
+from Post.permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyAccount
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework import status
 from Post.models import Post
+from account.models import Account
 from blog.models import Blog
 from django.db.models import Q
 from rest_framework.permissions import AllowAny
 from django.utils import timezone
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 
 
 from Post.permissions import IsStaffOrTargetUser
@@ -31,124 +34,35 @@ from Post.permissions import IsStaffOrTargetUser
 from datetime import date, timedelta
 from rest_framework.generics import CreateAPIView
 from rest_framework.authentication import TokenAuthentication
+from django.shortcuts import get_object_or_404
 
-
-'''
-# API authentication
-from social.apps.django_app.utils import strategy
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
-from rest_framework import parsers
-from rest_framework.authentication import get_authorization_header
-from rest_framework.authtoken.serializers import AuthTokenSerializer
+from django.db.models import Count
 
 
-@strategy()
-def register_by_access_token(request, backend):
-    backend = request.strategy.backend
-    # Split by spaces and get the array
-    auth = get_authorization_header(request).split()
-
-    if not auth or auth[0].lower() != b'token':
-        msg = 'No token header provided.'
-        return msg
-
-    if len(auth) == 1:
-        msg = 'Invalid token header. No credentials provided.'
-        return msg
-
-    access_token = auth[1]
-
-    user = backend.do_auth(access_token)
-
-    return user
-
-
-# Pour une vraie integration au rest framework
-class ObtainAuthToken(APIView):
-    throttle_classes = ()
-    permission_classes = ()
-    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.JSONRenderer,)
-    serializer_class = AuthTokenSerializer
-    model = Token
-
-    # Accepte un backend en parametre : 'auth' pour un login / pass classique
-    def post(self, request, backend):
-        serializer = self.serializer_class(data=request.DATA)
-
-        if backend == 'auth':
-            if serializer.is_valid():
-                token, created = Token.objects.get_or_create(user=serializer.object['user'])
-                return Response({'token': token.key})
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        else:
-            user = register_by_access_token(request, backend)
-
-            if user and user.is_active:
-                token, created = Token.objects.get_or_create(user=user)
-                return Response({'id': user.id, 'name': user.username, 'firstname': user.first_name, 'userRole': 'user', 'token': token.key})
-
-
-class ObtainUser(APIView):
-    throttle_classes = ()
-    permission_classes = ()
-    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.JSONRenderer,)
-    serializer_class = AuthTokenSerializer
-    model = Token
-
-    # Renvoi le user si le token est valide
-    def get(self, request):
-        serializer = self.serializer_class(data=request.DATA)
-        if request.META.get('HTTP_AUTHORIZATION'):
-
-            auth = request.META.get('HTTP_AUTHORIZATION').split()
-
-            if not auth or auth[0].lower() != b'token' or len(auth) != 2:
-                msg = 'Invalid token header. No credentials provided.'
-                return Response(msg, status=status.HTTP_401_UNAUTHORIZED)
-
-            token = Token.objects.get(key=auth[1])
-            if token and token.user.is_active:
-                return Response({'id': token.user_id, 'name': token.user.username, 'firstname': token.user.first_name, 'userRole': 'user', 'token': token.key})
-        else:
-            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
-
-
-class ObtainLogout(APIView):
-    throttle_classes = ()
-    permission_classes = ()
-    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.JSONRenderer,)
-    serializer_class = AuthTokenSerializer
-    model = Token
-
-    # Logout le user
-    def get(self, request):
-        return Response({'User': ''})
-'''
-
-
+#Overiding api-token-auth to get id along with the default response
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id})
 
 
 #REST API VIEWSETS
 
+'''wpoppin viewsets'''
+class UserViewSet(viewsets.ModelViewSet):
 
-
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset automatically provides `list` and `detail` actions.
-    """
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class =  UserSerializer
     model = User
 
     def get_permissions(self):
         # allow non-authenticated user to create via POST
         return (AllowAny() if self.request.method == 'POST'
                 else IsStaffOrTargetUser()),
+
 
 class BlogViewSet(viewsets.ModelViewSet):
     """
@@ -167,6 +81,7 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 
 
+#don't forget to change the serializer to EventSerializer when you update so that you can allow people to see the details of old events
 class PostViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list`, `create`, `retrieve`,
@@ -174,14 +89,55 @@ class PostViewSet(viewsets.ModelViewSet):
 
     Additionally we also provide an extra `highlight` action.
     """
+
+    startdate = date.today()
+    enddate = startdate + timedelta(days=365)
+
+    queryset = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
     now = timezone.localtime(timezone.now())
-    queryset = Post.objects.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).order_by('-posted_date')
+    #queryset = Post.objects.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).order_by('-posted_date')
     serializer_class = PostSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
+    model = Post
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    #saves an event to a users account
+    @detail_route(methods=['get', 'post', 'delete'])
+    def save(self, request, pk=None):
+        event = get_object_or_404(Post.objects.all(), pk=pk)
+        requesting_user = get_object_or_404(Account.objects.all(), user=request.user)
+
+        if request.method == 'POST':
+            if requesting_user in event.attending.all():
+                    return Response({'detail': 'You are already attending this event'}, status=status.HTTP_403_FORBIDDEN)
+
+            event.attending.add(requesting_user)
+
+            return Response(status=200)
+
+
+        if request.method == 'DELETE':
+
+            # remove from attending list
+            event.attending.remove(requesting_user)
+            event.save()
+            return Response(status=200)
+
+    #returns the accounts that saved an event
+    @detail_route(methods=['get'])
+    def people_saving(self, request, pk=None):
+        event = get_object_or_404(Post.objects.all(), pk=pk)
+        #requesting_user = get_object_or_404(Account.objects.all(), user=request.user)
+
+        if request.method == 'GET':
+            serializer = AccountSerializer(event.attending, context={'request': request}, many=True)
+            return Response(serializer.data)
+
 
 
 class PostTodayViewSet(viewsets.ModelViewSet):
@@ -190,6 +146,232 @@ class PostTodayViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly,)
+
+
+
+#includes a nested user model instead of just the username like the
+class FilteredEventViewSet(viewsets.ModelViewSet):
+
+    startdate = date.today()
+    enddate = startdate + timedelta(days=365)
+
+    queryset = Post.objects.filter(date__range=[startdate, enddate]).order_by('-posted_date')
+    now = timezone.localtime(timezone.now())
+    #queryset = Post.objects.filter(posted_date__lte=timezone.now()).filter(Q(date__gte=now.date())).order_by('-posted_date')
+    serializer_class = EventSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+    model = Post
+
+
+
+#returns the requesting users feed based on the people they are following
+class FeedViewSet(viewsets.ModelViewSet):
+
+    query = Account.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+    def get_queryset(self):
+        account = get_object_or_404(self.query, user=self.request.user)
+        following = account.following.values_list('user', flat=True)
+        date_joined = self.request.user.date_joined
+
+        return Post.objects.filter(author__in=following, author=self.request.user, date__gt=date_joined).order_by('-posted_date')
+
+
+#returns the requesting users account instance
+class MyAccountViewSet(viewsets.ModelViewSet):
+
+    queryset = Account.objects.all()
+    serializer_class =  AccountSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+    permission_classes = (IsOwnerOrReadOnlyAccount,)
+    model = Account
+
+    def get_queryset(self):
+        user = self.request.user
+        return Account.objects.filter(user=user)
+
+
+    '''
+    def myposted(self):
+        user = self.request.user
+        return Post.objects.filter(author=user)
+
+    def mysaved(self):
+        user=self.request.user
+        account = get_object_or_404(Account.objects.all(), user=user)
+        return account.attending.all()
+    '''
+
+class MyRecommendedViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class =  AccountSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+    permission_classes = (IsOwnerOrReadOnlyAccount,)
+    model = Account
+
+    def get_queryset(self):
+        user = self.request.user
+        account = get_object_or_404(self.queryset, user=user)
+        mycollege = account.college
+        following = account.following.all()
+        following_user =[]
+        requested_user = []
+        for i in following:
+            following_user.append(i.user)
+
+        requested = account.requested.all()
+        for i in requested:
+            requested_user.append(i.user)
+
+
+        #num_posted = Post.objects.filter(author=user).count()
+        #annotate(followers_count=Count('followers')).
+        recommended = Account.objects.filter(college=mycollege).exclude(user__in=requested_user).exclude(user__in=following_user).exclude(user=self.request.user).select_related('user').prefetch_related('following').prefetch_related('requesting')
+        return sorted(recommended, key= lambda t: t.num_posted, reverse=True)[:20]
+
+
+
+class OrganizationsViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.filter(organization=True)
+    serializer_class = AccountSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+    permission_classes = (IsOwnerOrReadOnlyAccount,)
+    model = Account
+
+
+
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all().select_related('user').prefetch_related('following').prefetch_related('requesting')
+    serializer_class =  AccountSerializer
+    parser_classes = (MultiPartParser, JSONParser)
+    permission_classes = (IsOwnerOrReadOnlyAccount,)
+    model = Account
+
+
+    @detail_route(methods=['get'])
+    def saved(self, request, pk=None):
+        account = get_object_or_404(self.queryset, pk=pk)
+        if request.method == 'GET':
+            serializer = EventSerializer(account.attending, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+    @detail_route(methods=['get'])
+    def posted(self, request, pk=None):
+        account = get_object_or_404(self.queryset, pk=pk)
+        user = account.user
+        query = Post.objects.filter(author=user)
+
+        if request.method == 'GET':
+            serializer = EventSerializer(query, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+
+
+    @detail_route(methods=['post'])
+    def update_profile(self, request, *args, **kwargs):
+        data = request.data
+        user = get_object_or_404(self.queryset, user=request.user)
+        serializer = AccountSerializer(user, data=data, context={'request': request}, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data)
+
+
+    #get the account's followers
+    @detail_route(methods=['get'])
+    def followers(self, request, pk=None):
+
+        account = get_object_or_404(self.queryset, pk=pk)
+        if request.method == 'GET':
+            serializer = AccountSerializer(account.followers, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+    #get the people the account is following
+    @detail_route(methods=['get'])
+    def following(self, request, pk=None):
+
+        account = get_object_or_404(self.queryset, pk=pk)
+        if request.method == 'GET':
+            serializer = AccountSerializer(account.following, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+    #get the people requesting to follow the account
+    @detail_route(methods=['get'])
+    def requesting(self, request, pk=None):
+
+        account = get_object_or_404(self.queryset, pk=pk)
+        if request.method == 'GET':
+            serializer = AccountSerializer(account.requesting, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+    #get the people the account has requested to folloq
+    @detail_route(methods=['get'])
+    def requested(self, request, pk=None):
+
+        account = get_object_or_404(self.queryset, pk=pk)
+        if request.method == 'GET':
+            serializer = AccountSerializer(account.requested, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+
+    #function that handles the following/unfollowing
+    @detail_route(methods=['post', 'put', 'get', 'delete'])
+    def follow(self, request, pk=None):
+
+        url_user = get_object_or_404(self.queryset, pk=pk) #user from url
+        requesting_user = get_object_or_404(self.queryset, user=request.user)  #requesting user
+
+        if request.method == 'GET':
+            serializer = AccountSerializer(url_user.requested, context={'request': request}, many=True)
+            return Response(serializer.data)
+
+        # send follow request
+        if request.method == 'POST':
+            if request.user.pk is int(pk):  # cant add yourself as your friend
+                return Response({'detail': 'cant follow yourself'}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                if requesting_user in url_user.followers.all():
+                    return Response({'detail': 'Already following'}, status=status.HTTP_403_FORBIDDEN)
+
+                if url_user in requesting_user.requested.all():
+                    return Response({'detail': 'Already sent the request'}, status=status.HTTP_403_FORBIDDEN)
+
+                requesting_user.requested.add(url_user)
+                return Response(status=200)
+
+
+        if request.method == 'PUT':
+            if request.user.pk is int(pk):  # cant add yourself as your friend
+                return Response({'detail': 'cant follow yourself'}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                if url_user not in requesting_user.requesting.all():
+                    return Response({'detail': 'No follow request found'}, status=status.HTTP_403_FORBIDDEN)
+
+                requesting_user.followers.add(url_user)
+                requesting_user.requesting.remove(url_user)
+                url_user.following.add(requesting_user)
+                return Response(status=200)
+
+
+        if request.method == 'DELETE':
+
+            # remove from user follow list or waitlist if the user's request hadnt been accepted yet
+            url_user.followers.remove(requesting_user)
+            url_user.requesting.remove(requesting_user)
+
+            requesting_user.following.remove(url_user)
+            requesting_user.requested.remove(url_user)
+            requesting_user.save()
+            url_user.save()
+            return Response(status=200)
 
 
 class PostTomorrowViewSet(viewsets.ModelViewSet):

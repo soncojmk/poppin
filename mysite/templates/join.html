@@ -1,734 +1,127 @@
-{% load account_tags %}
-{% load staticfiles %}
-{% load i18n %}
-{% load bootstrap_tags %}
-{{ form.media }}
+{% extends "site_base.html" %}
 
-<!DOCTYPE html>
+{% load i18n %}
+
+{% load base_extras %}
+
+{% load account_tags %}
+
+{% load pinax_likes_tags %}
+
+{% load taggit_templatetags2_tags %}
+
+{% block head_title %}{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+
+
+
 <html lang="{{ LANGUAGE_CODE }}">
 
-	<head>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  	<link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-		<link rel="shortcut icon" type="image/png" sizes="18x16" href="/site_media/media/images/LogoMakr (3).png">
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<!--not sure what this one does-->
-		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
-        <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-84946467-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
+   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
-		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  		<link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  		<link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-  		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-      <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-      <title >{% block head_title_base %}{% if SITE_NAME %}{{ SITE_NAME }} {% endif %}{% block head_title %}{% endblock %}{% endblock %}</title>
-
-
-		{% block viewport %}
-
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-      {% endblock %}
-
-      {% block styles %}
-
-		{% endblock %}
-
-      {% block html5shim %}
-
-      	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
-         <!--[if lt IE 9]>
-         	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-         <![endif]-->
-
-      {% endblock %}
-
-      {% block extra_head_base %}
-
-      	{% block extra_head %}{% endblock %}
-
-      {% endblock %}
-
-	</head>
-
-	{% load i18n %}
-
-
-<style>
-	html, body {height:100%;}
-	body {
-
-
-
-		background-color: white;
-		max-width: 100%;
-		overflow-x: hidden;
-		height: 100%;
-  	}
-
-
-  	.jumbotron {
-      background-color: #236B8E;
-      color: #fff;
-      padding: 100px 25px;
-      font-family: Montserrat, sans-serif;
-      padding-left: 0px;
-      padding-right: 0px;
-  	}
-
-
-  	.container-fluid {
-      padding: 60px 50px;
-  	}
-  	.bg-white {
-      background-color: white;
-  	}
-  	.logo-small {
-      color: #236B8E;
-      font-size: 50px;
-  	}
-  	.logo {
-      color: #236B8E;
-      font-size: 200px;
-  	}
-  	.thumbnail {
-      padding: 0 0 15px 0;
-      border: none;
-      border-radius: 0;
-  	}
-  	.thumbnail img {
-      width: 100%;
-      height: 100%;
-      margin-bottom: 10px;
-  	}
-  	.item h4 {
-      font-size: 19px;
-      line-height: 1.375em;
-      font-weight: 400;
-      font-style: italic;
-      margin: 70px 0;
-  	}
-  	.item span {
-      font-style: normal;
-  	}
-  	.panel {
-      border: 1px solid  #236B8E;
-      border-radius:0 !important;
-      transition: box-shadow 0.5s;
-  	}
-  	.panel:hover {
-      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  	}
-  	.panel-footer .btn:hover {
-      border: 1px solid  #236B8E;
-      background-color: #fff !important;
-      color:#236B8E;
-  	}
-  	.panel-heading {
-      color: #fff !important;
-      background-color:  #236B8E !important;
-      padding: 25px;
-      border-bottom: 1px solid transparent;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-  	}
-  	.panel-footer {
-      background-color: white !important;
-  	}
-  	.panel-footer h3 {
-      font-size: 32px;
-  	}
-  	.panel-footer h4 {
-      color: #aaa;
-      font-size: 14px;
-  	}
-  	.panel-footer .btn {
-      margin: 15px 0;
-      background-color:  #236B8E;
-      color: #fff;
-  	}
-  	.navbar {
-  		width: 100vw;
-      margin-bottom: 0;
-		background-color:  rgba(35, 107, 142, 0);
-      z-index: 9999;
-      border: 0;
-      font-size: 12px !important;
-      line-height: 1.42857143 !important;
-      letter-spacing: 4px;
-      border-radius: 0;
-      font-family: Montserrat, sans-serif;
-
-  	}
-  	.navbar li a {
-		font-size: 16px;
-	}
-	.navbar-brand {
-		font-size: 25px;
-	}
-  	.navbar li a, .navbar .navbar-brand {
-      color: #fff !important;
-  	}
-  	.navbar-nav li a:hover, .navbar-nav li.active a {
-      color:  #236B8E !important;
-      background-color: #fff !important;
-  	}
-
-	.navbar-nav li a {
-      color: #fff !important;
-      background-color: rgba(35, 107, 142, 0)  !important;
-  	}
-  	.navbar-default .navbar-toggle {
-      border-color: transparent;
-      color: #fff !important;
-  	}
-  	footer .glyphicon {
-      font-size: 20px;
-      margin-bottom: 20px;
-      color:  #236B8E;
-  	}
-  	.slideanim {
-  		visibility: hidden;
-  	}
-  	.slide {
-      animation-name: slide;
-      -webkit-animation-name: slide;
-      animation-duration: 1s;
-      -webkit-animation-duration: 1s;
-      visibility: visible;
-  	}
-
-
-  	@keyframes slide {
-   	0% {
-      	opacity: 0;
-      	-webkit-transform: translateY(70%);
-    	}
-    	100% {
-      	opacity: 1;
-      	-webkit-transform: translateY(0%);
-    	}
-  	}
-  	@-webkit-keyframes slide {
-    	0% {
-      	opacity: 0;
-      	-webkit-transform: translateY(70%);
-    	}
-    	100% {
-      	opacity: 1;
-      	-webkit-transform: translateY(0%);
-    	}
-  	}
-
-
-	body {
-      font: 400 15px Lato, sans-serif;
-      line-height: 1.8;
-
-		background-color: #f6f6f6;
-  	}
-  	h2 {
-      font-size: 24px;
-      text-transform: uppercase;
-      color: #303030;
-      font-weight: 600;
-      margin-bottom: 30px;
-  	}
-  	h4 {
-      font-size: 21px;
-      line-height: 1.375em;
-      color: #303030;
-      font-weight: 400;
-      margin-bottom: 10px;
-  	}
-
-	.detail p{
-		font-size: 15px;
-		font: 400 15px Lato, sans-serif;
-      line-height: 1.8;
-      color: #818181;
-	}
-  	.jumbotron {
-      background-color: #236B8E;
-      color: #fff;
-      padding: 100px 25px;
-      font-family: Montserrat, sans-serif;
-      padding-left: 0px;
-      padding-right: 0px;
-  	}
-
-  	.container-fluid {
-      padding: 60px 50px;
-  	}
-  	.bg-white {
-      background-color: white;
-  	}
-  	.logo-small {
-      color: #236B8E;
-      font-size: 50px;
-  	}
-  	.logo {
-      color: #236B8E;
-      font-size: 200px;
-  	}
-  	.thumbnail {
-      padding: 0 0 15px 0;
-      border: none;
-      border-radius: 0;
-  	}
-  	.thumbnail img {
-      width: 100%;
-      height: 100%;
-      margin-bottom: 10px;
-  	}
-  	.item h4 {
-      font-size: 19px;
-      line-height: 1.375em;
-      font-weight: 400;
-      font-style: italic;
-      margin: 70px 0;
-  	}
-  	.item span {
-      font-style: normal;
-  	}
-  	.panel {
-      border: 3px solid  #236B8E;
-      border-radius:0 !important;
-      transition: box-shadow 0.5s;
-  	}
-  	.panel:hover {
-      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  	}
-  	.panel-footer .btn:hover {
-      border: 1px solid  #236B8E;
-      background-color: #fff !important;
-      color:#236B8E;
-  	}
-  	.panel-heading {
-      color: #fff !important;
-      background-color:  #236B8E !important;
-      padding: 25px;
-      border-bottom: 1px solid transparent;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-  	}
-  	.panel-footer {
-      background-color: white !important;
-  	}
-  	.panel-footer h3 {
-      font-size: 32px;
-  	}
-  	.panel-footer h4 {
-      color: #aaa;
-      font-size: 14px;
-  	}
-  	.panel-footer .btn {
-      margin: 15px 0;
-      background-color:  #236B8E;
-      color: #fff;
-  	}
-  	.navbar {
-  		width: 100vw;
-      margin-bottom: 0;
-		background-color:  rgba(35, 107, 142, 0);
-      z-index: 9999;
-      border: 0;
-      font-size: 12px !important;
-      line-height: 1.42857143 !important;
-      letter-spacing: 4px;
-      border-radius: 0;
-      font-family: Montserrat, sans-serif;
-
-  	}
-  	.navbar li a {
-		font-size: 16px;
-	}
-	.navbar-brand {
-		font-size: 25px;
-	}
-  	.navbar li a, .navbar .navbar-brand {
-      color: #fff !important;
-  	}
-  	.navbar-nav li a:hover, .navbar-nav li.active a {
-      color:  #236B8E !important;
-      background-color: #fff !important;
-  	}
-
-	.navbar-nav li a {
-      color: #fff !important;
-      background-color: rgba(35, 107, 142, 0)  !important;
-  	}
-  	.navbar-default .navbar-toggle {
-      border-color: transparent;
-      color: #fff !important;
-  	}
-  	footer .glyphicon {
-      font-size: 20px;
-      margin-bottom: 20px;
-      color:  #236B8E;
-  	}
-  	.slideanim {
-  		visibility: hidden;
-  	}
-  	.slide {
-      animation-name: slide;
-      -webkit-animation-name: slide;
-      animation-duration: 1s;
-      -webkit-animation-duration: 1s;
-      visibility: visible;
-  	}
-
-
-  	@keyframes slide {
-   	0% {
-      	opacity: 0;
-      	-webkit-transform: translateY(70%);
-    	}
-    	100% {
-      	opacity: 1;
-      	-webkit-transform: translateY(0%);
-    	}
-  	}
-  	@-webkit-keyframes slide {
-    	0% {
-      	opacity: 0;
-      	-webkit-transform: translateY(70%);
-    	}
-    	100% {
-      	opacity: 1;
-      	-webkit-transform: translateY(0%);
-    	}
-  	}
-  	@media screen and (max-width: 800px) {
-    	.col-sm-4 {
-      	text-align: center;
-      	margin: 25px 0;
-    	}
-    	.btn-lg {
-        	width: 100%;
-        	margin-bottom: 35px;
-    	}
-    	.navbar {
-			background-color:  rgba(35, 107, 142, 1) !important;
+	<style>
+		body {
+			padding: 0px 10px;
 		}
-
-		.jumbotron img {
-        display:none;
-	}
-
-	    #subtitle {
-	        font-size:12px;
-
-	    }
-
-	    #contact .col-sm-5 {
-			font-size: 12px;
-			color: grey;
-			padding-left:0px;
-
+		.img-center {
+			margin: 0 auto;
 		}
+		.container {
+			padding: 0px;
+		}
+		.jumbotron {
+      	    background-color: transparent;
+      	    color: #236B8E;
+      	    padding: 100px 25px;
+      	    font-family: Montserrat, sans-serif;
+      	    margin-bottom: 0px;
+  		}
+  		.jumbotron h2 {
 
-
-  	}
-  	@media screen and (max-width: 480px) {
-    	.logo {
-        	font-size: 150px;
-    	}
-
-    	.container-fluid {
-      padding: 60px 2px;
-  	}
-  	}
-  	@media screen and (min-width: 1025px) {
-		#about .col-sm-4 p {
-			font-size: 17px;
-		}
-		#about h2 {
-			font-size: 30px;
-		}
-		#about h4 {
-			font-size: 20px;
-			font-weight: bold;
-		}
-		.jumbotron h1 {
-			font-size: 90px !important;
-		}
-		#services h2 {
-			font-size: 30px;
-		}
-
-		#contact .col-sm-5 {
-			font-size: 17px;
+  		    color: #236B8E !important;
+  		}
+		.row #info {
 			float: right;
-			color: grey;
+			text-decoration: none;
+			color:#236B8E;
+			background-color: #f4f4f4;
+			padding: 5px;
+			border-radius: 10px 10px;
 
 		}
-		#contact .col-sm-7 {
-			padding-top: 0px;
-			padding-bottom: 0px;
+		.row #info:hover {
+			background-color: #f7f7f7;
+			padding: 7px;
 		}
-		#contact .col-sm-7 input {
-			font-size: 15px;
+		a:hover {
+		    text-decoration: none;
 		}
-		#contact .row {
-			padding-top: 0px;
+		#job-title {
+		    color: black;
 		}
 
+	</style>
 
+   <body>
+		<div class="container">
 
-	}
+		<!-- Introduction Row -->
+      	<div class=" jumbotron text-center content">
 
-  	.btn-facebook{
-  		color: #3b5998;
-  		background-color: #fffs;
-		border-color:rgba(0,0,0,0.2)
-	}
-	.btn-facebook:focus,.btn-facebook.focus{
-		color: #2d4373;
-		background-color:#fff;
-		border-color:rgba(0,0,0,0.2)
-	}
+  				<h1 id='title'>What'sPoppin<span style="font-size:12px;"></span> </h1>
 
+  				<h2 style='color: white' id='subtitle'>Join the fastest growing Penn State Startup</h2>
 
+				<!--<img align='middle' src="/site_media/media/images/nasa.png" >-->
 
+			</div>
 
 
- 	#contact {
-		background-color: #f6f6f6;
-		width: 100%;
- 	}
 
- 	.col-sm-5 {
-		color: white;
- 	}
+			<div class="row job">
 
-  	.content {
-		min-height: 100vh !important;
+				<div class='col-sm-12'> <h2><a id='job-title' href="{% url 'storieswriter' %}">Stories Writer</a>
 
-	}
+					<a id='info' href="{% url 'storieswriter' %}">More Info</a></h2>
 
-	#jumbotron-inner {
-		position: relative;
-		display: block;
-		z-index: 2;
-		overflow-x: hidden !important;
-	}
-	.jumbotron img {
-		position: absolute;
-    	left: 0;
-    	top: 0;
-    	min-width: 100%;
-    	width: auto;
-    	height: 100%;
-    	opacity: 0.4;
-	}
-	#title {
-		padding-top: 15vh;
+					<br><hr style='color: black'>
 
-	}
-	.btn-primary {
-		background-color: #D47E36;
-	}
-	.btn-primary:hover {
-		background-color: #B25D16;
-	}
+				</div>
 
+			</div>
 
-	.col-sm-10 p {
-	    color: #434343;
-	    font-size: 17px;
-	    font:sans-serif;
+			<div class="row job">
 
-	}
+				<div class='col-sm-12'><h2><a id='job-title' href="{% url 'marketingintern' %}">Marketing Intern</a>
 
-	.navbar-fixed-top {position: absolute!important; }
+					<a id='info' href="{% url 'marketingintern' %}">More Info</a></h2>
 
+					<br><hr>
 
-</style>
+				</div>
 
+			</div>
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60" style="background-color:white;">
+		</div>
+    <!-- /.container -->
 
-	<nav id='navbar' class="navbar navbar-default navbar-fixed-top">
+	</body>
 
-  		<div class="container">
+</html>
 
-    		<div class="navbar-header">
+{% endblock %}
 
-      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-
-      		</button>
-
-      		<a class="navbar-brand" id="navbar-brand" href="/"> <span style="font:verdana;">WP</span></a>
-
-    		</div>
-
-    		<div class="collapse navbar-collapse" id="myNavbar">
-
-      		<ul id="nav-items" class="nav navbar-nav navbar-right">
-
-
-        			<li><a id="nav-about" href="{% url 'blog_list' %}">STORIES</a></li>
-        			<li><a id="nav-contact" href="{% url 'post_list' %}">EVENTS</a></li>
-        			{% if not user.is_authenticated %}
-        				<li><a href="{% url "account_login" %}">LOGIN</a></li>
-        			{% else %}
-      				<li> <a id="account_logout" href="{% url 'account_logout' %}" > LOG OUT</a></li>
-        			{% endif %}
-
-      		</ul>
-
-    		</div>
-
-  		</div>
-
-	</nav>
-
-
-	<div class="jumbotron text-center content">
-
-
-		<div id='jumbotron-inner'>
-
-
-  		<h1 id='title'>What'sPoppin<span style="font-size:12px;"></span> </h1>
-
-  		<h2 style='color: white' id='subtitle'>Join the fastest growing Penn State Startup</h2>
-
-     	</div>
-
-		<img align='middle' src="/site_media/media/images/u2ukri4lci8-nasa.jpg" >
-
-	</div>
-
-
-<!-- Container (About Section) -->
-
-
-	<div class="container-fluid content bg-white">
-
-  		<div id='about-inner' >
-
-    		<div  class="detail"  style="text-align:center; color: #236B8E; ">
-
-
-      		<h2 style="color:#236B8E;">What'sPoppin Stories Writer</h2><br>
-
-
-      		<div class="col-sm-10" style="text-align:left; float:right; margin:auto; align:center; font: sans serif;  margin-bottom:50px;">
-
-      		    <div class="col-sm-4" style="text-align:left;">
-
-      		    <img class="img-quare" width="220" height="190" src="/site_media/media/images/thon.jpg" border="0" alt="penn state stadium"/>
-
-
-      		    </div>
-
-
-                <div class="col-sm-5">
-      			<h4 style="color:#236B8E;">Be a Part of Something Big</h4>
-
-	<p>Imagine this… football season is over and you just finished binge watching your favorite show. You think, “What now? What can I do at Penn State beyond just partying?” <br><br>At What'sPoppin, we help students discover the most fun, interesting, inspiring, and engaging events that are otherwise overlooked. As a member of our team, you will play an important role in inspiring Penn State students and breathing life into amazing events that Penn State would otherwise never hear about.</p>
-
-                    </div>
-    			</div>
-
-
-    		<div class="col-sm-10" style="text-align:left; float:right; margin:auto; align:center;  margin-bottom:50px;">
-
-      		    <div class="col-sm-4" style="text-align:left;">
-
-      		    <img class="img-quare" width="220" height="210" src="/site_media/media/images/jlwvautloaq-dustin-lee.jpg" border="0" alt="penn state stadium"/>
-
-
-      		    </div>
-
-                 <div class="col-sm-5">
-      			<h4 style="color:#236B8E;">Gain Valuable Experience</h4>
-      			<p >
-You will be working alongside some of the smartest, most outgoing people on campus to spread awareness about Penn State's hidden gem events while simultaneously increasing excitement for them. Furthermore, you will gain valuable, hands-on experience to boost your resume (because we all know that's what you really care about).</p>
-      			</div>
-
-    			</div>
-
-    				<div class="col-sm-10" style="text-align:left; float:right; margin:auto;  margin-bottom:50px; align:center;">
-
-      		    <div class="col-sm-4" style="text-align:left;">
-
-      		    <img class="img-quare" width="220" height="210" src="/site_media/media/images/u2ukri4lci8-nasa.jpg" border="0" alt="penn state stadium"/>
-
-
-      		    </div>
-
-                <div class="col-sm-5">
-      			<h4 style="color:#236B8E;">Write about Fun and Interesting Events</h4>
-           			<p>	    You get to know before everyone else when our flashmobs and pop-up performances are going to happen.
-      			More importantly, your work will make a difference: Help Penn State students discover an inspiring, brand-new experience. Read a sample story <a href="/stories/post/4">here</a>.</p>
-
-      			</div>
-
-    			</div>
-    			</div>
-
-
-    			<div class="col-sm-10" style="text-align:left; float:right; margin:auto; align:center;  margin-bottom:50px;">
-
-      		             <div  style="text-align:left;">
-                            <br>
-      		                 <h4 style="color:#236B8E;">What will I be doing as a What'sPoppin Stories Writer?</h2>
-
-      		            <ol>
-      		                <li>Submit one to two articles each week (250 - 500 words) about an event you attended.</li>
-      		                <li>Share your article across social media to help familiarize students with the events.</li>
-      		                <li>Be on the look out for any interesting events to put on our platform as well as write about.</li>
-      		            </ol>
-                        <br>
-      		            <h4 style="color:#236B8E;">Requirements</h2>
-
-      		            <ol>
-      		                <li>Current Penn State student</li>
-      		                <li>Good writing skills</li>
-      		                <li>Good interpersonal skills</li>
-      		                <li>Previous experience not necessary, but preferred.</li>
-      		            </ol>
-
-                        <br>
-      		            <h4 style="color:#236B8E;">To apply, send your resume and two writing samples to us.wpoppin@gmail.com. <br>We look forward to working with you!</br> </h2>
-
-
-      		    </div>
-      		    </div>
-
-
-    		</div>
-
-
-
-  		</div>
-
-	</div>

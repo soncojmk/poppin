@@ -987,7 +987,7 @@ footer {
 		<div id='jumbotron-inner'>
 
 
-  		<h1 id='title'>{{post.title}}</h1>
+  		<h1 id='title'>{{post.title}} </h1>
 
   		<h2 style='color: white' id='subtitle'>By {% if post.author.first_name %}{{post.author.first_name}}  {{post.author.last_name}}{% else %}{{post.author}} {% endif %}</h2>
 
@@ -1001,7 +1001,7 @@ footer {
 
     <div class="content-mobile" style="padding-top:30px;">
 
-	<h4 style="color:#236B8E; font-size:30px; padding-left:10px;"><a href="{% url 'blog_detail' pk=post.pk %}"><span>{{ post.title }}</span></a></h4>
+	<h4 style="color:#000; font-size:30px; padding-left:10px;"><a style="color:#000;" href="{% url 'blog_detail' pk=post.pk %}"><span>{{ post.title }}</span></a></h4>
       		    <div class="">
 
       		 <a  href="{% url 'blog_detail' pk=post.pk %}"><img style="border-radius: 5px;" class="img-responsive img-center" src="{{post.image.large.url}}" border="0" alt="penn state stadium"/></a>
