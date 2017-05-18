@@ -17,3 +17,16 @@ pysolr
 solr
 django-localflavor
 pinax-account
+pinax
+pinax-likes
+django-taggit
+django-taggit-templatetags2
+django-taggit-labels
+pinax-messages
+django-stdimage
+django-geojson
+stream_django
+
+
+
+
