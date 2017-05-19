@@ -15,7 +15,6 @@ virtualenv
 pysolr
 solr
 django-localflavor
-pinax-account
 django-taggit-labels
 pinax-messages
 django-geojson
