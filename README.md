@@ -25,3 +25,6 @@ pip install -r requirements.txt
 ./manage.py runserver
 ```
 
+
+tutorial: dev server: http://technotes.tumblr.com/post/40838871308/django-with-sqlite-as-a-geospatial-database
+
