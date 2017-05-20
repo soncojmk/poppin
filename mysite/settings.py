@@ -181,7 +181,7 @@ INSTALLED_APPS = [
 
     "rest_auth",
     "djoser",
-    "push_notifications",
+    #"push_notifications",
 
     "drf_extra_fields",
 
