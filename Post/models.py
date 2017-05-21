@@ -109,13 +109,13 @@ class Post(models.Model):
 
     draft = models.BooleanField(default=False)
 
-    location = gis_models.PointField(u"longitude/latitude",
-                                     geography=True, blank=True, null=True)
+    #location = gis_models.PointField(u"longitude/latitude",
+    #                                geography=True, blank=True, null=True)
 
     #saves = models.IntegerField(null=True)
 
-    gis = gis_models.GeoManager()
-    objects = models.Manager()
+    #gis = gis_models.GeoManager()
+    #objects = models.Manager()
     #draft = models.BooleanField(default=False)
     #tags = TaggableManager()
 
@@ -295,7 +295,7 @@ class EventComment(models.Model):
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
     approved_comment = models.BooleanField(default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    #created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def approve(self):
         self.approved_comment = True

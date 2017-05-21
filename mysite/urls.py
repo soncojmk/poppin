@@ -10,8 +10,8 @@ from restapi import views
 from rest_framework import routers
 from rest_framework.authtoken import views as v
 
-from push_notifications.api.rest_framework import APNSDeviceViewSet, GCMDeviceViewSet
-from rest_framework.routers import DefaultRouter
+#from push_notifications.api.rest_framework import APNSDeviceViewSet, GCMDeviceViewSet
+#from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 router = routers.DefaultRouter()
@@ -45,8 +45,8 @@ router.register(r'filteredevents', views.FilteredEventViewSet, 'filteredevents')
 router.register(r'myrecommended', views.MyRecommendedViewSet, 'myrecommended')
 
 #notifications
-router.register(r'device/apns', APNSDeviceViewSet)
-router.register(r'device/gcm', GCMDeviceViewSet)
+#router.register(r'device/apns', APNSDeviceViewSet)
+#router.register(r'device/gcm', GCMDeviceViewSet)
 
 
 

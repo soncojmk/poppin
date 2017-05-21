@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_delete, post_save
-from stream_django.activity import Activity
-from stream_django.feed_manager import feed_manager
+#from stream_django.activity import Activity
+#from stream_django.feed_manager import feed_manager
 
 # Create your models here.
 
@@ -18,7 +18,7 @@ class BaseModel(models.Model):
 
 
 
-class Follow(Activity, BaseModel):
+class Follow(BaseModel):
     '''
     A simple table mapping who a user is following.
     For example, if user is Kyle and Kyle is following Alex,
@@ -28,7 +28,7 @@ class Follow(Activity, BaseModel):
         settings.AUTH_USER_MODEL, related_name='following_set')
     target = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='follower_set')
-
+'''
     @classmethod
     def activity_related_models(cls):
         return ['user', 'target']
@@ -39,20 +39,24 @@ class Follow(Activity, BaseModel):
 
     @property
     def activity_notify(self):
-        target_feed = feed_manager.get_notification_feed(self.target_id)
-        return [target_feed]
+       # target_feed = feed_manager.get_notification_feed(self.target_id)
+        return #[target_feed]
 
 
 def follow_change(sender, instance, created, **kwargs):
     if instance.deleted_at is None:
-        feed_manager.follow_user(instance.user_id, instance.target_id)
+        #feed_manager.follow_user(instance.user_id, instance.target_id)
     else:
-        feed_manager.unfollow_user(instance.user_id, instance.target_id)
+        
 
+#feed_manager.unfollow_user(instance.user_id, instance.target_id)
 
+	
 def unfollow_feed(sender, instance, **kwargs):
-    feed_manager.unfollow_user(instance.user_id, instance.target_id)
+    #feed_manager.unfollow_user(instance.user_id, instance.target_id)
 
 
 post_save.connect(follow_change, sender=Follow)
 post_delete.connect(unfollow_feed, sender=Follow)
+
+'''

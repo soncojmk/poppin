@@ -1,8 +1,8 @@
-from stream_django.enrich import Enrich as BaseEnrich
+#from stream_django.enrich import Enrich as BaseEnrich
 from .models import Follow
 
 
-
+'''
 def do_i_follow_users(user, users):
     followed_user_ids = Follow.objects.filter(user_id=user.id, target__in=users, deleted_at__isnull=True).values_list('target_id', flat=True)
     for u in users:
@@ -24,3 +24,5 @@ class Enrich(BaseEnrich):
         if self.current_user.is_authenticated():
             do_i_follow(self.current_user, follows.values())
         return follows
+'''
+

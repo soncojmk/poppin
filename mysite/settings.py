@@ -9,16 +9,12 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'pop',
-        'USER': 'super',
-        'PASSWORD': 'Munyao25#',
-        'HOST': 'soncojmk-178.postgres.pythonanywhere-services.com',
-        'PORT': '10178',
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "dev.db",
     }
 }
 
-ALLOWED_HOSTS = ['www.wpoppin.com']
+ALLOWED_HOSTS = []
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -185,6 +181,7 @@ INSTALLED_APPS = [
 
     "drf_extra_fields",
 
+    'reset_migrations',
 
     #for search sbar
     "haystack",

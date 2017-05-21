@@ -8,9 +8,9 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from stream_django.feed_manager import feed_manager
-from activity_stream.enrich import Enrich
-from activity_stream.enrich import do_i_follow_users
+#from stream_django.feed_manager import feed_manager
+#from activity_stream.enrich import Enrich
+#from activity_stream.enrich import do_i_follow_users
 import json
 
 
@@ -42,7 +42,7 @@ def trending(request):
     response = render_to_response('activity_stream/trending.html', context)
     return response
 
-
+"""
 @login_required
 def feed(request):
     '''
@@ -130,5 +130,4 @@ def follow(request):
             output['errors'] = dict(form.errors.items())
     return HttpResponse(json.dumps(output), content_type='application/json')
 
-
-
+"""
