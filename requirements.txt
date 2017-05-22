@@ -8,6 +8,7 @@ django-forms-bootstrap
 django-taggit
 django-taggit-templatetags2
 django-haystack
+fcm-django
 pinax-likes
 pinax
 django-stdimage
