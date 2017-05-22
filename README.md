@@ -62,8 +62,16 @@ API Endpoints
         api/devices --> Add a user's registration_id to our database. Link a user to a device 
                     --> (need to send token with request)
                     -->  Needed in order to allow device specific notifications on events like following, commenting...
-        
+```
+
 All other API endpoints that don't have any internal/hidden endpoints and are fairly straight forward to use are in the link below
---> http://wpoppin.com/api/   (the links are pretty self explanatory0
+--> http://wpoppin.com/api/   (the links are pretty self explanatory)
+
+CURL Commands for testing REST API (You have to have curl installed before hand - simplest way is to use pip)
+```
+curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}'
+
+The 'POST' can change depending on the type of request you want. i.e 'PUT', 'PATCH' ...
+
 ```
 
