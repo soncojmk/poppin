@@ -20,8 +20,8 @@ Make sure you are using a virtual environment of some sort (e.g. `virtualenv` or
 
 ```
 pip install -r requirements.txt
+./manage.py makemigrations (if on a windows system, it's python manage.py)
 ./manage.py migrate
-./manage.py loaddata sites
 ./manage.py runserver
 ```
 
@@ -59,8 +59,11 @@ API Endpoints
         api/events/<event_id>/people_saving (GET) --> get a list of users saving an event
         
     Notifications:
-        api/devices --> Add a user's registration_id to our database. Link a user to a device 
-                    --> (need to send token with request)
+        api/devices (POST) --> Required Parameters:
+                           --> registration_id (integer), active(boolean- should be set to true), type (android, ios, or web)
+                           --> (need to send token with request)                   
+                        
+                    --> Add a user's registration_id to our database. Link a user to a device 
                     -->  Needed in order to allow device specific notifications on events like following, commenting...
 ```
 
@@ -69,9 +72,9 @@ All other API endpoints that don't have any internal/hidden endpoints and are fa
 
 CURL Commands for testing REST API (You have to have curl installed before hand - simplest way is to use pip)
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}'
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Token xxxxxxxxxxxxxx" -d '{"key1":"value1", "key2":"value2"}' http://www.wpoppin.com/api/devices/
 
 The 'POST' can change depending on the type of request you want. i.e 'PUT', 'PATCH' ...
-
 ```
+Reference https://gist.github.com/subfuzion/08c5d85437d5d4f00e58 for more curl commands 
 
