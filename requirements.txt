@@ -31,6 +31,8 @@ django-oauth-toolkit
 django-rest-framework-social-oauth2
 geopy
 django-filter
-
+django-model-utils
+jsonfield
+pytz
 
 
