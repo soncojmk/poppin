@@ -66,6 +66,8 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/wp/auth/', include('djoser.urls')), #use for wpoppin registration with email/username/password
+    url(r'^api/confirm_ticket', views.confirm_ticket),
+    url(r'^api/generate_confirmation', views.generate_confirmation),
 
     #only returned the token: returns token and user id
     url(r'^api-token-auth/', v.obtain_auth_token), #Convert Username and Password to What'sPoppin Token

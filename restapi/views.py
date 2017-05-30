@@ -40,6 +40,33 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.db.models import Count
 
+from rest_framework.decorators import api_view
+from .ticket_confirmation import TicketConfirmation
+from django.http import HttpResponse
+from django.http import JsonResponse
+import json
+
+
+
+@api_view(['POST'])
+def confirm_ticket(request, pk=None):
+    ticketing = TicketConfirmation()
+    json_data = json.loads(request.body.decode('utf-8'))
+    confirmation_num = json_data['confirmation_num']
+    response = {'status': ticketing.confirm(confirmation_num)}
+    return JsonResponse(response)
+
+
+@api_view(['POST'])
+def generate_confirmation(request, pk=None):
+    print('hello')
+    json_data = json.loads(request.body.decode('utf-8'))
+    to_email = json_data['email']
+    event_name = json_data['event_name']
+    ticketing = TicketConfirmation()
+    response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
+    return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 #Overiding api-token-auth to get id along with the default response
 class CustomObtainAuthToken(ObtainAuthToken):

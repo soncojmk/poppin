@@ -174,7 +174,7 @@ INSTALLED_APPS = [
     "el_pagination",
     "rest_framework",
     "rest_framework.authtoken",
-
+    "restapi"
     "rest_auth",
     "djoser",
     #"push_notifications",

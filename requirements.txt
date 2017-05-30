@@ -34,5 +34,6 @@ django-filter
 django-model-utils
 jsonfield
 pytz
-
+pypng==0.0.18
+PyQRCode==1.2.1
 
