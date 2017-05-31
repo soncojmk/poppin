@@ -65,6 +65,13 @@ API Endpoints
                         
                     --> Add a user's registration_id to our database. Link a user to a device 
                     -->  Needed in order to allow device specific notifications on events like following, commenting...
+                    
+   Notification Feed:
+       api/notificationfeed (GET) --> (need to send authorization token with request)
+                                  --> outputs the actor, recipient, verb, and action_object of the notification
+                                  --> Sort of like "Joe (actor) followed (Verb) Jake (recipient) 
+                                  --> or "Jake (Actor) saved (verb) Jake's (recipient) event, the roast of time (action_object)
+                                 
 ```
 
 All other API endpoints that don't have any internal/hidden endpoints and are fairly straight forward to use are in the link below
