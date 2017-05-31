@@ -59,7 +59,6 @@ def confirm_ticket(request, pk=None):
 
 @api_view(['POST'])
 def generate_confirmation(request, pk=None):
-    print('hello')
     json_data = request.data
     to_email = json_data['email']
     event_name = json_data['event_name']
