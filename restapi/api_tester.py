@@ -6,7 +6,7 @@ ct_json = {'confirmation_num':'8945450aea'}
 
 def test_route(r, json_obj):  
     try:
-        base_url = "http://www.wpoppin.com/api/{}/"
+        base_url = "http://wpoppin.com/api/{}/"
         return_val = requests.post(base_url.format(r), json=json_obj)
         if r == 'generate_confirmation':
             ct_json['confirmation_num'] = return_val.json()['confirmation_num']
