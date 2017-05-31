@@ -51,7 +51,7 @@ import json
 @api_view(['POST'])
 def confirm_ticket(request, pk=None):
     ticketing = TicketConfirmation()
-    json_data = json.loads(request.body.decode('utf-8'))
+    json_data = request.data
     confirmation_num = json_data['confirmation_num']
     response = {'status': ticketing.confirm(confirmation_num)}
     return JsonResponse(response)
@@ -60,7 +60,7 @@ def confirm_ticket(request, pk=None):
 @api_view(['POST'])
 def generate_confirmation(request, pk=None):
     print('hello')
-    json_data = json.loads(request.body.decode('utf-8'))
+    json_data = request.data
     to_email = json_data['email']
     event_name = json_data['event_name']
     ticketing = TicketConfirmation()
