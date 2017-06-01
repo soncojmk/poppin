@@ -24,7 +24,7 @@ class TicketConfirmation:
 		self.SMTP.starttls()
 		self.SMTP.login(self.USERNAME, self.PASSWORD)	
 		print('authenticated')
-                conn = pyscopg2.connect("dbname=pop user=super")
+                conn = psycopg2.connect("dbname=pop user=super host=soncojmk-178.postgres.pythonanywhere-services.com password=Munyao25# port=10178")
                 self.cur = conn.cursor()
 
 
@@ -62,7 +62,7 @@ class TicketConfirmation:
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		self.cur.execute("INSERT INTO tickets (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)", (to_email, event_name, confirmation_num, 'unconfirmed'))
+		self.cur.execute("""INSERT INTO "tickets" (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)""", (to_address, event_name, confirmation_num, 'unconfirmed'))
 		return confirmation_num
 
 
