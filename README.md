@@ -77,7 +77,7 @@ API Endpoints
                                                   --> (need to send authorization token with request)
                                                   --> parameters -> [comment]
                                            (DELETE) --> To delete a comment from an event, grab the 'pk' from the comment object and 
-                                                        send it as a parameter with a DELETE request to that particular <event's                                                                 url>/post_comment
+                                                        send it as a parameter with a DELETE request to that particular <event'surl>/post_comment
        api/events/ (GET) --> comments now included in the event object with the comment author's account nested
                                  
 ```
