@@ -164,6 +164,11 @@ class Post(models.Model):
     def num_comments(self):
         return self.comments.count()
 
+    @property
+    def get_comments(self):
+        return self.comments.get()
+
+
     '''
     def save(self, **kwargs):
         if not self.location:
@@ -308,6 +313,20 @@ class EventComment(models.Model):
     def __str__(self):
         return self.comment
 
+    @property
+    def account(self):
+        return get_object_or_404(Account.objects.all(), user=self.author)
+
+    def timesince(self, now=None):
+        """
+        Shortcut for the ``django.utils.timesince.timesince`` function of the
+        current timestamp.
+        """
+        from django.utils.timesince import timesince as timesince_
+        return timesince_(self.created_date, now)
+
+
+
 
 
 class QuestionComment(models.Model):
@@ -345,31 +364,6 @@ class Broadcast_Email(models.Model):
 
 
 
-
-'''
-class Profile(models.Model):
-    user = models.ForeignKey('auth.user', unique=True)
-    about = models.TextField(help_text="tell us about your shitty professors or something")
-    college = models.CharField(max_length=50)
-
-    FRESHMAN = 'FR'
-    SOPHOMORE = 'SO'
-    JUNIOR = 'JR'
-    SENIOR = 'SR'
-
-    YEAR_IN_SCHOOL_CHOICES = (
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-    )
-    year_in_school = models.CharField(
-        max_length=10,
-        choices=YEAR_IN_SCHOOL_CHOICES,
-        default=FRESHMAN,
-    )
-
-'''
 
 
 

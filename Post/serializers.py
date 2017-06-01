@@ -14,18 +14,19 @@ class attendingSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    account = AccountSerializer()
     class Meta:
         model = EventComment
-        fields = ('author', 'comment', 'created_date',)
-
+        fields = ('account', 'author', 'pk', 'comment', 'timesince',)
 
 class PostSerializer(serializers.ModelSerializer):
     image = Base64ImageField(required=False)
     attending = attendingSerializer(read_only=True, many=True)
+    get_comments = CommentSerializer()
 
     class Meta:
         model = Post
-        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending')
+        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -48,11 +49,12 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
     image = Base64ImageField(required=False)
     attending = attendingSerializer(read_only=True, many=True)
+    get_comments = CommentSerializer()
 
     class Meta:
         model = Post
         fields = ('url', 'pk', 'author', 'category',
-                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending')
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments')
 
 
 
@@ -62,11 +64,12 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     account = AccountSerializer()
     image = Base64ImageField(required=False)
     attending = attendingSerializer(read_only=True, many=True)
+    get_comments = CommentSerializer()
 
     class Meta:
         model = Post
         fields = ('url', 'pk', 'author', 'account', 'category',
-                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments',)
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments', 'get_comments')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -76,4 +79,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'pk', 'username')
 
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.username')
+    post = serializers.ReadOnlyField(source='author.username')
+    class Meta:
+        model = EventComment
+        fields = ('author', 'post', 'comment')
 

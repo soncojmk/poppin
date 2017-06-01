@@ -10,8 +10,9 @@ from restapi import views
 from rest_framework import routers
 from rest_framework.authtoken import views as v
 
-#from push_notifications.api.rest_framework import APNSDeviceViewSet, GCMDeviceViewSet
-#from rest_framework.routers import DefaultRouter
+from push_notifications.api.rest_framework import APNSDeviceViewSet, GCMDeviceViewSet
+from fcm_django.api.rest_framework import FCMDeviceAuthorizedViewSet
+from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 router = routers.DefaultRouter()
@@ -43,10 +44,12 @@ router.register(r'myaccount', views.MyAccountViewSet, 'myaccounts')
 router.register(r'myfeed', views.FeedViewSet, 'myfeed')
 router.register(r'filteredevents', views.FilteredEventViewSet, 'filteredevents')
 router.register(r'myrecommended', views.MyRecommendedViewSet, 'myrecommended')
+router.register(r'notificationfeed', views.NotificationFeedViewSet, 'notificationfeed')
 
 #notifications
-#router.register(r'device/apns', APNSDeviceViewSet)
-#router.register(r'device/gcm', GCMDeviceViewSet)
+router.register(r'device/apns', APNSDeviceViewSet)
+router.register(r'device/gcm', GCMDeviceViewSet)
+router.register(r'devices', FCMDeviceAuthorizedViewSet)
 
 
 
@@ -66,8 +69,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/wp/auth/', include('djoser.urls')), #use for wpoppin registration with email/username/password
-    url(r'^api/confirm_ticket', views.confirm_ticket),
-    url(r'^api/generate_confirmation', views.generate_confirmation),
 
     #only returned the token: returns token and user id
     url(r'^api-token-auth/', v.obtain_auth_token), #Convert Username and Password to What'sPoppin Token
@@ -80,7 +81,7 @@ urlpatterns = [
 
     url(r'^api/auth/', include('rest_framework_social_oauth2.urls')),  #convert_token facebook to What'sPoppin Token
 
-    url(r"^profile/", include("activity_stream.urls")),
+    #url(r"^profile/", include("activity_stream.urls")),
 
     #different homepages
     url(r"^sports$", TemplateView.as_view(template_name="sports_homepage.html"), name="sports_home"),
@@ -92,6 +93,10 @@ urlpatterns = [
     url(r"^about", TemplateView.as_view(template_name="about.html"), name="about"),
     url(r"^storieswriter", TemplateView.as_view(template_name="stories-writer.html"), name="storieswriter"),
     url(r"^marketingintern", TemplateView.as_view(template_name="marketing-intern.html"), name="marketingintern"),
+
+    #ticketing
+    url(r'^api/confirm_ticket', views.confirm_ticket),
+    url(r'^api/generate_confirmation', views.generate_confirmation),
 
 
 ]

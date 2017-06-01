@@ -1,4 +1,4 @@
-from Post.views import PostViewSet, OrganizationsViewSet, MyRecommendedViewSet, FilteredEventViewSet, UserViewSet, FeedViewSet, MusicViewSet, MyAccountViewSet, AccountViewSet, SportsViewSet, CharityViewSet, PostTodayViewSet, PostTomorrowViewSet, PostThisWeekViewSet, PostThisMonthViewSet, api_root
+from Post.views import NotificationFeedViewSet, PostViewSet, OrganizationsViewSet, MyRecommendedViewSet, FilteredEventViewSet, UserViewSet, FeedViewSet, MusicViewSet, MyAccountViewSet, AccountViewSet, SportsViewSet, CharityViewSet, PostTodayViewSet, PostTomorrowViewSet, PostThisWeekViewSet, PostThisMonthViewSet, api_root
 from rest_framework import renderers
 from blog.views import BlogViewSet
 from .views import CustomObtainAuthToken
@@ -10,14 +10,13 @@ blog_list = BlogViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-
-
 blog_detail = BlogViewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
     'delete': 'destroy'
 })
+
 
 post_list = PostViewSet.as_view({
     'get': 'list',
@@ -41,6 +40,7 @@ music_detail = MusicViewSet.as_view({
     'patch': 'partial_update',
     'delete': 'destroy'
 })
+
 
 sports = SportsViewSet.as_view({
     'get': 'list',
@@ -70,17 +70,14 @@ events_today = PostTodayViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-
 events_tomorrow = PostTomorrowViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-
 events_this_week = PostThisWeekViewSet.as_view({
     'get': 'list',
     'post': 'create'
 })
-
 events_this_month = PostThisMonthViewSet.as_view({
     'get': 'list',
     'post': 'create'
@@ -110,12 +107,14 @@ account_detail = AccountViewSet.as_view({
     'get': 'retrieve'
 })
 
+
 myaccount_list = MyAccountViewSet.as_view({
     'post': 'create'
 })
 myaccount_detail = MyAccountViewSet.as_view({
     'get': 'retrieve'
 })
+
 
 myrecommended_list = MyRecommendedViewSet.as_view({
     'post': 'create'
@@ -124,20 +123,32 @@ myrecommended_detail = MyRecommendedViewSet.as_view({
     'get': 'retrieve'
 })
 
+
 feed_list = FeedViewSet.as_view({
     'post': 'create'
 })
-
 feed_detail = FeedViewSet.as_view({
     'get': 'retrieve'
 })
+
 
 filteredevent_list = FilteredEventViewSet.as_view({
     'post': 'create',
     'get': 'list'
 })
-
 filteredevent_detail = FilteredEventViewSet.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
+
+notificationfeed_list = NotificationFeedViewSet.as_view({
+    'post': 'create',
+    'get': 'list'
+})
+notificationfeed_detail = NotificationFeedViewSet.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
@@ -187,7 +198,8 @@ urlpatterns = format_suffix_patterns([
     url(r'^filteredevent/$', filteredevent_list, name='post-list'),
     url(r'^filteredevent/(?P<pk>[0-9]+)/$', filteredevent_detail, name='post-detail'),
 
-
+    url(r'^notificationfeed/$', notificationfeed_list, name='notification-list'),
+    url(r'^notificationfeed/(?P<pk>[0-9]+)/$', notificationfeed_detail, name='notification-detail'),
 
     #url(r'^api-token/login/(?P[^/]+)/$', ObtainAuthToken.as_view(), name='token'),
     #url(r'^token-auth/', CustomObtainAuthToken.as_view()),

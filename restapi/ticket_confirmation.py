@@ -7,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from restapi.models import Ticket
+import pyscopg2
 
 #Keep this as a class so its object holds onto the smtp connection (don't have to reconnect)
 class TicketConfirmation:
@@ -23,24 +24,27 @@ class TicketConfirmation:
 		self.SMTP.starttls()
 		self.SMTP.login(self.USERNAME, self.PASSWORD)	
 		print('authenticated')
+                conn = pyscopg2.connect("dbname=pop user=super")
+                self.cur = conn.cursor()
 
 
-	#Check for confirmation num in dbw
+	#Check for confirmation num in db
 	#if exists, check confirmed
 		#if not confirmed, return named, set to confirmed
 		#else return already confirmed
 	#if not, return no entry	
 	def confirm(self, confirmation_num):
-		print('hello')
-		for t in Ticket.objects.all():
-			if t.confirmation_num == confirmation_num:
-				if t.confirmed == 'confirmed':
-					return 'already confirmed'
-				else:
-					t.confirmed = 'confirmed'
-					t.save()
-					return 'confirmed'
-		return 'no entry'
+                
+                self.cur.execute("SELECT * FROM tickets WHERE confirmation_num = %s" %confirmation_num)
+                try:
+                        t = self.cur.fetchone()[0]
+                        if t[3] == 'confirmed':
+                                return 'already confirmed'
+                        else:
+                                self.cur.execute("UPDATE tickets SET confirmed = 'confirmed' WHERE confirmation_num = %s" %confirmation_num)
+                                return 'confirmed'
+                except:
+                        return 'invalid'
 
 
 	#Generates a confirmation number and sends an email
@@ -58,8 +62,7 @@ class TicketConfirmation:
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		t = Ticket(email=to_address, event_name=event_name, confirmation_num=confirmation_num, confirmed='unconfirmed')
-		t.save()
+		self.cur.execute("INSERT INTO tickets (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)", (to_email, event_name, confirmation_num, 'unconfirmed')
 		return confirmation_num
 
 

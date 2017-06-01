@@ -5,8 +5,10 @@ from django.shortcuts import render
 
 
 #REST API
-from Post.serializers import PostSerializer, EventSerializer
+from Post.serializers import PostSerializer, EventSerializer, CommentSerializer, CreateCommentSerializer
 from blog.serializers import BlogSerializer
+from notifications.serializers import NotificationSerializer
+from notifications.models import Notification
 from rest_framework import generics
 from Post.serializers import UserSerializer
 from account.serializers import AccountSerializer
@@ -20,7 +22,7 @@ from rest_framework import renderers
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework import status
-from Post.models import Post
+from Post.models import Post, EventComment
 from account.models import Account
 from blog.models import Blog
 from django.db.models import Q
@@ -39,29 +41,29 @@ from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.db.models import Count
+from fcm_django.models import FCMDevice
 
 from rest_framework.decorators import api_view
 from .ticket_confirmation import TicketConfirmation
 from django.http import HttpResponse
 from django.http import JsonResponse
 import json
+from notifications.signals import notify
 
 
 
 @api_view(['POST'])
 def confirm_ticket(request, pk=None):
     ticketing = TicketConfirmation()
-    json_data = request.data
-    confirmation_num = json_data['confirmation_num']
+    confirmation_num = request.POST.get('confirmation_num')
     response = {'status': ticketing.confirm(confirmation_num)}
     return JsonResponse(response)
 
 
 @api_view(['POST'])
 def generate_confirmation(request, pk=None):
-    json_data = request.data
-    to_email = json_data['email']
-    event_name = json_data['event_name']
+    to_email = request.POST.get('email')
+    event_name = request.POST.get("event_name")
     ticketing = TicketConfirmation()
     response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
     return HttpResponse(json.dumps(response), content_type='application/json')
@@ -107,6 +109,26 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 
 
+class NotificationFeedViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
+    """
+    serializer_class = NotificationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
+
+    def get_queryset(self):
+        return self.request.user.notifications.unread()
+
+    def perform_create(self, serializer):
+        serializer.save(actor=self.request.user)
+
+
+
+
 #don't forget to change the serializer to EventSerializer when you update so that you can allow people to see the details of old events
 class PostViewSet(viewsets.ModelViewSet):
     """
@@ -132,6 +154,37 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
+    #add a comment to an event
+    @detail_route(methods=['get', 'post', 'delete'])
+    def post_comment(self, *args, **kwargs):
+        comment = kwargs.pop('comment', None)
+        pk = kwargs.pop('pk', None)
+        request = self.request
+        post = get_object_or_404(Post.objects.all(), pk=pk)
+        author = self.request.user
+        data = request.data
+
+        if self.request.method == 'POST':
+            serializer = CreateCommentSerializer(data=data)
+
+            if serializer.is_valid():
+                serializer.save(author=author, post=post)
+                return Response(serializer.data)
+
+            else:
+                return Response(status=400)
+
+        if self.request.method == 'DELETE':
+            comment_pk = data['pk']
+            comment_object = get_object_or_404(EventComment.objects.all(), pk=comment_pk)
+            comment_object.delete()
+            return Response(status=200)
+
+
+
+
+
     #saves an event to a users account
     @detail_route(methods=['get', 'post', 'delete'])
     def save(self, request, pk=None):
@@ -143,6 +196,15 @@ class PostViewSet(viewsets.ModelViewSet):
                     return Response({'detail': 'You are already attending this event'}, status=status.HTTP_403_FORBIDDEN)
 
             event.attending.add(requesting_user)
+
+            #signal to add notification to the notification feed
+            notify.send(request.user, recipient=event.author, verb='saved', action_object=event)
+
+            #send the user that was sent a follow request a notification
+            if get_object_or_404(FCMDevice.objects.all(), user=event.author):
+                device = get_object_or_404(FCMDevice.objects.all(), user=event.author)
+                message = request.user.username + " saved your event"
+                device.send_message(title="One more person saved your event", body=message)
 
             return Response(status=200)
 
@@ -371,6 +433,21 @@ class AccountViewSet(viewsets.ModelViewSet):
                     return Response({'detail': 'Already sent the request'}, status=status.HTTP_403_FORBIDDEN)
 
                 requesting_user.requested.add(url_user)
+
+                #signal to add notification to the notification feed
+
+                notify.send(request.user, recipient=url_user, verb='has requested to follow you')
+
+                #send the user that was sent a follow request a notification
+                if get_object_or_404(FCMDevice.objects.all(), user=url_user):
+                    device = get_object_or_404(FCMDevice.objects.all(), user=url_user)
+                    #device.send_message("Title", "Message")
+                    #device.send_message(data={"test": "test"})
+                    message = request.user.username + " has requested to follow you"
+                    #device.send_message(title="You have one new follow request", body=message, icon=..., data={"test": "test"})
+                    device.send_message(title="You have one new follow request", body=message)
+
+
                 return Response(status=200)
 
 
@@ -384,6 +461,16 @@ class AccountViewSet(viewsets.ModelViewSet):
                 requesting_user.followers.add(url_user)
                 requesting_user.requesting.remove(url_user)
                 url_user.following.add(requesting_user)
+
+                #signal to add notification to the notification feed
+                notify.send(request.user, recipient=url_user, verb='has accepted your follow request')
+
+                #send the user that sent a follow request a notification
+                if get_object_or_404(FCMDevice.objects.all(), user=url_user):
+                    device = get_object_or_404(FCMDevice.objects.all(), user=url_user)
+                    message = request.user.username + " has accepted your follow request"
+                    device.send_message(title=message)
+
                 return Response(status=200)
 
 

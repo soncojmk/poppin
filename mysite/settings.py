@@ -9,12 +9,16 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dev.db",
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'pop',
+        'USER': 'super',
+        'PASSWORD': 'Munyao25#',
+        'HOST': 'soncojmk-178.postgres.pythonanywhere-services.com',
+        'PORT': '10178',
     }
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.wpoppin.com']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -169,19 +173,24 @@ INSTALLED_APPS = [
     #"datetimewidget",
     "djgeojson",
     #"stream_django",
-    "activity_stream",
+    #"activity_stream",
+
+    "fcm_django",
+    "restapi",
+
 
     "el_pagination",
     "rest_framework",
     "rest_framework.authtoken",
-    "restapi"
+
     "rest_auth",
     "djoser",
-    #"push_notifications",
+    "push_notifications", #this should be refactored soon
 
     "drf_extra_fields",
+    "notifications",
 
-    'reset_migrations',
+
 
     #for search sbar
     "haystack",
