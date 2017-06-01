@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from restapi.models import Ticket
-import pyscopg2
+import psycopg2
 
 #Keep this as a class so its object holds onto the smtp connection (don't have to reconnect)
 class TicketConfirmation:
@@ -62,7 +62,7 @@ class TicketConfirmation:
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		self.cur.execute("INSERT INTO tickets (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)", (to_email, event_name, confirmation_num, 'unconfirmed')
+		self.cur.execute("INSERT INTO tickets (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)", (to_email, event_name, confirmation_num, 'unconfirmed'))
 		return confirmation_num
 
 
