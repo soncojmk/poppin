@@ -71,6 +71,14 @@ API Endpoints
                                   --> outputs the actor, recipient, verb, and action_object of the notification
                                   --> Sort of like "Joe (actor) followed (Verb) Jake (recipient) 
                                   --> or "Jake (Actor) saved (verb) Jake's (recipient) event, the roast of time (action_object)
+                                  
+   Comments API:
+       api/events/<event_id>/post_comment/ (POST) --> This is for posting a comment to an event
+                                                  --> (need to send authorization token with request)
+                                                  --> parameters -> [comment]
+                                           (DELETE) --> To delete a comment from an event, grab the 'pk' from the comment object and 
+                                                        send it as a parameter with a DELETE request to that particular <event's                                                                 url>/post_comment
+       api/events/ (GET) --> comments now included in the event object with the comment author's account nested
                                  
 ```
 
