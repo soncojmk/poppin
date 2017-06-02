@@ -35,13 +35,13 @@ class TicketConfirmation:
 	#if not, return no entry	
 	def confirm(self, confirmation_num):
                 
-                self.cur.execute("SELECT * FROM tickets WHERE confirmation_num = %s" %confirmation_num)
+                self.cur.execute("SELECT * FROM restapi_ticket WHERE confirmation_num = %s" %confirmation_num)
                 try:
                         t = self.cur.fetchone()[0]
                         if t[3] == 'confirmed':
                                 return 'already confirmed'
                         else:
-                                self.cur.execute("UPDATE tickets SET confirmed = 'confirmed' WHERE confirmation_num = %s" %confirmation_num)
+                                self.cur.execute("UPDATE restapi_ticket SET confirmed = 'confirmed' WHERE confirmation_num = %s" %confirmation_num)
                                 return 'confirmed'
                 except:
                         return 'invalid'
@@ -62,7 +62,7 @@ class TicketConfirmation:
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		self.cur.execute("""INSERT INTO "tickets" (email, event_name, confirmation_num, confirmed) VALUES (%s, %s, %s, %s)""", (to_address, event_name, confirmation_num, 'unconfirmed'))
+		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed") VALUES (%s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed'))
 		return confirmation_num
 
 

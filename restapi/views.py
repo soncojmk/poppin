@@ -52,18 +52,18 @@ from notifications.signals import notify
 
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def confirm_ticket(request, pk=None):
     ticketing = TicketConfirmation()
-    confirmation_num = request.POST.get('confirmation_num')
+    confirmation_num = request.GET.get('confirmation_num', '')
     response = {'status': ticketing.confirm(confirmation_num)}
     return JsonResponse(response)
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def generate_confirmation(request, pk=None):
-    to_email = request.POST.get('email')
-    event_name = request.POST.get("event_name")
+    to_email = request.GET.get('email', '')
+    event_name = request.GET.get('event_name', '')
     ticketing = TicketConfirmation()
     response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
     return HttpResponse(json.dumps(response), content_type='application/json')
