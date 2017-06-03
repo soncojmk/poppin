@@ -1,5 +1,5 @@
 
-# mysite
+# What'sPoppin
 
 ## Getting Started
 
@@ -57,6 +57,9 @@ API Endpoints
         api/events/<event_id>/save (POST) --> Save an event (need to send token with request)
         api/events/<event_id>/save (DELETE) --> Unsave an event (need to send token with request)
         api/events/<event_id>/people_saving (GET) --> get a list of users saving an event
+        
+    Personal Event:  (just like normal events) --> just check is  'is_personal' field is true to determine if it's a personal event
+       
         
     Notifications:
         api/devices (POST) --> Required Parameters:
