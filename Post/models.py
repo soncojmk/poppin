@@ -86,9 +86,9 @@ class Post(models.Model):
     (OTHER, 'Other'),
 )
 
-    category = models.CharField(max_length= 25, choices = CATEGORIES, null=True)
+    category = models.CharField(max_length= 25, choices = CATEGORIES, null=True, blank=True)
     author = models.ForeignKey('auth.user')
-    title = models.CharField(max_length=32)
+    title = models.CharField(max_length=32, null=True, blank=True)
     street_address = models.CharField(max_length=200)
     city = models.CharField(max_length=64)
     state = USStateField(choices = STATE_CHOICES)
@@ -99,7 +99,7 @@ class Post(models.Model):
 
     time = models.TimeField( help_text="24 hour clock", null=True,)
     description = models.TextField()
-    price = models.IntegerField(null=True)
+    price = models.IntegerField(null=True, blank=True)
     ticket_link = models.URLField(null=True, blank=True)
     image = StdImageField(upload_to='Post/images', null =True, blank=True,
                           variations={ 'large': {'width': 630, 'height': 300, 'crop': True}})
@@ -124,6 +124,9 @@ class Post(models.Model):
 
     #the attendees many-to-many relationship with the account model
     attending = models.ManyToManyField('account.Account', blank=True, related_name="attending")
+
+    #personal event boolean
+    is_personal = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-posted_date']
@@ -167,6 +170,10 @@ class Post(models.Model):
     @property
     def get_comments(self):
         return self.comments.get()
+
+    @property
+    def num_attending(self):
+        return self.attending.count()
 
 
     '''

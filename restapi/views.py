@@ -29,7 +29,7 @@ from django.db.models import Q
 from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-
+from rest_framework import filters
 
 from Post.permissions import IsStaffOrTargetUser
 
@@ -51,23 +51,30 @@ import json
 from notifications.signals import notify
 
 
-
-@api_view(['GET'])
+@api_view(['POST'])
 def confirm_ticket(request, pk=None):
     ticketing = TicketConfirmation()
-    confirmation_num = request.GET.get('confirmation_num', '')
-    response = {'status': ticketing.confirm(confirmation_num)}
-    return JsonResponse(response)
+    try:
+        data = request.data.dict()
+        body = json.loads(data['_content'])
+        confirmation_num = body['confirmation_num']
+        response = {'status': ticketing.confirm(confirmation_num)}
+        return JsonResponse(response)
+    except:
+        return JsonResponse({'status':'error'})
 
-
-@api_view(['GET'])
+@api_view(['POST'])
 def generate_confirmation(request, pk=None):
-    to_email = request.GET.get('email', '')
-    event_name = request.GET.get('event_name', '')
-    ticketing = TicketConfirmation()
-    response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
-    return HttpResponse(json.dumps(response), content_type='application/json')
-
+    try:
+        data = request.data.dict()
+        body = json.loads(data['_content'])
+        to_email = body['email']
+        event_name = body['event_name']
+        ticketing = TicketConfirmation()
+        response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
+        return JsonResponse(response)
+    except:
+        return JsonResponse({'confirmation_num':'error'})
 
 #Overiding api-token-auth to get id along with the default response
 class CustomObtainAuthToken(ObtainAuthToken):
@@ -340,6 +347,8 @@ class AccountViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, JSONParser)
     permission_classes = (IsOwnerOrReadOnlyAccount,)
     model = Account
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('user__username', 'user__first_name', 'user__last_name',)
 
 
     @detail_route(methods=['get'])

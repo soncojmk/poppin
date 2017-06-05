@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments')
+        fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments', 'is_personal', 'num_attending')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -54,7 +54,7 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
         fields = ('url', 'pk', 'author', 'category',
-                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments')
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments', 'is_personal', 'num_attending')
 
 
 
@@ -69,7 +69,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
         fields = ('url', 'pk', 'author', 'account', 'category',
-                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments', 'get_comments')
+                  'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments', 'get_comments', 'is_personal', 'num_attending')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

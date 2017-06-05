@@ -24,8 +24,8 @@ class TicketConfirmation:
 		self.SMTP.starttls()
 		self.SMTP.login(self.USERNAME, self.PASSWORD)	
 		print('authenticated')
-                conn = psycopg2.connect("dbname=pop user=super host=soncojmk-178.postgres.pythonanywhere-services.com password=Munyao25# port=10178")
-                self.cur = conn.cursor()
+                self.conn = psycopg2.connect("dbname=pop user=super host=soncojmk-178.postgres.pythonanywhere-services.com password=Munyao25# port=10178")
+                self.cur = self.conn.cursor()
 
 
 	#Check for confirmation num in db
@@ -33,15 +33,15 @@ class TicketConfirmation:
 		#if not confirmed, return named, set to confirmed
 		#else return already confirmed
 	#if not, return no entry	
-	def confirm(self, confirmation_num):
-                
-                self.cur.execute("SELECT * FROM restapi_ticket WHERE confirmation_num = %s" %confirmation_num)
+	def confirm(self, confirmation_num): 
                 try:
-                        t = self.cur.fetchone()[0]
+                        self.cur.execute("""SELECT * FROM "restapi_ticket" WHERE "confirmation_num"=%s;""", (confirmation_num,))
+                        t = self.cur.fetchone()
                         if t[3] == 'confirmed':
                                 return 'already confirmed'
                         else:
-                                self.cur.execute("UPDATE restapi_ticket SET confirmed = 'confirmed' WHERE confirmation_num = %s" %confirmation_num)
+                                self.cur.execute("""UPDATE "restapi_ticket" SET "confirmed" = %s WHERE "confirmation_num" = %s;""", ('confirmed', confirmation_num,))
+                                self.conn.commit()
                                 return 'confirmed'
                 except:
                         return 'invalid'
@@ -63,7 +63,8 @@ class TicketConfirmation:
 		except:
 			print('could not send email')
 		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed") VALUES (%s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed'))
-		return confirmation_num
+		self.conn.commit()
+                return confirmation_num
 
 
 

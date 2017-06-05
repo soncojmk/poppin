@@ -95,10 +95,10 @@ urlpatterns = [
     url(r"^marketingintern", TemplateView.as_view(template_name="marketing-intern.html"), name="marketingintern"),
 
     #ticketing
-    url(r'^api/confirm_ticket/(?P<confirmation_num>[\w-]+)/$', views.confirm_ticket),
-    url(r'^api/generate_confirmation/(?P<email>[\w.@+-]+)/(?P<event_name>[\w.@+-]+)/$', views.generate_confirmation),
-
-
+    url(r'^api/confirm_ticket/$', views.confirm_ticket),
+    url(r'^api/generate_confirmation/$', views.generate_confirmation),
+    url(r'^api/confirm_ticket/(?P<confirmation_num>[\w\-]+)/$', views.confirm_ticket),
+    url(r'^api/generate_confirmation/(?P<email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/(?P<event_name>[\w]+)/$', views.generate_confirmation),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

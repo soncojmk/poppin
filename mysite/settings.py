@@ -220,9 +220,15 @@ PUSH_NOTIFICATIONS_SETTINGS = {
         "FCM_API_KEY": "AAAAJTpiJK8:APA91bH2fUiskht4a057qGICOnzykkGyHMpcKc4uAr5EoBDCA9OK1sWrBjlKPvXXAbVxZFrVRUaJUub4GqJ12hfQWasI9nR9KqW2CTaQZZTjvETwnIjt0QLxhcjx2WOwctycn9xSncwO",
         #"APNS_CERTIFICATE": "/path/to/your/certificate.pem",
         "FCM_POST_URL": 'https://fcm.googleapis.com/fcm/send',
-
-
 }
+
+
+FCM_DJANGO_SETTINGS = {
+        "FCM_SERVER_KEY": "AAAAJTpiJK8:APA91bH2fUiskht4a057qGICOnzykkGyHMpcKc4uAr5EoBDCA9OK1sWrBjlKPvXXAbVxZFrVRUaJUub4GqJ12hfQWasI9nR9KqW2CTaQZZTjvETwnIjt0QLxhcjx2WOwctycn9xSncwO",
+        "ONE_DEVICE_PER_USER": True, # true if you want to have only one active device per registered user at a time
+        "DELETE_INACTIVE_DEVICES": False, # devices to which notifications cannot be sent, are deleted upon receiving error response from FCM
+}
+
 
 '''
 EMAIL_BACKEND = "mailer.backend.DbBackend"
