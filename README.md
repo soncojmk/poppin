@@ -1,5 +1,5 @@
 
-# mysite
+# What'sPoppin
 
 ## Getting Started
 
@@ -58,6 +58,9 @@ API Endpoints
         api/events/<event_id>/save (DELETE) --> Unsave an event (need to send token with request)
         api/events/<event_id>/people_saving (GET) --> get a list of users saving an event
         
+    Personal Event:  (just like normal events) --> just check is  'is_personal' field is true to determine if it's a personal event
+       
+        
     Notifications:
         api/devices (POST) --> Required Parameters:
                            --> registration_id (integer), active(boolean- should be set to true), type (android, ios, or web)
@@ -80,6 +83,11 @@ API Endpoints
                                                         send it as a parameter with a DELETE request to that particular <event'surl>/post_comment
        api/events/ (GET) --> comments now included in the event object with the comment author's account nested
                                  
+  Searching for other users:
+      api/accounts?search=<username or first name or last name> (GET) --> This will return a list of accounts that have that keyword
+      
+  
+  
 ```
 
 All other API endpoints that don't have any internal/hidden endpoints and are fairly straight forward to use are in the link below
