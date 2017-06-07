@@ -48,24 +48,34 @@ class TicketConfirmation:
 
 
 	#Generates a confirmation number and sends an email
-	def generate_confirmation(self, to_address, event_name):
+	def generate_confirmation(self, to_address, event_name, user_id, username):
 		confirmation_num = str(uuid.uuid4()).replace('-', '')[0:10] #uses a uuid for confirmation number
 		try:
 			_generate_qr(confirmation_num)
 		except:
 			print('could not generate qr code')
-			pass
-		email = _generate_email(self.USERNAME, to_address, event_name, confirmation_num)
+		email = _generate_email(username, self.USERNAME, to_address, event_name, confirmation_num)
 		try:
 			self.SMTP.sendmail(self.USERNAME, to_address, email.as_string())
 			print('sent email')
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed") VALUES (%s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed'))
+		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed", "user_id") VALUES (%s, %s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed', user_id))
 		self.conn.commit()
                 return confirmation_num
 
+        def resend_confirmation(self, to_address, event_name, user_id, username):
+                try:
+                        self.cur.execute("""SELECT * FROM "restapi_ticket" WHERE "user_id"=%s AND "event_name"=%s;""", (user_id,event_name,))
+                        t = self.cur.fetchone()
+                        _generate_qr(t[1])
+                        email = _generate_email(username, self.USERNAME, to_address, t[2], t[1])
+                        self.SMTP.sendmail(self.USERNAME, to_address, email.as_string())
+                        os.remove('%s.png' % t[1])
+                        return t[1]
+                except:
+                        print('could not send email')
 
 
 ###############################################
@@ -77,13 +87,13 @@ class TicketConfirmation:
 #Email HTML template; change to include more information, fancify it, etc.
 ###
 message_template = '''
-Hello! <br><br>
-You're all set to attend <i>{0}</i>! <br>
-Your confirmation number is <b>{1}</b> <br><br>
+Hey, {0}! <br><br>
+You're all set to attend <i>{1}</i>! <br>
+Your confirmation number is <b>{2}</b> <br><br>
 Have fun!<br><br>
 Sincerely,<br>
 What's Poppin'<br><br>
-<img src="cid:{2}"><br><br>
+<img src="cid{3}"><br><br>
 <i>Please present your QR Code to your event host</i>
 '''
 
@@ -96,14 +106,14 @@ def _generate_qr(confirmation_num):
 
 #Generates an email with the qr code, based on the format of the template message
 #Add additional attributes if needed
-def _generate_email(from_address, to_address, event_name, confirmation_num):
+def _generate_email(name, from_address, to_address, event_name, confirmation_num):
 	email = MIMEMultipart()
 	email['Subject'] = 'Confirming Attendance to %s' % event_name
 	email['From'] = from_address
 	email['To'] = to_address
 
 	#attaching message
-	text = MIMEText(message_template.format(event_name, confirmation_num, confirmation_num), 'html')
+	text = MIMEText(message_template.format(name, event_name, confirmation_num, confirmation_num), 'html')
 	email.attach(text)
 	
 	#attaching qr image

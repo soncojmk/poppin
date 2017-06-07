@@ -4,6 +4,9 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = PACKAGE_ROOT
+PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY","pk_test_iIHWmhaA1PL0j7M8ilskNojJ")
+PINAX_STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY","sk_test_KPPfPDbb30oeMEDS7gRBjSny")
+
 
 DEBUG = True
 
@@ -210,7 +213,7 @@ INSTALLED_APPS = [
     "rest_framework_social_oauth2",
 
     # project
-    "mysite",
+    "mysite"
 ]
 
 SITE_ID = 1
