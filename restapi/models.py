@@ -22,6 +22,6 @@ class Ticket(models.Model):
 	confirmation_num = models.CharField(max_length=20, primary_key=True, unique=True)
 	event_name = models.CharField(max_length=128, unique = False)
 	confirmed = models.CharField(max_length=20, unique=False)
-
+	user_id = models.IntegerField()
 	def __unicode__(self):
 		return self.confirmation_num

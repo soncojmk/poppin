@@ -70,8 +70,25 @@ def generate_confirmation(request, pk=None):
         body = json.loads(data['_content'])
         to_email = body['email']
         event_name = body['event_name']
+        user_id = body['user_id']
+        username = body['username']
         ticketing = TicketConfirmation()
-        response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name)}
+        response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name, user_id, username)}
+        return JsonResponse(response)
+    except:
+        return JsonResponse({'confirmation_num':'error'})
+
+@api_view(['POST'])
+def resend_confirmation(request, pk=None):
+    try:
+        data = request.data.dict()
+        body = json.loads(data['_content'])
+        to_email = body['email']
+        user_id = body['user_id']
+        username = body['username']
+        event_name = body['event_name']
+        ticketing = TicketConfirmation()
+        response = {'confirmation_num':ticketing.resend_confirmation(to_email, event_name, user_id, username)}
         return JsonResponse(response)
     except:
         return JsonResponse({'confirmation_num':'error'})
