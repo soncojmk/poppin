@@ -7,6 +7,7 @@ from django.contrib import admin
 
 from Post import views as pv
 from restapi import views
+from ticketing import views as tviews
 from rest_framework import routers
 from rest_framework.authtoken import views as v
 
@@ -97,7 +98,8 @@ urlpatterns = [
     #ticketing
     url(r'^api/confirm_ticket/$', views.confirm_ticket),
     url(r'^api/generate_confirmation/$', views.generate_confirmation),
-    url(r'^api/resend_confirmation/$', views.resend_confirmation)
+    url(r'^api/resend_confirmation/$', views.resend_confirmation),
+    url(r'^api/purchase/(?P<event_id>\d+)/$', tviews.purchase)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

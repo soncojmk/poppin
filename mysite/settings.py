@@ -161,7 +161,7 @@ INSTALLED_APPS = [
 #    "django.contrib.postgres",
     "pinax.likes",
     #"mailer",
-
+    "ticketing",
     "Post",
     "blog",
 
