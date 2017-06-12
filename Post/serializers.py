@@ -28,7 +28,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id','category', 'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'get_comments', 'is_personal', 'num_attending')
 
-
 class UserSerializer(serializers.ModelSerializer):
     #posts = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all())
 
@@ -70,6 +69,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         model = Post
         fields = ('url', 'pk', 'author', 'account', 'category',
                   'title', 'street_address', 'city', 'state', 'zip_code', 'date', 'time', 'description', 'price', 'image', 'ticket_link', 'attending', 'num_comments', 'get_comments', 'is_personal', 'num_attending')
+
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):

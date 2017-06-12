@@ -98,6 +98,7 @@ urlpatterns = [
     url(r'^api/confirm_ticket/$', views.confirm_ticket),
     url(r'^api/generate_confirmation/$', views.generate_confirmation),
     url(r'^api/resend_confirmation/$', views.resend_confirmation)
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
