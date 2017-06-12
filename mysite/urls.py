@@ -97,7 +97,8 @@ urlpatterns = [
     #ticketing
     url(r'^api/confirm_ticket/$', views.confirm_ticket),
     url(r'^api/generate_confirmation/$', views.generate_confirmation),
-    url(r'^api/resend_confirmation/$', views.resend_confirmation)
+    url(r'^api/resend_confirmation/$', views.resend_confirmation),
+    url(r'^api/purchase/(?P<event_id>\d+)/$', tviews.purchase)
 
 ]
 
