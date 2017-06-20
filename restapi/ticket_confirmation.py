@@ -48,7 +48,7 @@ class TicketConfirmation:
 
 
 	#Generates a confirmation number and sends an email
-	def generate_confirmation(self, to_address, event_name, user_id, username):
+	def generate_confirmation(self, to_address, event_name, user_id, username, charge_id):
 		confirmation_num = str(uuid.uuid4()).replace('-', '')[0:10] #uses a uuid for confirmation number
 		try:
 			_generate_qr(confirmation_num)
@@ -61,7 +61,7 @@ class TicketConfirmation:
 			os.remove('%s.png' % confirmation_num)
 		except:
 			print('could not send email')
-		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed", "user_id") VALUES (%s, %s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed', user_id))
+		self.cur.execute("""INSERT INTO "restapi_ticket" ("email", "event_name", "confirmation_num", "confirmed", "user_id", "charge_id") VALUES (%s, %s, %s, %s, %s, %s)""",(to_address, event_name, confirmation_num, 'unconfirmed', user_id, charge_id))
 		self.conn.commit()
                 return confirmation_num
 

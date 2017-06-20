@@ -5,6 +5,8 @@ from django.views.generic import TemplateView
 
 from django.contrib import admin
 
+from ticketing import views as tviews
+
 from Post import views as pv
 from restapi import views
 from rest_framework import routers
@@ -98,8 +100,8 @@ urlpatterns = [
     url(r'^api/confirm_ticket/$', views.confirm_ticket),
     url(r'^api/generate_confirmation/$', views.generate_confirmation),
     url(r'^api/resend_confirmation/$', views.resend_confirmation),
-    url(r'^api/purchase/(?P<event_id>\d+)/$', tviews.purchase)
-
+    url(r'^purchase/(?P<event_id>\d+)/$', tviews.purchase),
+    url(r'^checkout/$', tviews.checkout)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

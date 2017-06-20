@@ -1,24 +1,22 @@
-<!-->Used this for Credit Card Form: https://tutorialzine.com/2016/11/simple-credit-card-validation-form<!-->
-
 <center>
     <h2>{{event_name}}</h2>
     <p>{{event_description}}</p>
     <h3>{{event_address}}</h3>
-    <h3>{{event_state}}</h3
+    <h3>{{event_city}}</h3>
     <h3>{{event_state}}</h3>
     <h3>{{event_zip}}</h3>
-    <h3>{{event_time}}</h3>
     <h3>{{event_date}}</h3>
+    <h3>{{event_time}}</h3>
+    <h3>{{event_price}}</h3>
     
     
-    <div class="creditCardForm">
-        <div class="heading">
-            <h1>Confirm Purchase</h1>
-        </div>
-        <div class="payment">
-            <form action="{{ checkout }}" method="POST">
+    <div>
+        <h1>Confirm Purchase</h1>
+        <div>
+            <form action="/checkout/" method="POST">
                 {% csrf_token %}
-                {{ form.as_table }}
+                {{ form }}
+                <input type="submit" value="Submit"/>
             </form>
         </div>
     </div>

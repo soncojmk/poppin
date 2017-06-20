@@ -72,8 +72,9 @@ def generate_confirmation(request, pk=None):
         event_name = body['event_name']
         user_id = body['user_id']
         username = body['username']
+        charge_id = body['charge_id']
         ticketing = TicketConfirmation()
-        response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name, user_id, username)}
+        response = {'confirmation_num':ticketing.generate_confirmation(to_email, event_name, user_id, username, charge_id)}
         return JsonResponse(response)
     except:
         return JsonResponse({'confirmation_num':'error'})
