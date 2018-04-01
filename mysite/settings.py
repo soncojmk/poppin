@@ -12,7 +12,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'pop',
         'USER': 'super',
-        'PASSWORD': 'Munyao25#',
+        'PASSWORD': '',
         'HOST': 'soncojmk-178.postgres.pythonanywhere-services.com',
         'PORT': '10178',
     }
