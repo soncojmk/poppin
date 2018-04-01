@@ -217,14 +217,14 @@ SITE_ID = 1
 
 
 PUSH_NOTIFICATIONS_SETTINGS = {
-        "FCM_API_KEY": "AAAAJTpiJK8:APA91bH2fUiskht4a057qGICOnzykkGyHMpcKc4uAr5EoBDCA9OK1sWrBjlKPvXXAbVxZFrVRUaJUub4GqJ12hfQWasI9nR9KqW2CTaQZZTjvETwnIjt0QLxhcjx2WOwctycn9xSncwO",
+        "FCM_API_KEY": ":",
         #"APNS_CERTIFICATE": "/path/to/your/certificate.pem",
         "FCM_POST_URL": 'https://fcm.googleapis.com/fcm/send',
 }
 
 
 FCM_DJANGO_SETTINGS = {
-        "FCM_SERVER_KEY": "AAAAJTpiJK8:APA91bH2fUiskht4a057qGICOnzykkGyHMpcKc4uAr5EoBDCA9OK1sWrBjlKPvXXAbVxZFrVRUaJUub4GqJ12hfQWasI9nR9KqW2CTaQZZTjvETwnIjt0QLxhcjx2WOwctycn9xSncwO",
+        "FCM_SERVER_KEY": "",
         "ONE_DEVICE_PER_USER": True, # true if you want to have only one active device per registered user at a time
         "DELETE_INACTIVE_DEVICES": False, # devices to which notifications cannot be sent, are deleted upon receiving error response from FCM
 }
@@ -232,15 +232,16 @@ FCM_DJANGO_SETTINGS = {
 
 '''
 EMAIL_BACKEND = "mailer.backend.DbBackend"
-MAILER_EMAIL_BACKEND = "sgbackend.SendGridBackend"
+MAILER_EMAIL_BACKEND = "sgbackend.
+ridBackend"
 
 SEND_CONFIRMATION_EMAIL = True;
 
 
 '''
 EMAIL_BACKEND = "sgbackend.SendGridBackend"
-SENDGRID_USER = "soncojmk"
-SENDGRID_PASSWORD = "jomuki25"
+SENDGRID_USER = ""
+SENDGRID_PASSWORD = ""
 DEFAULT_FROM_EMAIL = 'WhatsPoppin <noreply@wpoppin.com>'
 THEME_CONTACT_EMAIL = "kitongajoseph@gmail.com"
 
@@ -393,14 +394,14 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 
-SOCIAL_AUTH_TWITTER_KEY = "tGAWnVvel2WzKp8qGqYFzo1xT"
-SOCIAL_AUTH_TWITTER_SECRET = "Hc1TTdHiPq6qBTYJvFCCalyqeo7CFRPwqjhcerrS4vRjWRRwgL"
+SOCIAL_AUTH_TWITTER_KEY = ""
+SOCIAL_AUTH_TWITTER_SECRET = ""
 
-SOCIAL_AUTH_FACEBOOK_KEY = "304444299892792"
-SOCIAL_AUTH_FACEBOOK_SECRET = "74a1767c459da522d55a6fc9cd0d4446"
+SOCIAL_AUTH_FACEBOOK_KEY = ""
+SOCIAL_AUTH_FACEBOOK_SECRET = ""
 
-STREAM_API_KEY = 'zj4pfe5wds8x'
-STREAM_API_SECRET = '7s8gynn65v6yscphrjnynme3sju7uw72qhmgttzzrvfvkazrp5wvz6met3vt3e7q'
+STREAM_API_KEY = ''
+STREAM_API_SECRET = ''
 
 
 
