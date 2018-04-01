@@ -3,7 +3,7 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = PACKAGE_ROOT
-STRIPE_API_KEY='sk_test_KPPfPDbb30oeMEDS7gRBjSny'
+STRIPE_API_KEY=''
 
 DEBUG = True
 
